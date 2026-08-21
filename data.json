@@ -1,0 +1,28 @@
+{
+  "pageTitle": "사은품 증정 이벤트",
+  "headerTitle": "사은품 증정 이벤트 참여하기",
+  "headerDescription": "아래 3가지 단계를 순서대로 모두 완료하시고 특별한 사은품을 받아가세요.",
+  "steps": [
+    {
+      "id": "step1",
+      "title": "1. 백화점 어플 설치",
+      "buttonText": "바로가기",
+      "link": "https://play.google.com/store/apps/details?id=com.example.app",
+      "target": "_blank"
+    },
+    {
+      "id": "step2",
+      "title": "2. 카카오톡 친구추가 (부산본점)",
+      "buttonText": "바로가기",
+      "link": "http://pf.kakao.com/_example",
+      "target": "_blank"
+    },
+    {
+      "id": "step3",
+      "title": "3. 이벤트 참여하기",
+      "buttonText": "바로가기",
+      "link": "https://example.com/event-page",
+      "target": "_self"
+    }
+  ]
+}
