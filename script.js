@@ -310,21 +310,21 @@ function createGwanganBridgeIllustrationSvg() {
     `;
 }
 
-// 전체 페이지 렌더링
+// 전체 페이지 렌더링 및 시네마틱 인트로 전환 제어
 function renderPage(data) {
     document.title = data.pageTitle;
 
-    // 헤더 영역 렌더링
+    const appContainer = document.querySelector('.app-container');
+    if (appContainer) {
+        appContainer.classList.add('is-intro');
+    }
+
+    // 헤더 영역 렌더링 (사은 혜택 안내 뱃지 완전 제거)
     const headerContainer = document.getElementById('header-container');
     if (headerContainer) {
         headerContainer.innerHTML = `
             ${createGwanganBridgeIllustrationSvg()}
             <div class="header-content">
-                <div class="festival-badge">
-                    <span class="sparkle-icon">✨</span>
-                    <span>${data.headerBadge || '사은 혜택 안내'}</span>
-                    <span class="sparkle-icon">✨</span>
-                </div>
                 <h1 class="festival-title">${data.headerTitle}</h1>
                 <p class="festival-subtitle">${data.headerSubtitle}</p>
             </div>
@@ -340,7 +340,7 @@ function renderPage(data) {
         data.steps.forEach((step, index) => {
             const stepElement = document.createElement('section');
             stepElement.className = 'step-card';
-            stepElement.style.animationDelay = `${(index + 1) * 0.18}s`;
+            stepElement.style.setProperty('--step-index', index);
 
             // 1번 어플 설치 단계일 경우 OS에 따라 링크 분기
             let finalLink = step.link;
@@ -390,16 +390,26 @@ function renderPage(data) {
         });
     }
 
-    // 푸터 영역 렌더링
-    const footerContainer = document.getElementById('footer-container');
-    if (footerContainer && data.notice) {
-        footerContainer.innerHTML = `
-            <div class="notice-box">
-                <p class="notice-text">${data.notice}</p>
-            </div>
-            <div class="footer-brand">
-                <span>© EVENT & BENEFITS GUIDE. ALL RIGHTS RESERVED.</span>
-            </div>
-        `;
+    // 시네마틱 인트로 -> 본 페이지 전환 트리거
+    let transitioned = false;
+    function triggerPageTransition() {
+        if (transitioned || !appContainer) return;
+        transitioned = true;
+        appContainer.classList.remove('is-intro');
+        appContainer.classList.add('is-ready');
     }
+
+    // 1.1초 동안 인트로를 보여준 후 상단 헤더로 부드럽게 축소 이동
+    const transitionTimer = setTimeout(triggerPageTransition, 1100);
+
+    // 사용자가 화면을 탭/클릭하면 즉시 인트로를 건너뛰고 전환
+    function handleUserSkip() {
+        clearTimeout(transitionTimer);
+        triggerPageTransition();
+        window.removeEventListener('click', handleUserSkip);
+        window.removeEventListener('touchstart', handleUserSkip);
+    }
+
+    window.addEventListener('click', handleUserSkip, { once: true });
+    window.addEventListener('touchstart', handleUserSkip, { once: true, passive: true });
 }

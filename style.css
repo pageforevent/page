@@ -160,6 +160,24 @@ body {
     flex-direction: column;
     align-items: center;
     margin-bottom: 1.8rem;
+    width: 100%;
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 인트로 모드: 화면 중앙 히어로 뷰 */
+.app-container.is-intro .header {
+    padding-top: max(15vh, 45px);
+    padding-bottom: max(10vh, 30px);
+    margin-bottom: 0;
+    transform: scale(1.04);
+}
+
+/* 전환 완료 모드: 상단 헤더 뷰로 축소 이동 */
+.app-container.is-ready .header {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 1.6rem;
+    transform: scale(1);
 }
 
 .bridge-illustration-card {
@@ -171,8 +189,15 @@ body {
         0 14px 28px rgba(0, 0, 0, 0.4),
         0 0 20px rgba(56, 189, 248, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.15rem;
     background: #070D1E;
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.app-container.is-intro .bridge-illustration-card {
+    box-shadow: 
+        0 22px 48px rgba(0, 0, 0, 0.65),
+        0 0 35px rgba(56, 189, 248, 0.35);
 }
 
 .gwangan-bridge-svg {
@@ -331,50 +356,58 @@ body {
 .header-content {
     text-align: center;
     width: 100%;
-    animation: fadeInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.festival-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(56, 189, 248, 0.15));
-    border: 1px solid rgba(253, 224, 71, 0.35);
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: var(--color-gold-bright);
-    margin-bottom: 0.75rem;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.15);
-}
-
-.festival-badge .sparkle-icon {
-    font-size: 0.85rem;
 }
 
 .festival-title {
-    font-size: 1.85rem;
+    font-size: 1.8rem;
     font-weight: 800;
     line-height: 1.25;
     letter-spacing: -0.5px;
-    margin-bottom: 0.5rem;
     background: linear-gradient(135deg, #FFFFFF 0%, #FDE047 50%, #38BDF8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.25));
     word-break: keep-all;
+    transition: all 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.app-container.is-intro .festival-title {
+    font-size: 2.15rem;
+    margin-top: 0.85rem;
+    margin-bottom: 0;
+}
+
+.app-container.is-ready .festival-title {
+    font-size: 1.75rem;
+    margin-top: 0;
+    margin-bottom: 0.4rem;
 }
 
 .festival-subtitle {
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--color-text-sub);
     line-height: 1.45;
     word-break: keep-all;
     max-width: 90%;
     margin: 0 auto;
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.app-container.is-intro .festival-subtitle {
+    opacity: 0;
+    transform: translateY(12px);
+    max-height: 0;
+    overflow: hidden;
+    margin: 0;
+    pointer-events: none;
+}
+
+.app-container.is-ready .festival-subtitle {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 50px;
+    margin-top: 0.35rem;
 }
 
 /* 스켈레톤 로딩 */
@@ -404,6 +437,21 @@ body {
     display: flex;
     flex-direction: column;
     gap: 1.15rem;
+    transition: all 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.app-container.is-intro .step-list {
+    opacity: 0;
+    transform: translateY(35px);
+    max-height: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.app-container.is-ready .step-list {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 2000px;
 }
 
 .step-card {
@@ -414,10 +462,26 @@ body {
     position: relative;
     overflow: hidden;
     box-shadow: var(--glass-shadow);
-    transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: 
+        transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease,
+        opacity 0.6s ease;
+}
+
+.app-container.is-intro .step-card {
     opacity: 0;
-    transform: translateY(25px);
-    animation: fadeInUp 0.7s forwards cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(30px);
+}
+
+.app-container.is-ready .step-card {
+    opacity: 1;
+    transform: translateY(0);
+    transition: 
+        opacity 0.6s ease calc(0.35s + var(--step-index, 0) * 0.14s),
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) calc(0.35s + var(--step-index, 0) * 0.14s),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
 }
 
 .step-card:hover {
@@ -620,36 +684,6 @@ body {
 
 .btn-action:hover .btn-arrow {
     transform: translateX(4px);
-}
-
-/* ==========================================================================
-   푸터 & 공지사항
-   ========================================================================== */
-.footer {
-    margin-top: 1.8rem;
-    text-align: center;
-}
-
-.notice-box {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 0.85rem 1rem;
-    margin-bottom: 1.1rem;
-}
-
-.notice-text {
-    font-size: 0.78rem;
-    color: var(--color-text-muted);
-    line-height: 1.45;
-    word-break: keep-all;
-}
-
-.footer-brand {
-    font-size: 0.7rem;
-    color: rgba(148, 163, 184, 0.6);
-    letter-spacing: 1px;
-    font-weight: 500;
 }
 
 /* ==========================================================================
