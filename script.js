@@ -319,14 +319,13 @@ function renderPage(data) {
         appContainer.classList.add('is-intro');
     }
 
-    // 헤더 영역 렌더링 (사은 혜택 안내 뱃지 완전 제거)
+    // 헤더 영역 렌더링
     const headerContainer = document.getElementById('header-container');
     if (headerContainer) {
         headerContainer.innerHTML = `
             ${createGwanganBridgeIllustrationSvg()}
             <div class="header-content">
                 <h1 class="festival-title">${data.headerTitle}</h1>
-                <p class="festival-subtitle">${data.headerSubtitle}</p>
             </div>
         `;
     }
