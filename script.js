@@ -20,9 +20,9 @@ function renderPage(data) {
     document.title = data.pageTitle;
 
     const headerContainer = document.getElementById('header-container');
+    // headerDescription이 삭제되었으므로 title만 렌더링
     headerContainer.innerHTML = `
         <h1>${data.headerTitle}</h1>
-        <p>${data.headerDescription}</p>
     `;
 
     const stepContainer = document.getElementById('step-container');
@@ -32,10 +32,13 @@ function renderPage(data) {
         const stepElement = document.createElement('div');
         stepElement.className = 'step-item';
         
-        // 아이템마다 나타나는 애니메이션 딜레이를 주어 순차적으로 뜨게 함
-        stepElement.style.animationDelay = `${index * 0.15}s`;
+        // 순차적 등장 애니메이션 딜레이 설정
+        stepElement.style.animationDelay = `${index * 0.2}s`;
         
         stepElement.innerHTML = `
+            <div class="icon-wrapper">
+                ${step.iconSvg}
+            </div>
             <div class="step-title">${step.title}</div>
             <a href="${step.link}" class="btn-go" target="${step.target}" rel="noopener noreferrer">${step.buttonText}</a>
         `;

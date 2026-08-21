@@ -1,28 +1,30 @@
 {
-  "pageTitle": "사은품 증정 이벤트",
-  "headerTitle": "사은품 증정 이벤트",
-  "headerDescription": "아래 3가지 단계를 순서대로 모두 완료하시고 특별한 사은품을 받아가세요.",
+  "pageTitle": "사은 행사 안내",
+  "headerTitle": "사은 행사 안내",
   "steps": [
     {
       "id": "step1",
       "title": "1. 백화점 어플 설치",
       "buttonText": "바로가기",
       "link": "https://play.google.com/store/apps/details?id=com.example.app",
-      "target": "_blank"
+      "target": "_blank",
+      "iconSvg": "<svg fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3\"></path></svg>"
     },
     {
       "id": "step2",
       "title": "2. 카카오톡 친구추가 (부산본점)",
       "buttonText": "바로가기",
       "link": "http://pf.kakao.com/_example",
-      "target": "_blank"
+      "target": "_blank",
+      "iconSvg": "<svg fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z\"></path></svg>"
     },
     {
       "id": "step3",
-      "title": "3. 이벤트 참여하기",
+      "title": "3. 행사 참여하기",
       "buttonText": "바로가기",
       "link": "https://example.com/event-page",
-      "target": "_self"
+      "target": "_self",
+      "iconSvg": "<svg fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"M21 11.25v8.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 109.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1114.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z\"></path></svg>"
     }
   ]
 }
