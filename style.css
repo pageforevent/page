@@ -38,7 +38,6 @@ body {
     overflow: hidden;
 }
 
-/* 상단 장식 효과 */
 .app-container::before {
     content: '';
     position: absolute;
@@ -73,7 +72,6 @@ body {
     display: inline-block;
 }
 
-/* 타이틀 밑줄 포인트 */
 .header h1::after {
     content: '';
     position: absolute;
@@ -104,21 +102,17 @@ body {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
-    
-    /* 애니메이션 초기 상태 */
     opacity: 0;
     transform: translateY(30px);
     animation: fadeInUp 0.7s forwards;
 }
 
-/* 호버 시 입체감 및 반응성 강화 */
 .step-item:hover {
     border-color: rgba(192, 146, 71, 0.3);
     box-shadow: 0 12px 30px rgba(192, 146, 71, 0.15);
     transform: translateY(-8px) scale(1.02);
 }
 
-/* 배경 미세 패턴/그라데이션 효과 */
 .step-item::before {
     content: '';
     position: absolute;
@@ -137,7 +131,6 @@ body {
     opacity: 1;
 }
 
-/* 아이콘 래퍼 */
 .icon-wrapper {
     width: 64px;
     height: 64px;
@@ -155,7 +148,6 @@ body {
     transform: rotateY(180deg) scale(1.1);
 }
 
-/* 아이콘 자체 역회전(똑바로 보이게) 및 스타일 */
 .icon-wrapper svg {
     width: 32px;
     height: 32px;
@@ -176,7 +168,6 @@ body {
     z-index: 1;
 }
 
-/* 버튼 고급화 (빛 반사 애니메이션 추가) */
 .btn-go {
     width: 100%;
     display: block;
@@ -195,7 +186,6 @@ body {
     z-index: 1;
 }
 
-/* 버튼 Shine 효과 */
 .btn-go::after {
     content: '';
     position: absolute;
@@ -219,7 +209,6 @@ body {
     box-shadow: 0 3px 10px rgba(192, 146, 71, 0.3);
 }
 
-/* 키프레임 */
 @keyframes fadeInUp {
     0% { opacity: 0; transform: translateY(30px); }
     100% { opacity: 1; transform: translateY(0); }
