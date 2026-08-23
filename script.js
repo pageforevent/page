@@ -775,36 +775,9 @@ function createCinematicIntro(data, target, sceneKey) {
                 ${createBusanMapIntroSvg(sceneKey)}
             </div>
         </div>
-        <div class="map-focus-visual">
-            ${createBusanSceneIllustrationSvg(sceneKey, 'Intro')}
-        </div>
         <div class="map-intro-grain"></div>
     `;
     document.body.appendChild(overlay);
-
-    const targetRect = target?.getBoundingClientRect();
-    const introCard = overlay.querySelector('.map-focus-visual .bridge-illustration-card');
-    if (targetRect && introCard) {
-        const isPortrait = window.innerHeight > window.innerWidth;
-        const desiredWidth = isPortrait
-            ? Math.max(window.innerWidth * 1.34, targetRect.width * 2.05)
-            : Math.min(window.innerWidth * 0.82, 1040);
-        const introScale = Math.max(1.2, desiredWidth / targetRect.width);
-        const targetCenterX = targetRect.left + targetRect.width / 2;
-        const targetCenterY = targetRect.top + targetRect.height / 2;
-        const introCenterY = window.innerHeight * (isPortrait ? 0.43 : 0.46);
-        const translateX = window.innerWidth / 2 - targetCenterX;
-        const translateY = introCenterY - targetCenterY;
-
-        Object.assign(introCard.style, {
-            left: `${targetRect.left}px`,
-            top: `${targetRect.top}px`,
-            width: `${targetRect.width}px`,
-            height: `${targetRect.height}px`,
-            opacity: '0',
-            transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${introScale})`
-        });
-    }
 
     return overlay;
 }
@@ -815,10 +788,9 @@ function waitForIntro(milliseconds) {
 
 async function playBusanMapIntro(overlay, sceneKey, litePerformance) {
     const mapWorld = overlay?.querySelector('.busan-map-world');
-    const introCard = overlay?.querySelector('.map-focus-visual .bridge-illustration-card');
     const point = BUSAN_MAP_POINT_BY_SCENE[sceneKey] || BUSAN_MAP_POINT_BY_SCENE.gwangan;
 
-    if (!overlay || !mapWorld || !introCard || typeof mapWorld.animate !== 'function') return;
+    if (!overlay || !mapWorld || typeof mapWorld.animate !== 'function') return;
 
     await waitForIntro(litePerformance ? 360 : 980);
     if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
@@ -833,33 +805,22 @@ async function playBusanMapIntro(overlay, sceneKey, litePerformance) {
     const zoomScale = isPortrait ? 3.45 : 2.45;
     const translateX = targetX - focusX;
     const translateY = targetY - focusY;
-    const zoomDuration = litePerformance ? 960 : 2050;
+    const zoomDuration = litePerformance ? 980 : 2250;
 
     mapWorld.style.transformOrigin = `${(point.x / 1000) * 100}% ${(point.y / 1250) * 100}%`;
     const mapAnimation = mapWorld.animate([
         { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
         { transform: `translate3d(${translateX * 0.18}px, ${translateY * 0.18}px, 0) scale(1.08)`, opacity: 1, offset: 0.22 },
-        { transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${zoomScale})`, opacity: 0.12 }
+        { transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${zoomScale})`, opacity: 1 }
     ], {
         duration: zoomDuration,
         easing: 'cubic-bezier(0.68, 0, 0.22, 1)',
         fill: 'forwards'
     });
 
-    const cardReveal = introCard.animate([
-        { opacity: 0, offset: 0 },
-        { opacity: 0, offset: 0.58 },
-        { opacity: 1, offset: 0.88 },
-        { opacity: 1 }
-    ], {
-        duration: zoomDuration,
-        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-        fill: 'forwards'
-    });
-
-    await Promise.allSettled([mapAnimation.finished, cardReveal.finished]);
+    await Promise.allSettled([mapAnimation.finished]);
     if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
-    await waitForIntro(litePerformance ? 80 : 230);
+    await waitForIntro(litePerformance ? 60 : 180);
 }
 
 function collapseCinematicIntro(overlay, target, duration) {
@@ -868,34 +829,16 @@ function collapseCinematicIntro(overlay, target, duration) {
         return Promise.resolve();
     }
 
-    overlay.classList.add('is-collapsing');
-    const introCard = overlay.querySelector('.map-focus-visual .bridge-illustration-card');
-    if (introCard) introCard.style.opacity = '1';
-
     const backdropAnimation = overlay.animate([
         { opacity: 1 },
-        { opacity: 1, offset: 0.76 },
         { opacity: 0 }
     ], {
         duration,
-        easing: 'cubic-bezier(0.76, 0, 0.24, 1)',
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
         fill: 'forwards'
     });
 
-    const cardAnimation = introCard?.animate([
-        { transform: introCard.style.transform },
-        { transform: 'translate3d(0, 0, 0) scale(1)', offset: 0.9 },
-        { transform: 'translate3d(0, 0, 0) scale(1)' }
-    ], {
-        duration,
-        easing: 'cubic-bezier(0.76, 0, 0.24, 1)',
-        fill: 'forwards'
-    });
-
-    return Promise.allSettled([
-        backdropAnimation.finished,
-        cardAnimation?.finished || Promise.resolve()
-    ])
+    return Promise.allSettled([backdropAnimation.finished])
         .finally(() => overlay.remove());
 }
 
@@ -1104,24 +1047,22 @@ function renderPage(data) {
         document.body.classList.remove('is-intro');
     }
 
-    // 지도를 보는 중 화면을 누르면 선택 장면을 짧게 거쳐 바로 본문으로 이동합니다.
+    // 지도를 보는 중 화면을 누르면 현재 확대 상태에서 바로 본문으로 이동합니다.
     function handleUserSkip() {
         if (introFinished || skipInProgress || !cinematicIntro.isConnected) return;
         skipInProgress = true;
         cinematicIntro.dataset.cancelled = 'true';
         cinematicIntro.getAnimations({ subtree: true }).forEach((animation) => animation.cancel());
         const mapWorld = cinematicIntro.querySelector('.busan-map-world');
-        const introCard = cinematicIntro.querySelector('.map-focus-visual .bridge-illustration-card');
-        if (mapWorld) mapWorld.style.opacity = '0';
-        if (introCard) introCard.style.opacity = '1';
+        if (mapWorld) mapWorld.style.opacity = '1';
         revealPage();
-        collapseCinematicIntro(cinematicIntro, bridgeTarget, litePerformance ? 360 : 500)
+        collapseCinematicIntro(cinematicIntro, bridgeTarget, litePerformance ? 280 : 420)
             .finally(finishIntro);
     }
 
     window.addEventListener('pointerdown', handleUserSkip, { once: true, passive: true });
 
-    // 전체 지도 감상 -> 선택 지역 줌인 -> 완성 장면 -> 최종 헤더 순서로 연결합니다.
+    // 전체 지도 감상 -> 선택 지역 줌인 -> 실제 페이지 순서로 바로 연결합니다.
     playBusanMapIntro(cinematicIntro, sceneKey, litePerformance)
         .then(() => {
             if (cinematicIntro.dataset.cancelled === 'true' || !cinematicIntro.isConnected) return;
@@ -1129,7 +1070,7 @@ function renderPage(data) {
             return collapseCinematicIntro(
                 cinematicIntro,
                 bridgeTarget,
-                litePerformance ? 720 : 1080
+                litePerformance ? 420 : 720
             );
         })
         .finally(() => {
