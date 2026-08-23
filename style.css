@@ -997,7 +997,33 @@ html[data-performance="lite"] .map-intro-grain {
     display: block;
 }
 
-/* Five Busan landmarks × four time palettes. The landmark is random per load. */
+/* Nine Busan landmarks × four time palettes. The landmark is random per load. */
+.scene-kitsch {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.scene-kitsch .kitsch-main {
+    stroke: var(--scene-ink);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.scene-kitsch .kitsch-detail {
+    fill: none;
+    stroke: var(--scene-line);
+    stroke-width: 1.45;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.scene-kitsch .kitsch-shadow {
+    fill: var(--scene-ink);
+    opacity: 0.18;
+    stroke: none;
+}
+
 .busan-scene-svg {
     --scene-sky-top: #050816;
     --scene-sky-bottom: #16325E;

@@ -421,193 +421,205 @@ function createAtmosphereSvg() {
 
 function createGwanganSceneSvg() {
     return `
-        <rect y="128" width="400" height="72" fill="var(--scene-sea-top)"/><path d="M0 160Q100 145 200 160t200 0v40H0Z" fill="var(--scene-sea-bottom)"/>
-        <g class="scene-landmark gwangan-landmark">
-            <g fill="none" stroke="var(--scene-line)" stroke-linecap="round"><path d="M8 128Q78 112 145 66M145 66Q200 119 255 66M255 66Q323 112 392 128" stroke-width="2.6"/><g stroke-width=".8" opacity=".7"><path d="M165 86v40M182 103v23M200 114v12M218 103v23M235 86v40M105 103v23M295 103v23"/></g></g>
-            <path class="bridge-led-flow" d="M8 128Q78 112 145 66Q200 119 255 66Q323 112 392 128" fill="none" stroke="var(--scene-light)" stroke-width="2.1" stroke-linecap="round" stroke-dasharray="2 16"/>
-            <g stroke="var(--scene-structure)" stroke-width="3" stroke-linecap="round"><path d="M141 126V61M149 126V61M251 126V61M259 126V61"/></g>
-            <g stroke="var(--scene-pop-2)" stroke-width="1.1"><path d="M141 76l8 12m0-12l-8 12m0 9l8 12m0-12l-8 12M251 76l8 12m0-12l-8 12m0 9l8 12m0-12l-8 12"/></g>
-            <g class="bridge-piers" fill="var(--scene-structure)" stroke="var(--scene-ink)" stroke-width="1.2">
-                <path d="M138 126h14l-3 34h-8Z"/><path d="M248 126h14l-3 34h-8Z"/>
-                <path d="M136 157h18v5h-18ZM246 157h18v5h-18Z" fill="var(--scene-ink)"/>
+        <rect y="126" width="400" height="74" fill="var(--scene-sea-top)"/>
+        <path d="M0 164q82-14 164 0t164 0t164 0v36H0Z" fill="var(--scene-sea-bottom)"/>
+        <g class="scene-landmark gwangan-landmark scene-kitsch">
+            <path class="kitsch-shadow" d="M0 137h400v8H0Z"/>
+            <g class="kitsch-main" fill="var(--scene-house)">
+                <path d="M126 130V60h18v70ZM256 130V60h18v70Z"/>
+                <path d="M121 66h28l-14-17ZM251 66h28l-14-17Z" fill="var(--scene-pop-2)"/>
             </g>
-            <path d="M0 125H400" stroke="var(--scene-ink)" stroke-width="7"/><path d="M0 124H400" stroke="var(--scene-line)" stroke-width="1.3"/>
-            <g class="scene-night-lights" fill="var(--scene-light)"><circle cx="145" cy="58" r="2"/><circle cx="170" cy="90" r="1.8"/><circle cx="200" cy="112" r="2"/><circle cx="230" cy="90" r="1.8"/><circle cx="255" cy="58" r="2"/></g>
-            <g class="bridge-traffic" stroke-width="2" stroke-linecap="round"><path d="M10 122h38" stroke="var(--scene-pop-1)"/><path d="M352 128h38" stroke="var(--scene-light)"/></g>
+            <g fill="none" stroke="var(--scene-line)" stroke-width="3" stroke-linecap="round">
+                <path d="M6 128Q67 113 135 58Q200 119 265 58Q333 113 394 128"/>
+                <path d="M135 59Q200 119 265 59" stroke="var(--scene-house)" stroke-width="4.6"/>
+            </g>
+            <path class="bridge-led-flow" d="M7 127Q69 112 135 58Q200 118 265 58Q331 112 393 127" fill="none" stroke="var(--scene-light)" stroke-width="2.2" stroke-dasharray="3 14"/>
+            <g class="kitsch-detail" opacity=".76"><path d="M86 112v17M108 91v38M157 81v48M178 101v28M200 112v17M222 101v28M243 81v48M292 91v38M314 112v17"/></g>
+            <path d="M0 127H400V139H0Z" fill="var(--scene-ink)"/>
+            <path d="M0 128H400" fill="none" stroke="var(--scene-pop-1)" stroke-width="3"/>
+            <g class="bridge-piers kitsch-main" fill="var(--scene-structure)"><path d="M126 137h18l-3 31h-12ZM256 137h18l-3 31h-12Z"/><path d="M122 165h26v6h-26ZM252 165h26v6h-26Z" fill="var(--scene-ink)"/></g>
+            <g class="scene-night-lights" fill="var(--scene-light)"><circle cx="135" cy="49" r="3"/><circle cx="168" cy="92" r="2.2"/><circle cx="200" cy="111" r="2.4"/><circle cx="232" cy="92" r="2.2"/><circle cx="265" cy="49" r="3"/></g>
+            <g class="bridge-traffic" stroke-linecap="round" stroke-width="3"><path d="M18 125h44" stroke="var(--scene-light)"/><path d="M338 136h43" stroke="var(--scene-pop-1)"/></g>
         </g>
-        <g class="gwangan-reflection" fill="var(--scene-light)" opacity=".12"><path d="M135 132h20l8 63h-38Z"/><path d="M245 132h20l12 63h-40Z"/></g>
-        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".65"><path d="M-30 153q45-7 90 0t90 0t90 0t90 0t90 0M-60 178q58-8 116 0t116 0t116 0t116 0"/></g>`;
+        <g class="gwangan-reflection" fill="var(--scene-light)" opacity=".13"><path d="M122 140h29l12 56h-54Z"/><path d="M250 140h29l14 56h-57Z"/></g>
+        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.4" opacity=".72"><path d="M-30 157q45-7 90 0t90 0t90 0t90 0t90 0M-60 181q58-8 116 0t116 0t116 0t116 0"/></g>`;
 }
 
 function createGamcheonSceneSvg() {
     return `
-        <path d="M0 131Q52 93 111 106Q165 52 218 88Q274 52 326 91Q360 74 400 82V200H0Z" fill="var(--scene-hill)"/>
-        <path d="M0 170Q86 133 174 146Q267 112 400 126V200H0Z" fill="var(--scene-ink)" opacity=".12"/>
-        <path class="gamcheon-cloud-shadow" d="M-96 119q34-20 77-3q31 13 64 1q35-13 70 4q-26 18-79 12q-63-7-132 7Z" fill="var(--scene-ink)" opacity=".09"/>
-        <g class="scene-landmark gamcheon-landmark" stroke="var(--scene-ink)" stroke-width="1.4" stroke-linejoin="round">
-            <g class="gamcheon-upper-row">
-                <path d="M53 122V96h48v26Z" fill="var(--scene-house)"/>
-                <path d="M105 105V76h52v29Z" fill="var(--scene-pop-1)"/>
-                <path d="M166 116V88h55v28Z" fill="var(--scene-pop-2)"/>
-                <path d="M232 99V70h53v29Z" fill="var(--scene-house)"/>
-                <path d="M296 111V82h56v29Z" fill="var(--scene-pop-1)"/>
+        <path d="M0 112Q64 66 129 88Q198 38 258 76Q329 42 400 79V200H0Z" fill="var(--scene-hill)"/>
+        <path d="M0 159Q87 122 169 137Q271 100 400 119V200H0Z" fill="var(--scene-ink)" opacity=".11"/>
+        <path class="gamcheon-cloud-shadow" d="M-100 102q42-22 88-5q41 15 86-2q39-14 77 5q-35 21-98 12q-69-10-153 8Z" fill="var(--scene-ink)" opacity=".08"/>
+        <g class="scene-landmark gamcheon-landmark scene-kitsch">
+            <g class="gamcheon-upper-row kitsch-main">
+                <path d="M57 109V83h43v26Z" fill="var(--scene-house)"/>
+                <path d="M113 96V62h48v34Z" fill="var(--scene-pop-1)"/>
+                <path d="M179 109V76h49v33Z" fill="var(--scene-pop-2)"/>
+                <path d="M249 94V58h48v36Z" fill="var(--scene-house)"/>
+                <path d="M316 107V73h50v34Z" fill="var(--scene-pop-3)"/>
             </g>
-            <g class="gamcheon-lower-row">
-                <path d="M10 162v-35h61v35Z" fill="var(--scene-pop-1)"/>
-                <path d="M78 151v-36h64v36Z" fill="var(--scene-pop-2)"/>
-                <path d="M150 169v-38h65v38Z" fill="var(--scene-pop-3)"/>
-                <path d="M224 147v-36h67v36Z" fill="var(--scene-pop-2)"/>
-                <path d="M300 158v-38h67v38Z" fill="var(--scene-house)"/>
-                <path d="M31 200v-29h76v29ZM118 200v-38h80v38ZM210 200v-40h78v40ZM300 200v-32h86v32Z" fill="var(--scene-pop-3)"/>
+            <g class="gamcheon-lower-row kitsch-main">
+                <path d="M17 154v-35h58v35Z" fill="var(--scene-pop-1)"/>
+                <path d="M88 145v-37h62v37Z" fill="var(--scene-pop-2)"/>
+                <path d="M166 160v-38h64v38Z" fill="var(--scene-pop-3)"/>
+                <path d="M246 143v-36h65v36Z" fill="var(--scene-pop-2)"/>
+                <path d="M326 154v-36h64v36Z" fill="var(--scene-house)"/>
+                <path d="M0 200v-34h83v34ZM95 200v-42h86v42ZM194 200v-30h86v30ZM292 200v-39h108v39Z" fill="var(--scene-pop-3)"/>
             </g>
-            <g fill="none" stroke="var(--scene-line)" stroke-width="3" opacity=".9"><path d="M53 96h48M105 76h52M166 88h55M232 70h53M296 82h56M10 127h61M78 115h64M150 131h65M224 111h67M300 120h67"/></g>
-            <g fill="var(--scene-window)" class="scene-night-lights gamcheon-window-glow" stroke="none"><path d="M68 106h9v8h-9zM120 87h9v8h-9zM183 98h9v8h-9zM249 80h9v8h-9zM315 93h9v8h-9zM29 140h10v9H29zM99 127h10v9H99zM174 144h10v9h-10zM247 123h10v9h-10zM325 133h10v9h-10zM57 181h10v9H57zM148 174h10v9h-10zM241 173h10v9h-10zM337 179h10v9h-10z"/></g>
-            <g class="gamcheon-bunting" stroke="var(--scene-ink)" stroke-width="1">
-                <path d="M107 70q25 7 49 0" fill="none"/>
-                <path d="M114 72l8 2l-5 7ZM128 73l8 1l-4 8ZM142 73l8-2l-2 8Z" fill="var(--scene-light)"/>
-            </g>
-            <g class="gamcheon-lookout" fill="var(--scene-ink)" stroke="none"><circle cx="268" cy="63" r="4"/><path d="M265 67h6v6h-6z"/><path d="M257 69h9v2h-9z"/></g>
+            <g fill="none" stroke="var(--scene-line)" stroke-width="4"><path d="M55 83h47M111 62h52M177 76h53M247 58h52M314 73h54M15 119h62M86 108h66M164 122h68M244 107h69M324 118h68"/></g>
+            <g class="scene-night-lights gamcheon-window-glow" fill="var(--scene-window)"><path d="M69 93h9v8h-9zM128 75h10v9h-10zM194 88h10v9h-10zM264 70h10v9h-10zM333 86h10v9h-10zM34 133h11v10H34zM106 121h11v10h-11zM185 136h11v10h-11zM266 120h11v10h-11zM347 131h11v10h-11zM23 177h12v10H23zM124 172h12v10h-12zM220 180h12v10h-12zM337 174h12v10h-12z"/></g>
+            <g class="gamcheon-bunting kitsch-detail"><path d="M112 56q25 8 50 0" fill="none"/><path d="M120 58l8 2l-5 8ZM135 59l8 1l-4 9ZM150 58l8-2l-2 9Z" fill="var(--scene-light)" stroke="var(--scene-ink)"/></g>
+            <g class="gamcheon-lookout" fill="var(--scene-ink)"><circle cx="278" cy="51" r="4"/><path d="M275 55h6v8h-6zM266 61h11v3h-11z"/></g>
         </g>`;
 }
 
 function createNurimaruSceneSvg() {
     return `
-        <rect y="126" width="400" height="74" fill="var(--scene-sea-top)"/><path d="M0 168q100-17 200 0t200 0v32H0Z" fill="var(--scene-sea-bottom)"/>
-        <path d="M0 137Q60 91 137 111q70 19 132 4q70-17 131 8v31H0Z" fill="var(--scene-hill)"/>
-        <g class="scene-landmark nurimaru-landmark">
-            <g class="dongbaek-pines" fill="var(--scene-ink)" stroke="var(--scene-ink)" stroke-linecap="round"><path d="M30 126V78m0 8l-18 17m18-8l19 17M55 130V94m0 7l-13 14m13-7l15 13M357 129V83m0 8l-17 16m17-8l18 17M380 132V99m0 7l-12 12m12-5l13 11" fill="none" stroke-width="3"/><path d="M9 106q18-19 40-5q-14 5-20 17q-7-10-20-12ZM40 118q14-18 31-7q-11 5-16 15q-5-7-15-8ZM337 109q19-22 39-6q-14 5-20 18q-6-9-19-12ZM365 121q15-18 30-5q-10 4-14 13q-6-7-16-8Z"/></g>
-            <g class="distant-bridge" fill="none" stroke="var(--scene-line)" stroke-width="1" opacity=".5"><path d="M278 116q20-16 39 0q20-16 41 0M297 116V96m40 20V96"/></g>
-            <path class="nurimaru-roof-shadow" d="M91 114Q196 30 309 103q-58-20-109-11q-55 9-109 31Z" fill="var(--scene-ink)" opacity=".72"/>
-            <path class="nurimaru-roof" d="M96 107Q196 38 304 98q-55-15-105-7q-53 8-103 25Z" fill="var(--scene-house)" stroke="var(--scene-ink)" stroke-width="2.2"/>
-            <path d="M112 109q86-46 176-9" fill="none" stroke="var(--scene-pop-2)" stroke-width="4" stroke-linecap="round"/>
-            <path d="M128 111q72-28 145-8" fill="none" stroke="var(--scene-line)" stroke-width="2"/>
-            <path d="M132 110Q199 91 270 106v44H132Z" fill="var(--scene-glass)" stroke="var(--scene-ink)" stroke-width="2"/>
-            <g stroke="var(--scene-line)" opacity=".72"><path d="M146 108v41M164 103v46M183 99v50M202 97v52M221 98v51M240 101v48M258 105v44"/></g>
-            <path class="nurimaru-glass-shimmer" d="M151 111l28-8l35 47h-27Z" fill="var(--scene-line)" opacity=".14"/>
-            <path class="nurimaru-light-sweep scene-night-lights" d="M146 138q55 11 111-2" fill="none" stroke="var(--scene-light)" stroke-width="3" stroke-linecap="round"/>
-            <g class="nurimaru-distant-lights scene-night-lights" fill="var(--scene-light)"><circle cx="297" cy="96" r="1.6"/><circle cx="317" cy="112" r="1.3"/><circle cx="337" cy="96" r="1.6"/></g>
-            <path d="M112 150h176l20 11H93Z" fill="var(--scene-ink)"/><path d="M126 154h151" stroke="var(--scene-line)" stroke-width="2"/>
+        <rect y="130" width="400" height="70" fill="var(--scene-sea-top)"/><path d="M0 173q98-17 196 0t204 0v27H0Z" fill="var(--scene-sea-bottom)"/>
+        <path d="M0 145Q65 93 140 115q67 20 128 4q70-19 132 7v35H0Z" fill="var(--scene-hill)"/>
+        <g class="scene-landmark nurimaru-landmark scene-kitsch">
+            <g class="dongbaek-pines" fill="var(--scene-ink)" stroke="var(--scene-ink)" stroke-linecap="round"><path d="M29 137V77M55 140V95M367 138V81M389 140V99" fill="none" stroke-width="4"/><path d="M7 103q22-23 46-4q-17 5-24 22q-7-12-22-18ZM37 119q18-22 38-5q-14 5-20 18q-6-9-18-13ZM344 108q22-25 46-5q-17 6-24 22q-7-11-22-17ZM370 123q17-21 30-5q-9 5-13 17q-6-9-17-12Z"/></g>
+            <path class="nurimaru-roof-shadow" d="M78 111Q198 24 323 102Q259 79 201 88Q138 96 78 122Z" fill="var(--scene-ink)" opacity=".34"/>
+            <path class="nurimaru-roof kitsch-main" d="M84 103Q197 31 316 94Q258 80 201 88Q140 95 84 114Z" fill="var(--scene-house)"/>
+            <path d="M101 106Q197 52 299 96" fill="none" stroke="var(--scene-pop-2)" stroke-width="7" stroke-linecap="round"/>
+            <path class="kitsch-main" d="M118 108Q198 82 282 102V153H118Z" fill="var(--scene-glass)"/>
+            <g class="kitsch-detail" opacity=".82"><path d="M135 104v48M157 97v55M180 92v60M203 89v63M226 91v61M249 95v57M270 100v52"/></g>
+            <path class="nurimaru-glass-shimmer" d="M142 109l31-11l38 54h-31Z" fill="var(--scene-line)" opacity=".16"/>
+            <path class="nurimaru-light-sweep scene-night-lights" d="M134 139q66 14 132-3" fill="none" stroke="var(--scene-light)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M101 152h197l17 13H84Z" fill="var(--scene-ink)"/><path d="M119 156h162" stroke="var(--scene-pop-1)" stroke-width="3"/>
+            <g class="nurimaru-distant-lights scene-night-lights" fill="var(--scene-light)"><circle cx="323" cy="113" r="2"/><circle cx="343" cy="121" r="1.7"/><circle cx="363" cy="112" r="2"/></g>
         </g>
-        <g class="scene-water-lines nurimaru-reflection" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M48 170q49-7 98 0t98 0t98 0M92 187q38-6 76 0t76 0t76 0"/></g>`;
+        <g class="scene-water-lines nurimaru-reflection" fill="none" stroke="var(--scene-water-line)" stroke-width="1.4" opacity=".72"><path d="M44 173q52-7 104 0t104 0t104 0M89 190q40-6 80 0t80 0t80 0"/></g>`;
 }
 
 function createHuinnyeoulSceneSvg() {
     return `
-        <rect y="96" width="400" height="104" fill="var(--scene-sea-top)"/><path d="M192 157q90-18 180 0t180 0v43H192Z" fill="var(--scene-sea-bottom)"/><path d="M0 50Q91 51 146 84q55 31 101 72l-23 44H0Z" fill="var(--scene-hill)"/>
-        <g class="scene-landmark huinnyeoul-landmark">
-            <path d="M0 137q91-8 153 24l42 39H0Z" fill="var(--scene-ink)" opacity=".16"/>
-            <g class="white-cliff-houses" stroke="var(--scene-ink)" stroke-width="1.4" stroke-linejoin="round">
-                <path d="M5 64h59v38H5ZM67 75h57v40H67ZM13 108h62v42H13ZM78 120h55v42H78ZM3 156h73v44H3Z" fill="var(--scene-house)"/>
-                <path d="M1 59h68v9H1ZM62 70h67v9H62ZM8 103h72v9H8ZM73 115h65v9H73ZM0 151h81v9H0Z" fill="var(--scene-pop-2)"/>
+        <rect y="92" width="400" height="108" fill="var(--scene-sea-top)"/><path d="M214 160q86-18 172 0t172 0v40H214Z" fill="var(--scene-sea-bottom)"/>
+        <path d="M0 54Q91 48 156 81Q207 107 260 165L228 200H0Z" fill="var(--scene-hill)"/>
+        <g class="scene-landmark huinnyeoul-landmark scene-kitsch">
+            <path d="M0 143q108-9 177 28l36 29H0Z" fill="var(--scene-ink)" opacity=".12"/>
+            <g class="white-cliff-houses kitsch-main">
+                <path d="M8 64h59v38H8ZM74 72h61v43H74ZM17 111h66v43H17ZM91 124h62v43H91ZM7 160h78v40H7Z" fill="var(--scene-house)"/>
+                <path d="M3 58h69v10H3ZM69 66h71v10H69ZM12 105h76v10H12ZM86 118h72v10H86ZM2 154h88v10H2Z" fill="var(--scene-pop-2)"/>
             </g>
-            <g fill="var(--scene-window)" class="scene-night-lights"><path d="M18 76h11v9H18zM81 87h11v9H81zM28 121h12v10H28zM94 134h12v10H94zM22 171h12v10H22z"/></g>
-            <g class="coastal-promenade" stroke-linejoin="round" stroke-linecap="round">
-                <path d="M154 103C183 115 210 136 237 161L220 179C196 151 173 134 147 122Z" fill="var(--scene-house)" stroke="var(--scene-ink)" stroke-width="1.6"/>
-                <path class="coastal-route-line" d="M155 110C183 121 208 140 229 165" fill="none" stroke="var(--scene-pop-1)" stroke-width="4.5" stroke-dasharray="12 5"/>
-                <path d="M153 100C184 112 211 132 239 158" fill="none" stroke="var(--scene-line)" stroke-width="2.4"/>
-                <g class="huinnyeoul-walker" fill="var(--scene-ink)" stroke="none"><circle cx="190" cy="129" r="3"/><path d="M188 133h5l2 9l-4 5l-4-6Z"/></g>
+            <g class="scene-night-lights" fill="var(--scene-window)"><path d="M23 77h12v10H23zM91 86h12v10H91zM35 124h13v11H35zM110 138h13v11h-13zM28 174h13v11H28z"/></g>
+            <g class="coastal-promenade">
+                <path class="kitsch-main" d="M166 111Q207 127 255 166L240 185Q196 145 158 131Z" fill="var(--scene-house)"/>
+                <path d="M160 108Q207 124 260 165" fill="none" stroke="var(--scene-line)" stroke-width="4"/>
+                <path class="coastal-route-line" d="M170 120Q207 136 247 173" fill="none" stroke="var(--scene-pop-1)" stroke-width="5" stroke-dasharray="13 7"/>
+                <g class="huinnyeoul-walker" fill="var(--scene-ink)"><circle cx="211" cy="143" r="4"/><path d="M207 148h8l2 13l-6 7l-6-8Z"/></g>
             </g>
-            <path class="huinnyeoul-tunnel" d="M184 200v-22a17 17 0 0 1 34 0v22Z" fill="var(--scene-ink)"/><path d="M191 200v-20a10 10 0 0 1 20 0v20Z" fill="var(--scene-sky-bottom)" opacity=".45"/>
-            <g class="huinnyeoul-seagulls" fill="none" stroke="var(--scene-ink-soft)" stroke-width="1.8" stroke-linecap="round"><path d="M223 74q8-9 16 0q8-9 16 0M266 91q5-6 10 0q5-6 10 0"/></g>
-            <g class="huinnyeoul-boat"><path d="M287 149h64l-13 15h-38Z" fill="var(--scene-pop-1)" stroke="var(--scene-ink)" stroke-width="1.6"/><path d="M318 149v-24" stroke="var(--scene-ink)" stroke-width="1.4"/><path d="M321 127l21 12h-21Z" fill="var(--scene-light)"/></g>
+            <path class="huinnyeoul-tunnel" d="M196 200v-18a18 18 0 0 1 36 0v18Z" fill="var(--scene-ink)"/><path d="M204 200v-17a10 10 0 0 1 20 0v17Z" fill="var(--scene-sky-bottom)" opacity=".48"/>
+            <g class="huinnyeoul-seagulls" fill="none" stroke="var(--scene-ink-soft)" stroke-width="2.2" stroke-linecap="round"><path d="M249 65q9-10 18 0q9-10 18 0M291 84q6-7 12 0q6-7 12 0"/></g>
+            <g class="huinnyeoul-boat kitsch-main"><path d="M300 148h65l-13 17h-39Z" fill="var(--scene-pop-1)"/><path d="M332 148v-28" fill="none"/><path d="M335 122l22 13h-22Z" fill="var(--scene-light)"/></g>
         </g>
-        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M240 128q48-7 96 0t96 0M226 181q54-8 108 0t108 0"/></g>`;
+        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.4" opacity=".72"><path d="M258 116q49-7 98 0t98 0M247 184q55-8 110 0t110 0"/></g>`;
 }
 
 function createJagalchiSceneSvg() {
     return `
-        <rect y="139" width="400" height="61" fill="var(--scene-sea-top)"/><path d="M0 177q100-14 200 0t200 0v23H0Z" fill="var(--scene-sea-bottom)"/>
-        <g class="scene-landmark jagalchi-landmark">
-            <g class="harbor-crane" fill="none" stroke="var(--scene-ink)" stroke-width="2"><path d="M378 91v48M340 92h56M378 92l16 18M394 110v12"/><path class="jagalchi-crane-hook" d="M394 119v10q0 6 5 6"/></g>
-            <path d="M103 65h181v91H103Z" fill="var(--scene-structure)" stroke="var(--scene-ink)" stroke-width="2"/>
-            <path class="jagalchi-wave-roof" d="M92 70q48-35 101-8q47 24 103-17q-6 24-18 39q-45 24-91-2q-42-24-84 5Z" fill="var(--scene-house)" stroke="var(--scene-ink)" stroke-width="2.2"/>
-            <path d="M101 70q47-26 89-7q48 22 96-10" fill="none" stroke="var(--scene-pop-2)" stroke-width="8" stroke-linecap="round"/>
-            <path d="M115 88h157v58H115Z" fill="var(--scene-glass)"/><g stroke="var(--scene-line)" opacity=".68"><path d="M135 88v58M158 88v58M181 88v58M204 88v58M227 88v58M250 88v58M115 107h157M115 126h157"/></g>
-            <g class="scene-night-lights" fill="var(--scene-light)"><path d="M120 92h12v10h-12zM142 92h12v10h-12zM233 92h12v10h-12zM255 111h12v10h-12z"/></g>
-            <rect x="141" y="116" width="103" height="22" rx="3" fill="var(--scene-pop-1)" stroke="var(--scene-ink)"/>
-            <g class="market-fish-mark" fill="var(--scene-ink)"><path d="M156 127q9-8 19 0q-10 8-19 0Zm-6 0l7-6v12Z"/><path d="M188 127q9-8 19 0q-10 8-19 0Zm-6 0l7-6v12Z"/><path d="M220 127q6-6 13 0q-7 6-13 0Zm-5 0l6-5v10Z"/></g>
-            <g class="market-awnings"><path d="M286 137h104v12H286Z" fill="var(--scene-house)" stroke="var(--scene-ink)"/><path class="market-awning-stripes" d="M286 137h13v12h-13zM312 137h13v12h-13zM338 137h13v12h-13zM364 137h13v12h-13z" fill="var(--scene-pop-1)"/><g fill="var(--scene-pop-3)" stroke="var(--scene-ink)"><path d="M295 149h25v20h-25zM324 149h26v20h-26zM354 149h27v20h-27z"/></g></g>
-            <g class="jagalchi-boat"><path d="M15 157h81l-13 19H33Z" fill="var(--scene-pop-3)" stroke="var(--scene-ink)" stroke-width="2"/><path d="M45 157v-26h35v26" fill="var(--scene-house)" stroke="var(--scene-ink)"/><path d="M63 131v-18" stroke="var(--scene-ink)" stroke-width="2"/><path d="M65 116l20 10H65Z" fill="var(--scene-light)"/><path d="M24 151h67" stroke="var(--scene-pop-1)" stroke-width="3"/></g>
-            <g class="jagalchi-harbor-gulls" fill="none" stroke="var(--scene-ink-soft)" stroke-width="1.5" stroke-linecap="round"><path d="M22 82q6-7 12 0q6-7 12 0M52 97q4-5 8 0q4-5 8 0"/></g>
+        <rect y="143" width="400" height="57" fill="var(--scene-sea-top)"/><path d="M0 179q99-14 198 0t202 0v21H0Z" fill="var(--scene-sea-bottom)"/>
+        <g class="scene-landmark jagalchi-landmark scene-kitsch">
+            <g class="harbor-crane kitsch-detail"><path d="M369 85v58M329 86h65M369 86l23 22M392 108v16" fill="none"/><path class="jagalchi-crane-hook" d="M392 122v10q0 7 6 7" fill="none"/></g>
+            <path class="kitsch-main" d="M95 69h198v88H95Z" fill="var(--scene-structure)"/>
+            <path class="jagalchi-wave-roof kitsch-main" d="M79 76Q127 29 189 60Q245 88 314 39Q307 63 291 82Q242 105 183 76Q132 51 92 91Z" fill="var(--scene-house)"/>
+            <path d="M91 73Q133 43 184 66Q240 91 300 51" fill="none" stroke="var(--scene-pop-2)" stroke-width="8" stroke-linecap="round"/>
+            <path class="kitsch-main" d="M111 91h166v57H111Z" fill="var(--scene-glass)"/>
+            <g class="kitsch-detail" opacity=".75"><path d="M135 91v57M159 91v57M183 91v57M207 91v57M231 91v57M255 91v57M111 111h166M111 130h166"/></g>
+            <g class="scene-night-lights" fill="var(--scene-light)"><path d="M117 97h13v10h-13zM143 116h13v10h-13zM237 97h13v10h-13zM260 116h12v10h-12z"/></g>
+            <rect x="143" y="116" width="103" height="23" rx="5" fill="var(--scene-pop-1)" stroke="var(--scene-ink)" stroke-width="2"/>
+            <g class="market-fish-mark" fill="var(--scene-ink)"><path d="M158 128q9-8 19 0q-10 8-19 0Zm-7 0l8-6v12ZM190 128q9-8 19 0q-10 8-19 0Zm-7 0l8-6v12ZM222 128q7-7 15 0q-8 7-15 0Zm-6 0l7-5v10Z"/></g>
+            <g class="market-awnings kitsch-main"><path d="M294 139h96v13h-96Z" fill="var(--scene-house)"/><path class="market-awning-stripes" d="M294 139h14v13h-14zM322 139h14v13h-14zM350 139h14v13h-14zM378 139h12v13h-12z" fill="var(--scene-pop-1)"/><path d="M302 152h25v22h-25ZM332 152h25v22h-25ZM362 152h24v22h-24Z" fill="var(--scene-pop-3)"/></g>
+            <g class="jagalchi-boat kitsch-main"><path d="M12 160h82l-14 19H31Z" fill="var(--scene-pop-3)"/><path d="M42 160v-27h37v27" fill="var(--scene-house)"/><path d="M61 133v-21" fill="none"/><path d="M64 115l23 12H64Z" fill="var(--scene-light)"/><path d="M22 154h68" fill="none" stroke="var(--scene-pop-1)" stroke-width="4"/></g>
+            <g class="jagalchi-harbor-gulls" fill="none" stroke="var(--scene-ink-soft)" stroke-width="2" stroke-linecap="round"><path d="M21 78q7-8 14 0q7-8 14 0M53 96q5-6 10 0q5-6 10 0"/></g>
         </g>
-        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M-20 178q45-6 90 0t90 0t90 0t90 0t90 0M70 191q42-5 84 0t84 0t84 0"/></g>`;
+        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.4" opacity=".72"><path d="M-20 180q46-6 92 0t92 0t92 0t92 0t92 0M70 193q43-5 86 0t86 0t86 0"/></g>`;
 }
 
 function createHaeundaeSceneSvg() {
     return `
-        <rect y="143" width="400" height="57" fill="var(--scene-sea-top)"/><path d="M0 176q95-14 190 0t210 0v24H0Z" fill="var(--scene-sea-bottom)"/>
-        <path d="M0 137q92-13 184 0t216-2v18H0Z" fill="var(--scene-house)"/>
-        <g class="scene-landmark haeundae-landmark" stroke="var(--scene-ink)" stroke-linejoin="round">
-            <g class="marine-city-buildings" stroke-width="1.2">
-                <path d="M28 137V91h31v46ZM64 137V72h35v65ZM105 137V84h30v53ZM141 137V62h38v75ZM184 137V78h31v59ZM220 137V69h32v68Z" fill="var(--scene-glass)"/>
-                <path d="M36 97h15v40H36ZM74 79h16v58H74ZM113 91h14v46h-14ZM151 70h18v67h-18ZM192 85h15v52h-15ZM228 76h16v61h-16Z" fill="var(--scene-structure)" opacity=".38"/>
-                <g stroke="var(--scene-line)" stroke-width=".8" opacity=".58"><path d="M28 106h31M64 93h35M64 114h35M105 105h30M141 88h38M141 111h38M184 99h31M220 91h32M220 114h32"/></g>
+        <rect y="144" width="400" height="56" fill="var(--scene-sea-top)"/><path d="M0 178q96-14 192 0t208 0v22H0Z" fill="var(--scene-sea-bottom)"/>
+        <path d="M0 137q95-14 190 0t210-2v20H0Z" fill="var(--scene-house)"/>
+        <g class="scene-landmark haeundae-landmark scene-kitsch">
+            <g class="marine-city-buildings kitsch-main">
+                <path d="M19 137V93h31v44ZM55 137V70h37v67ZM98 137V84h33v53ZM137 137V57h41v80ZM184 137V77h34v60ZM224 137V67h35v70Z" fill="var(--scene-glass)"/>
+                <path d="M28 101h13v36H28ZM66 78h15v59H66ZM108 92h13v45h-13ZM149 66h17v71h-17ZM195 85h13v52h-13ZM235 75h14v62h-14Z" fill="var(--scene-structure)" opacity=".38"/>
+                <g class="kitsch-detail" opacity=".65"><path d="M19 109h31M55 91h37M55 115h37M98 105h33M137 83h41M137 110h41M184 98h34M224 90h35M224 114h35"/></g>
             </g>
-            <g class="lct-cluster" stroke-width="1.5">
-                <path d="M266 137V48l12-14l14 14v89Z" fill="var(--scene-structure)"/>
-                <path d="M299 137V25l13-15l14 15v112Z" fill="var(--scene-glass)"/>
-                <path d="M333 137V51l12-13l13 13v86Z" fill="var(--scene-structure)"/>
-                <path d="M274 52h10v85h-10ZM307 30h11v107h-11ZM341 55h9v82h-9Z" fill="var(--scene-pop-2)" opacity=".48"/>
-                <g class="haeundae-window-lights scene-night-lights" fill="var(--scene-light)" stroke="none"><path d="M277 62h4v5h-4zM277 82h4v5h-4zM277 105h4v5h-4zM310 42h5v6h-5zM310 65h5v6h-5zM310 90h5v6h-5zM310 115h5v6h-5zM343 68h4v5h-4zM343 92h4v5h-4zM343 115h4v5h-4z"/></g>
+            <g class="lct-cluster kitsch-main">
+                <path d="M270 137V47l13-15l13 15v90Z" fill="var(--scene-structure)"/>
+                <path d="M301 137V23l15-17l15 17v114Z" fill="var(--scene-glass)"/>
+                <path d="M338 137V50l13-14l14 14v87Z" fill="var(--scene-structure)"/>
+                <path d="M278 52h10v85h-10ZM310 30h12v107h-12ZM346 56h10v81h-10Z" fill="var(--scene-pop-2)" opacity=".58"/>
+                <g class="haeundae-window-lights scene-night-lights" fill="var(--scene-light)"><path d="M280 64h5v6h-5zM280 86h5v6h-5zM280 110h5v6h-5zM313 43h6v7h-6zM313 68h6v7h-6zM313 94h6v7h-6zM313 119h6v7h-6zM348 69h5v6h-5zM348 94h5v6h-5zM348 117h5v6h-5z"/></g>
             </g>
-            <g class="beach-parasols" stroke-width="1.2"><path d="M78 141q12-17 24 0Z" fill="var(--scene-pop-1)"/><path d="M90 141v12M161 141q12-17 24 0Z" fill="var(--scene-pop-3)"/><path d="M173 141v12M368 141q10-14 20 0Z" fill="var(--scene-light)"/><path d="M378 141v12"/></g>
-            <g class="haeundae-yacht"><path d="M18 160h54l-10 12H29Z" fill="var(--scene-pop-1)" stroke-width="1.4"/><path d="M46 160v-18"/><path d="M49 144l15 9H49Z" fill="var(--scene-light)" stroke="none"/></g>
+            <path d="M0 137Q99 126 198 138T400 136" fill="none" stroke="var(--scene-pop-3)" stroke-width="5"/>
+            <g class="beach-parasols kitsch-main"><path d="M72 143q14-19 28 0Z" fill="var(--scene-pop-1)"/><path d="M86 143v14" fill="none"/><path d="M157 143q14-19 28 0Z" fill="var(--scene-pop-3)"/><path d="M171 143v14" fill="none"/><path d="M369 143q11-15 22 0Z" fill="var(--scene-light)"/><path d="M380 143v14" fill="none"/></g>
+            <g class="haeundae-yacht kitsch-main"><path d="M13 162h61l-11 14H27Z" fill="var(--scene-pop-1)"/><path d="M45 162v-22" fill="none"/><path d="M49 142l18 11H49Z" fill="var(--scene-light)"/></g>
         </g>
-        <g class="scene-water-lines haeundae-reflection" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M88 164q48-6 96 0t96 0t96 0M44 188q54-7 108 0t108 0t108 0"/></g>`;
+        <g class="scene-water-lines haeundae-reflection" fill="none" stroke="var(--scene-water-line)" stroke-width="1.4" opacity=".72"><path d="M86 164q49-6 98 0t98 0t98 0M40 190q55-7 110 0t110 0t110 0"/></g>`;
 }
 
 function createLotteBusanSceneSvg() {
     return `
-        <path d="M0 136V91h42v45V73h30v63V99h34v37V82h31v54H0Z" fill="var(--scene-ink)" opacity=".2"/>
-        <rect y="158" width="400" height="42" fill="var(--scene-ink)"/><path d="M0 171h400" stroke="var(--scene-line)" stroke-width="2" stroke-dasharray="22 13" opacity=".55"/>
-        <g class="scene-landmark lotte-busan-landmark" stroke="var(--scene-ink)" stroke-linejoin="round">
-            <path d="M47 158V56h242v102Z" fill="var(--scene-house)" stroke-width="2"/>
-            <path d="M250 158V31h64v127Z" fill="var(--scene-glass)" stroke-width="2"/>
-            <g class="lotte-facade-slats" stroke="var(--scene-light)" stroke-width="3" opacity=".76"><path d="M60 58v98M73 58v98M86 58v98M99 58v98M112 58v98M125 58v98M138 58v98M151 58v98M164 58v98M177 58v98M190 58v98M203 58v98M216 58v98M229 58v98M242 58v98M255 58v98M268 58v98"/></g>
-            <path d="M141 83h105v52H141Z" fill="var(--scene-glass)" stroke-width="1.6"/>
-            <g class="lotte-screen"><path d="M149 91h89v36h-89Z" fill="var(--scene-pop-3)" stroke="none"/><path class="lotte-screen-scan" d="M153 96h26v26h-26Z" fill="var(--scene-light)" opacity=".68"/><path d="M184 101h47M184 111h35M184 120h42" stroke="var(--scene-line)" stroke-width="3" stroke-linecap="round"/></g>
-            <g class="lotte-roundel" stroke="none"><circle cx="77" cy="77" r="12" fill="var(--scene-pop-1)"/><circle cx="77" cy="77" r="5" fill="var(--scene-house)"/></g>
-            <g class="lotte-hotel-windows scene-night-lights" fill="var(--scene-light)" stroke="none"><path d="M259 48h8v7h-8zM278 48h8v7h-8zM297 48h8v7h-8zM259 68h8v7h-8zM278 68h8v7h-8zM297 68h8v7h-8zM259 90h8v7h-8zM278 90h8v7h-8zM297 90h8v7h-8zM259 112h8v7h-8zM278 112h8v7h-8zM297 112h8v7h-8z"/></g>
-            <path class="lotte-facade-glint" d="M102 61l28-2l45 96h-29Z" fill="var(--scene-line)" opacity=".12" stroke="none"/>
-            <g class="seomyeon-traffic" stroke="none"><path d="M18 178h49l8 13H10Z" fill="var(--scene-pop-1)"/><circle cx="23" cy="192" r="4" fill="var(--scene-structure)"/><circle cx="62" cy="192" r="4" fill="var(--scene-structure)"/><path d="M315 176h59l10 15h-78Z" fill="var(--scene-pop-3)"/><circle cx="320" cy="192" r="4" fill="var(--scene-structure)"/><circle cx="369" cy="192" r="4" fill="var(--scene-structure)"/></g>
+        <path d="M0 141V96h43v45V73h31v68V103h36v38V84h34v57H0Z" fill="var(--scene-ink)" opacity=".18"/>
+        <rect y="161" width="400" height="39" fill="var(--scene-ink)"/><path d="M0 176h400" stroke="var(--scene-line)" stroke-width="2" stroke-dasharray="23 14" opacity=".58"/>
+        <g class="scene-landmark lotte-busan-landmark scene-kitsch">
+            <path class="kitsch-shadow" d="M41 158h290v8H41Z"/>
+            <path class="kitsch-main" d="M48 157V50h235v107Z" fill="var(--scene-house)"/>
+            <path class="kitsch-main" d="M267 157V28h65v129Z" fill="var(--scene-glass)"/>
+            <g class="lotte-facade-slats" stroke="var(--scene-light)" stroke-width="4" opacity=".8"><path d="M62 53v101M77 53v101M92 53v101M107 53v101M122 53v101M137 53v101M152 53v101M167 53v101M182 53v101M197 53v101M212 53v101M227 53v101M242 53v101M257 53v101M272 53v101"/></g>
+            <path class="kitsch-main" d="M132 78h112v57H132Z" fill="var(--scene-glass)"/>
+            <g class="lotte-screen"><path d="M141 87h94v39h-94Z" fill="var(--scene-pop-3)"/><path class="lotte-screen-scan" d="M146 92h29v29h-29Z" fill="var(--scene-light)" opacity=".7"/><path d="M182 98h44M182 109h34M182 119h41" stroke="var(--scene-line)" stroke-width="3" stroke-linecap="round"/></g>
+            <g class="lotte-roundel"><circle cx="77" cy="74" r="13" fill="var(--scene-pop-1)"/><circle cx="77" cy="74" r="6" fill="var(--scene-house)"/></g>
+            <g class="lotte-hotel-windows scene-night-lights" fill="var(--scene-light)"><path d="M278 44h9v8h-9zM300 44h9v8h-9zM320 44h8v8h-8zM278 66h9v8h-9zM300 66h9v8h-9zM320 66h8v8h-8zM278 90h9v8h-9zM300 90h9v8h-9zM320 90h8v8h-8zM278 116h9v8h-9zM300 116h9v8h-9zM320 116h8v8h-8z"/></g>
+            <path class="lotte-facade-glint" d="M100 55l31-2l48 102h-33Z" fill="var(--scene-line)" opacity=".13"/>
+            <g class="seomyeon-traffic"><path d="M17 178h52l9 14H8Z" fill="var(--scene-pop-1)"/><circle cx="22" cy="193" r="5" fill="var(--scene-structure)"/><circle cx="64" cy="193" r="5" fill="var(--scene-structure)"/><path d="M314 176h62l11 16h-82Z" fill="var(--scene-pop-3)"/><circle cx="320" cy="193" r="5" fill="var(--scene-structure)"/><circle cx="371" cy="193" r="5" fill="var(--scene-structure)"/></g>
         </g>`;
 }
 
 function createBusanTowerSceneSvg() {
     return `
-        <path d="M0 143q62-28 126-11q72-29 144 1q66-22 130 8v59H0Z" fill="var(--scene-hill)"/>
-        <path d="M0 169q90-19 180 2q105-27 220 2v27H0Z" fill="var(--scene-ink)" opacity=".2"/>
-        <g class="scene-landmark busan-tower-landmark" stroke="var(--scene-ink)" stroke-linejoin="round">
-            <g class="yongdusan-pavilion" stroke-width="1.4"><path d="M34 126h94v12H34Z" fill="var(--scene-pop-1)"/><path d="M45 138h72v30H45Z" fill="var(--scene-house)"/><path d="M27 125q54-30 108 0q-54-12-108 0Z" fill="var(--scene-pop-2)"/><path d="M55 139v29M81 139v29M107 139v29"/></g>
-            <g class="busan-tower" stroke-width="1.8">
-                <path d="M190 147l7-69h18l7 69Z" fill="var(--scene-structure)"/>
-                <path d="M181 76l8-18h34l10 18l-13 12h-27Z" fill="var(--scene-house)"/>
-                <path d="M185 63h43" stroke="var(--scene-pop-1)" stroke-width="5"/>
-                <path d="M198 55V34h17v21Z" fill="var(--scene-glass)"/>
-                <path d="M206 34V17" stroke="var(--scene-structure)" stroke-width="3"/>
-                <circle class="busan-tower-beacon" cx="206" cy="15" r="3" fill="var(--scene-light)" stroke="none"/>
-                <g class="tower-light-ring scene-night-lights" fill="var(--scene-light)" stroke="none"><path d="M189 68h39v5h-39Z"/></g>
+        <path d="M0 145q63-31 128-12q72-31 145 0q65-24 127 8v59H0Z" fill="var(--scene-hill)"/>
+        <path d="M0 174q92-20 184 1q104-27 216 1v24H0Z" fill="var(--scene-ink)" opacity=".17"/>
+        <g class="scene-landmark busan-tower-landmark scene-kitsch">
+            <g class="yongdusan-pavilion kitsch-main"><path d="M25 127q58-34 116 0q-58-13-116 0Z" fill="var(--scene-pop-2)"/><path d="M33 128h100v13H33Z" fill="var(--scene-pop-1)"/><path d="M45 141h76v31H45Z" fill="var(--scene-house)"/><path d="M56 142v30M83 142v30M110 142v30" fill="none"/></g>
+            <g class="busan-tower kitsch-main">
+                <path d="M188 153l8-76h22l8 76Z" fill="var(--scene-structure)"/>
+                <path d="M178 77l10-21h39l11 21l-15 14h-31Z" fill="var(--scene-house)"/>
+                <path d="M184 62h48" fill="none" stroke="var(--scene-pop-1)" stroke-width="7"/>
+                <path d="M198 55V31h18v24Z" fill="var(--scene-glass)"/>
+                <path d="M207 31V11" fill="none" stroke-width="4"/>
+                <circle class="busan-tower-beacon" cx="207" cy="9" r="4" fill="var(--scene-light)" stroke="none"/>
+                <g class="tower-light-ring scene-night-lights" fill="var(--scene-light)"><path d="M187 68h46v6h-46Z"/></g>
             </g>
-            <g class="park-trees" fill="var(--scene-ink)" stroke="none"><path d="M12 173q4-32 23-44q18 12 21 44ZM130 173q5-36 25-49q18 14 22 49ZM274 174q5-38 27-52q21 15 25 52ZM335 174q5-31 22-43q18 12 22 43Z"/></g>
-            <g class="tower-city-lights scene-night-lights" fill="var(--scene-light)" stroke="none"><circle cx="246" cy="147" r="2"/><circle cx="259" cy="153" r="1.6"/><circle cx="342" cy="148" r="2"/><circle cx="367" cy="154" r="1.6"/></g>
+            <g class="park-trees" fill="var(--scene-ink)"><path d="M8 177q5-36 26-49q20 14 23 49ZM129 177q5-39 27-53q21 15 24 53ZM274 177q5-41 29-56q22 16 26 56ZM340 177q5-34 24-47q19 13 22 47Z"/></g>
+            <g class="tower-city-lights scene-night-lights" fill="var(--scene-light)"><circle cx="251" cy="150" r="2.4"/><circle cx="264" cy="158" r="2"/><circle cx="343" cy="150" r="2.4"/><circle cx="370" cy="157" r="2"/></g>
         </g>`;
 }
 
 function createCinemaCenterSceneSvg() {
     return `
-        <rect y="155" width="400" height="45" fill="var(--scene-ink)"/><path d="M0 177h400" stroke="var(--scene-line)" stroke-width="1.4" opacity=".56"/>
-        <g class="scene-landmark cinema-center-landmark" stroke="var(--scene-ink)" stroke-linejoin="round">
-            <path class="cinema-big-roof" d="M18 56h317l47 16l-42 18H27L5 73Z" fill="var(--scene-house)" stroke-width="2"/>
-            <path d="M27 76h320" stroke="var(--scene-pop-2)" stroke-width="7"/>
-            <g class="cinema-roof-leds scene-night-lights" fill="var(--scene-light)" stroke="none"><circle cx="45" cy="66" r="2"/><circle cx="70" cy="73" r="2"/><circle cx="98" cy="65" r="2"/><circle cx="128" cy="74" r="2"/><circle cx="158" cy="65" r="2"/><circle cx="189" cy="74" r="2"/><circle cx="220" cy="65" r="2"/><circle cx="251" cy="74" r="2"/><circle cx="282" cy="65" r="2"/><circle cx="314" cy="73" r="2"/></g>
-            <path class="cinema-projector" d="M75 89h238l48 66H28Z" fill="var(--scene-pop-3)" opacity=".09" stroke="none"/>
-            <path d="M171 89h59l22 66H148Z" fill="var(--scene-glass)" stroke-width="2"/>
-            <path d="M182 90h36l13 65h-63Z" fill="var(--scene-structure)" opacity=".48"/>
-            <path d="M38 95h109v60H38Z" fill="var(--scene-structure)" stroke-width="1.8"/><path d="M254 97h103v58H254Z" fill="var(--scene-structure)" stroke-width="1.8"/>
-            <path d="M50 107h84v35H50ZM267 108h77v34h-77Z" fill="var(--scene-glass)" stroke-width="1.2"/>
-            <g stroke="var(--scene-line)" stroke-width="1" opacity=".64"><path d="M71 107v35M92 107v35M113 107v35M286 108v34M305 108v34M324 108v34"/></g>
-            <path d="M145 155h110" stroke="var(--scene-pop-1)" stroke-width="5"/>
-            <g class="cinema-people" fill="var(--scene-light)" stroke="none"><circle cx="113" cy="149" r="3"/><path d="M110 153h6v8h-6Z"/><circle cx="286" cy="149" r="3"/><path d="M283 153h6v8h-6Z"/></g>
+        <path d="M0 157H400V200H0Z" fill="var(--scene-ink)"/><path d="M0 181H400" stroke="var(--scene-line)" stroke-width="2" opacity=".48"/>
+        <g class="scene-landmark cinema-center-landmark scene-kitsch">
+            <path class="cinema-projector" d="M78 83h262l43 76H31Z" fill="var(--scene-pop-3)" opacity=".1"/>
+            <path class="kitsch-main" d="M42 101h129v57H42Z" fill="var(--scene-structure)"/>
+            <path class="kitsch-main" d="M55 113h101v32H55Z" fill="var(--scene-glass)"/>
+            <g class="kitsch-detail" opacity=".72"><path d="M79 113v32M105 113v32M131 113v32"/></g>
+            <path class="kitsch-main" d="M276 106h81v52h-81Z" fill="var(--scene-structure)"/>
+            <path class="kitsch-main" d="M287 117h58v29h-58Z" fill="var(--scene-glass)"/>
+            <path class="cinema-big-roof kitsch-main" d="M19 49L344 32L394 49L364 64L39 82L6 68Z" fill="var(--scene-structure)"/>
+            <path class="kitsch-main" d="M39 70L364 53L375 64L47 84Z" fill="var(--scene-pop-3)"/>
+            <path d="M48 73L362 57" fill="none" stroke="var(--scene-pop-2)" stroke-width="6" stroke-linecap="round"/>
+            <g class="cinema-roof-leds scene-night-lights" fill="var(--scene-light)"><circle cx="61" cy="72" r="2.4"/><circle cx="93" cy="70" r="2.4"/><circle cx="125" cy="68" r="2.4"/><circle cx="158" cy="67" r="2.4"/><circle cx="191" cy="65" r="2.4"/><circle cx="224" cy="63" r="2.4"/><circle cx="257" cy="62" r="2.4"/><circle cx="291" cy="60" r="2.4"/><circle cx="325" cy="59" r="2.4"/><circle cx="354" cy="57" r="2.4"/></g>
+            <g class="cinema-double-cone kitsch-main">
+                <path d="M207 82h63l-25 37h-18Z" fill="var(--scene-glass)"/>
+                <path d="M227 118h18l29 40h-76Z" fill="var(--scene-structure)"/>
+                <path d="M220 86h38l-20 28Z" fill="var(--scene-pop-3)" opacity=".58"/>
+                <path d="M219 156h35" fill="none" stroke="var(--scene-pop-1)" stroke-width="6"/>
+            </g>
+            <path d="M23 158H377" stroke="var(--scene-pop-1)" stroke-width="5"/>
+            <g class="cinema-people" fill="var(--scene-light)"><circle cx="91" cy="151" r="3.5"/><path d="M87 155h8v11h-8Z"/><circle cx="309" cy="151" r="3.5"/><path d="M305 155h8v11h-8Z"/></g>
         </g>`;
 }
 
