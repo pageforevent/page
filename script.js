@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initParticleBackground();
     loadEventData();
 });
 
@@ -15,71 +14,11 @@ function getMobileOS() {
     return 'unknown';
 }
 
-// 배경 반짝이는 별빛/스파클 파티클 캔버스 효과
-function initParticleBackground() {
-    const canvas = document.getElementById('particle-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    });
-
-    const particles = [];
-    const particleCount = Math.min(Math.floor(window.innerWidth / 15), 45);
-
-    for (let i = 0; i < particleCount; i++) {
-        particles.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            size: Math.random() * 2.2 + 0.8,
-            speedY: -(Math.random() * 0.4 + 0.15),
-            speedX: (Math.random() - 0.5) * 0.3,
-            opacity: Math.random() * 0.8 + 0.2,
-            twinkleSpeed: Math.random() * 0.03 + 0.01,
-            color: ['#FCD34D', '#38BDF8', '#F472B6', '#FFFFFF', '#A78BFA'][Math.floor(Math.random() * 5)]
-        });
-    }
-
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-
-        particles.forEach(p => {
-            p.y += p.speedY;
-            p.x += p.speedX;
-            p.opacity += Math.sin(Date.now() * p.twinkleSpeed) * 0.02;
-
-            if (p.y < -10) {
-                p.y = height + 10;
-                p.x = Math.random() * width;
-            }
-            if (p.x < -10) p.x = width + 10;
-            if (p.x > width + 10) p.x = -10;
-
-            const alpha = Math.max(0.1, Math.min(1, p.opacity));
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.globalAlpha = alpha;
-            ctx.shadowBlur = p.size * 3;
-            ctx.shadowColor = p.color;
-            ctx.fill();
-        });
-
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-}
-
 // 이벤트 데이터 로드
 async function loadEventData() {
     try {
-        const response = await fetch(`data.json?t=${new Date().getTime()}`);
+        // 브라우저 캐시를 재사용하면서 배포 후 변경 여부만 서버에 확인합니다.
+        const response = await fetch('data.json', { cache: 'no-cache' });
         if (!response.ok) {
             throw new Error('데이터를 불러오는데 실패했습니다.');
         }
@@ -165,7 +104,8 @@ function createGwanganBridgeIllustrationSvg() {
             </g>
 
             <!-- 4. 페스티벌 불꽃놀이 (Fireworks Effect) -->
-            <g class="fireworks" transform="translate(325, 48)">
+            <g transform="translate(325, 48)">
+                <g class="fireworks">
                 <circle cx="0" cy="0" r="2" fill="#EC4899" class="firework-core"/>
                 <line x1="0" y1="0" x2="0" y2="-16" stroke="#F472B6" stroke-width="1.5" stroke-linecap="round" class="spark spark-1"/>
                 <line x1="0" y1="0" x2="12" y2="-12" stroke="#FCD34D" stroke-width="1.5" stroke-linecap="round" class="spark spark-2"/>
@@ -174,14 +114,17 @@ function createGwanganBridgeIllustrationSvg() {
                 <line x1="0" y1="0" x2="-12" y2="12" stroke="#34D399" stroke-width="1.5" stroke-linecap="round" class="spark spark-5"/>
                 <line x1="0" y1="0" x2="-16" y2="0" stroke="#F472B6" stroke-width="1.5" stroke-linecap="round" class="spark spark-6"/>
                 <line x1="0" y1="0" x2="-12" y2="-12" stroke="#FCD34D" stroke-width="1.5" stroke-linecap="round" class="spark spark-7"/>
+                </g>
             </g>
 
-            <g class="fireworks fireworks-sm" transform="translate(180, 35)">
+            <g transform="translate(180, 35)">
+                <g class="fireworks fireworks-sm">
                 <line x1="0" y1="0" x2="0" y2="-11" stroke="#FCD34D" stroke-width="1.2" stroke-linecap="round" class="spark spark-1"/>
                 <line x1="0" y1="0" x2="9" y2="-7" stroke="#38BDF8" stroke-width="1.2" stroke-linecap="round" class="spark spark-2"/>
                 <line x1="0" y1="0" x2="9" y2="7" stroke="#EC4899" stroke-width="1.2" stroke-linecap="round" class="spark spark-3"/>
                 <line x1="0" y1="0" x2="-9" y2="7" stroke="#34D399" stroke-width="1.2" stroke-linecap="round" class="spark spark-4"/>
                 <line x1="0" y1="0" x2="-9" y2="-7" stroke="#A78BFA" stroke-width="1.2" stroke-linecap="round" class="spark spark-5"/>
+                </g>
             </g>
 
             <!-- 5. 귀여운 부산 갈매기 (Seagulls) -->
@@ -317,6 +260,7 @@ function renderPage(data) {
     const appContainer = document.querySelector('.app-container');
     if (appContainer) {
         appContainer.classList.add('is-intro');
+        document.body.classList.add('is-intro');
     }
 
     // 헤더 영역 렌더링
@@ -396,10 +340,12 @@ function renderPage(data) {
         transitioned = true;
         appContainer.classList.remove('is-intro');
         appContainer.classList.add('is-ready');
+        document.body.classList.remove('is-intro');
     }
 
-    // 1.1초 동안 인트로를 보여준 후 상단 헤더로 부드럽게 축소 이동
-    const transitionTimer = setTimeout(triggerPageTransition, 1100);
+    // 짧게 인트로를 보여준 뒤 레이아웃 변경 없이 transform/opacity로 전환합니다.
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const transitionTimer = setTimeout(triggerPageTransition, reduceMotion ? 0 : 420);
 
     // 사용자가 화면을 탭/클릭하면 즉시 인트로를 건너뛰고 전환
     function handleUserSkip() {

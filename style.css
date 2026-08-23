@@ -35,7 +35,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
@@ -51,88 +51,44 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     position: relative;
     overflow-x: hidden;
     padding: 1.5rem 0.75rem;
 }
 
-/* ==========================================================================
-   배경 앰비언트 글로우 & 파티클 캔버스
-   ========================================================================== */
-.particle-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 0;
+body.is-intro {
+    overflow-y: hidden;
 }
 
-.bg-glow {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.35;
-    pointer-events: none;
-    z-index: 0;
-    animation: floatGlow 12s ease-in-out infinite alternate;
-}
-
-.bg-glow-1 {
-    width: 320px;
-    height: 320px;
-    background: radial-gradient(circle, #38BDF8 0%, transparent 70%);
-    top: -50px;
-    right: -50px;
-}
-
-.bg-glow-2 {
-    width: 380px;
-    height: 380px;
-    background: radial-gradient(circle, #F59E0B 0%, transparent 70%);
-    bottom: -80px;
-    left: -80px;
-    animation-delay: -4s;
-}
-
-.bg-glow-3 {
-    width: 250px;
-    height: 250px;
-    background: radial-gradient(circle, #EC4899 0%, transparent 70%);
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.18;
-    animation-delay: -8s;
-}
-
-@keyframes floatGlow {
-    0% { transform: translateY(0) scale(1); }
-    100% { transform: translateY(30px) scale(1.15); }
-}
-
-/* ==========================================================================
+/* ========================================================================== 
    메인 앱 컨테이너
    ========================================================================== */
 .app-container {
     width: 100%;
     max-width: 480px;
     min-height: auto;
-    background: rgba(10, 19, 41, 0.7);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: rgba(10, 19, 41, 0.96);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 28px;
     padding: 1.5rem 1.25rem 2.25rem;
     box-shadow: 
-        0 25px 50px -12px rgba(0, 0, 0, 0.7),
-        0 0 35px rgba(56, 189, 248, 0.12),
+        0 20px 42px -16px rgba(0, 0, 0, 0.65),
+        0 0 24px rgba(56, 189, 248, 0.08),
         inset 0 1px 1px rgba(255, 255, 255, 0.15);
     position: relative;
     z-index: 1;
     overflow: hidden;
+}
+
+.app-container.is-intro {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.app-container.is-intro::before {
+    opacity: 0;
 }
 
 .app-container::before {
@@ -144,12 +100,7 @@ body {
     height: 3px;
     background: linear-gradient(90deg, #F59E0B, #38BDF8, #EC4899, #F59E0B);
     background-size: 300% 100%;
-    animation: gradientMove 6s linear infinite;
-}
-
-@keyframes gradientMove {
-    0% { background-position: 0% 0%; }
-    100% { background-position: 300% 0%; }
+    background-position: 50% 0;
 }
 
 /* ==========================================================================
@@ -161,23 +112,19 @@ body {
     align-items: center;
     margin-bottom: 1.8rem;
     width: 100%;
-    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    margin-bottom: 1.6rem;
+    transform-origin: center top;
+    transition: transform 0.56s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* 인트로 모드: 화면 중앙 히어로 뷰 */
 .app-container.is-intro .header {
-    padding-top: max(15vh, 45px);
-    padding-bottom: max(10vh, 30px);
-    margin-bottom: 0;
-    transform: scale(1.04);
+    transform: translate3d(0, min(24vh, 180px), 0) scale(1.035);
 }
 
 /* 전환 완료 모드: 상단 헤더 뷰로 축소 이동 */
 .app-container.is-ready .header {
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: 1.6rem;
-    transform: scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
 }
 
 .bridge-illustration-card {
@@ -185,19 +132,10 @@ body {
     border-radius: 20px;
     overflow: hidden;
     position: relative;
-    box-shadow: 
-        0 14px 28px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(56, 189, 248, 0.2);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.38);
     border: 1px solid rgba(255, 255, 255, 0.15);
     margin-bottom: 1.15rem;
     background: #070D1E;
-    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.app-container.is-intro .bridge-illustration-card {
-    box-shadow: 
-        0 22px 48px rgba(0, 0, 0, 0.65),
-        0 0 35px rgba(56, 189, 248, 0.35);
 }
 
 .gwangan-bridge-svg {
@@ -209,7 +147,7 @@ body {
 /* 광안대교 SVG 내부 애니메이션 */
 /* 1. 별빛 깜빡임 */
 .star {
-    animation: starTwinkle 3s ease-in-out infinite alternate;
+    animation: none;
 }
 .star-1 { animation-delay: 0s; }
 .star-2 { animation-delay: 1s; }
@@ -220,10 +158,13 @@ body {
     50% { opacity: 1; transform: scale(1.4); }
 }
 
+.stars-layer {
+    animation: softPulse 4s ease-in-out infinite alternate;
+}
+
 /* 2. 달빛 펄스 */
 .moon-aura {
-    animation: moonPulse 4s ease-in-out infinite alternate;
-    transform-origin: center;
+    animation: none;
 }
 @keyframes moonPulse {
     0% { opacity: 0.5; r: 20; }
@@ -233,11 +174,12 @@ body {
 /* 3. 페스티벌 불꽃놀이 */
 .fireworks {
     animation: fireworkBurst 3.5s cubic-bezier(0.1, 0.8, 0.2, 1) infinite;
-    transform-origin: 325px 48px;
+    transform-box: fill-box;
+    transform-origin: center;
 }
 .fireworks-sm {
-    animation: fireworkBurst 4s cubic-bezier(0.1, 0.8, 0.2, 1) infinite 1.8s;
-    transform-origin: 180px 35px;
+    animation: none;
+    opacity: 0.55;
 }
 
 @keyframes fireworkBurst {
@@ -253,8 +195,9 @@ body {
     transform-origin: center;
 }
 .seagull-2 {
-    animation: seagullFly 7s ease-in-out infinite 2s;
-    transform-origin: center;
+    animation: none;
+    opacity: 0.65;
+    transform: translate(220px, 55px);
 }
 
 @keyframes seagullFly {
@@ -265,16 +208,16 @@ body {
 
 /* 5. 오션 파도 웨이브 애니메이션 */
 .wave-back {
-    animation: waveDrift 8s ease-in-out infinite alternate;
+    animation: none;
 }
 .wave-mid {
-    animation: waveDrift 6s ease-in-out infinite alternate-reverse;
+    animation: none;
 }
 .wave-front {
-    animation: waveDrift 5s ease-in-out infinite alternate;
+    animation: none;
 }
 .wave-shimmer, .wave-shimmer-2 {
-    animation: waveShimmerMove 4s ease-in-out infinite alternate;
+    animation: none;
 }
 
 @keyframes waveDrift {
@@ -289,7 +232,8 @@ body {
 
 /* 6. 다리 케이블 LED 라이트쇼 */
 .led-dot {
-    animation: ledPulse 2s ease-in-out infinite alternate;
+    animation: none;
+    filter: none;
 }
 .led-1 { animation-delay: 0s; }
 .led-2 { animation-delay: 0.3s; }
@@ -303,18 +247,27 @@ body {
     100% { opacity: 1; r: 2.8; filter: drop-shadow(0 0 6px #FCD34D); }
 }
 
+.led-lights {
+    animation: softPulse 2.8s ease-in-out infinite alternate;
+}
+
+@keyframes softPulse {
+    from { opacity: 0.62; }
+    to { opacity: 1; }
+}
+
 /* 7. 주행 차량 빛 궤적 */
 .car-red {
     animation: carMoveRight 3.5s linear infinite;
 }
 .car-red-2 {
-    animation: carMoveRight 3.5s linear infinite 1.7s;
+    animation: none;
 }
 .car-white {
     animation: carMoveLeft 3s linear infinite;
 }
 .car-white-2 {
-    animation: carMoveLeft 3s linear infinite 1.5s;
+    animation: none;
 }
 
 @keyframes carMoveRight {
@@ -333,7 +286,7 @@ body {
 
 /* 8. 주탑 상단 빨간 비콘등 */
 .beacon-light {
-    animation: beaconFlash 1.2s ease-in-out infinite alternate;
+    animation: none;
 }
 @keyframes beaconFlash {
     0% { opacity: 0.2; r: 1.5; }
@@ -342,8 +295,7 @@ body {
 
 /* 9. 다리 수면 반영 */
 .bridge-reflection {
-    animation: reflectionWiggle 3s ease-in-out infinite alternate;
-    transform-origin: center top;
+    animation: none;
 }
 @keyframes reflectionWiggle {
     0% { opacity: 0.3; transform: scaleX(0.95); }
@@ -368,17 +320,6 @@ body {
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.25));
     word-break: keep-all;
-    transition: all 0.85s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.app-container.is-intro .festival-title {
-    font-size: 2.15rem;
-    margin-top: 1.1rem;
-    margin-bottom: 0;
-}
-
-.app-container.is-ready .festival-title {
-    font-size: 1.65rem;
     margin-top: 0;
     margin-bottom: 0;
 }
@@ -410,21 +351,22 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.95rem;
-    transition: all 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+        opacity 0.36s ease,
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .app-container.is-intro .step-list {
     opacity: 0;
-    transform: translateY(35px);
-    max-height: 0;
-    overflow: hidden;
+    transform: translate3d(0, 24px, 0);
+    visibility: hidden;
     pointer-events: none;
 }
 
 .app-container.is-ready .step-list {
     opacity: 1;
-    transform: translateY(0);
-    max-height: 2000px;
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
 }
 
 .step-card {
@@ -444,15 +386,15 @@ body {
 
 .app-container.is-intro .step-card {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translate3d(0, 18px, 0);
 }
 
 .app-container.is-ready .step-card {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
     transition: 
-        opacity 0.6s ease calc(0.35s + var(--step-index, 0) * 0.14s),
-        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) calc(0.35s + var(--step-index, 0) * 0.14s),
+        opacity 0.36s ease calc(0.08s + var(--step-index, 0) * 0.07s),
+        transform 0.42s cubic-bezier(0.16, 1, 0.3, 1) calc(0.08s + var(--step-index, 0) * 0.07s),
         border-color 0.35s ease,
         box-shadow 0.35s ease;
 }
@@ -528,8 +470,8 @@ body {
     border-radius: 14px;
     background: linear-gradient(135deg, var(--color-gold-main), var(--color-ocean-cyan));
     opacity: 0.25;
-    filter: blur(6px);
-    transition: all 0.35s ease;
+    filter: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .step-card:hover .icon-pulse {
@@ -614,26 +556,14 @@ body {
         inset 0 1px 1px rgba(255, 255, 255, 0.4);
     position: relative;
     overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition:
+        transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
+        box-shadow 0.24s ease;
 }
 
 /* 버튼 반짝이는 샤인 광택 */
 .btn-action::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-    transform: skewX(-22deg);
-    animation: btnShine 3.5s infinite;
-}
-
-@keyframes btnShine {
-    0% { left: -100%; }
-    22% { left: 200%; }
-    100% { left: 200%; }
+    content: none;
 }
 
 .btn-action:hover {
@@ -659,7 +589,21 @@ body {
     transform: translateX(4px);
 }
 
-/* ==========================================================================
+/* 인트로 전환 중에는 장식 애니메이션을 멈춰 이동 프레임에 자원을 집중합니다. */
+.app-container.is-intro .gwangan-bridge-svg * {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================================================== 
    등장 애니메이션 키프레임
    ========================================================================== */
 @keyframes fadeInUp {
@@ -717,4 +661,3 @@ body {
         padding: 1.6rem 1.4rem;
     }
 }
-
