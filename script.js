@@ -88,8 +88,12 @@ function getMobileOS() {
 // 이벤트 데이터 로드
 async function loadEventData() {
     try {
-        // 브라우저 캐시를 재사용하면서 배포 후 변경 여부만 서버에 확인합니다.
-        const response = await fetch('data.json', { cache: 'no-cache' });
+        // head에서 먼저 시작한 요청을 재사용해 느린 네트워크의 대기 시간을 줄입니다.
+        const response = await (window.__eventDataPromise || fetch('data.json', {
+            cache: 'no-cache',
+            credentials: 'same-origin'
+        }));
+        if (response?.__eventDataError) throw response.__eventDataError;
         if (!response.ok) {
             throw new Error('데이터를 불러오는데 실패했습니다.');
         }
@@ -398,30 +402,45 @@ function createGwanganSceneSvg() {
         <rect y="128" width="400" height="72" fill="var(--scene-sea-top)"/><path d="M0 160Q100 145 200 160t200 0v40H0Z" fill="var(--scene-sea-bottom)"/>
         <g class="scene-landmark gwangan-landmark">
             <g fill="none" stroke="var(--scene-line)" stroke-linecap="round"><path d="M8 128Q78 112 145 66M145 66Q200 119 255 66M255 66Q323 112 392 128" stroke-width="2.6"/><g stroke-width=".8" opacity=".7"><path d="M165 86v40M182 103v23M200 114v12M218 103v23M235 86v40M105 103v23M295 103v23"/></g></g>
+            <path class="bridge-led-flow" d="M8 128Q78 112 145 66Q200 119 255 66Q323 112 392 128" fill="none" stroke="var(--scene-light)" stroke-width="2.1" stroke-linecap="round" stroke-dasharray="2 16"/>
             <g stroke="var(--scene-structure)" stroke-width="3" stroke-linecap="round"><path d="M141 126V61M149 126V61M251 126V61M259 126V61"/></g>
             <g stroke="var(--scene-pop-2)" stroke-width="1.1"><path d="M141 76l8 12m0-12l-8 12m0 9l8 12m0-12l-8 12M251 76l8 12m0-12l-8 12m0 9l8 12m0-12l-8 12"/></g>
             <path d="M0 125H400" stroke="var(--scene-ink)" stroke-width="7"/><path d="M0 124H400" stroke="var(--scene-line)" stroke-width="1.3"/>
             <g class="scene-night-lights" fill="var(--scene-light)"><circle cx="145" cy="58" r="2"/><circle cx="170" cy="90" r="1.8"/><circle cx="200" cy="112" r="2"/><circle cx="230" cy="90" r="1.8"/><circle cx="255" cy="58" r="2"/></g>
             <g class="bridge-traffic" stroke-width="2" stroke-linecap="round"><path d="M10 122h38" stroke="var(--scene-pop-1)"/><path d="M352 128h38" stroke="var(--scene-light)"/></g>
-        </g><g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".65"><path d="M-30 153q45-7 90 0t90 0t90 0t90 0t90 0M-60 178q58-8 116 0t116 0t116 0t116 0"/></g>`;
+        </g>
+        <g class="gwangan-reflection" fill="var(--scene-light)" opacity=".12"><path d="M135 132h20l8 63h-38Z"/><path d="M245 132h20l12 63h-40Z"/></g>
+        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".65"><path d="M-30 153q45-7 90 0t90 0t90 0t90 0t90 0M-60 178q58-8 116 0t116 0t116 0t116 0"/></g>`;
 }
 
 function createGamcheonSceneSvg() {
     return `
-        <path d="M0 116L62 87l43 13l48-39l50 26l54-18l55 28l88-20v123H0Z" fill="var(--scene-hill)"/>
-        <g class="scene-landmark gamcheon-landmark" stroke="var(--scene-ink)" stroke-width="1">
-            <g fill="var(--scene-pop-1)"><path d="M10 124h48v28H10zM64 108h43v27H64zM113 89h44v31h-44zM165 103h48v30h-48zM219 87h45v29h-45zM271 104h47v29h-47zM326 90h54v31h-54z"/></g>
-            <g fill="var(--scene-pop-2)"><path d="M24 157h50v30H24zM81 139h45v31H81zM132 126h48v32h-48zM186 139h49v31h-49zM242 121h48v33h-48zM297 138h50v31h-50zM352 126h48v34h-48z"/></g>
-            <g fill="var(--scene-pop-3)"><path d="M0 174h42v26H0zM51 180h56v20H51zM116 164h55v36h-55zM180 177h55v23h-55zM244 160h54v40h-54zM307 175h55v25h-55zM370 165h30v35h-30z"/></g>
-            <g fill="var(--scene-window)" class="scene-night-lights"><path d="M20 132h7v6h-7zM76 116h7v6h-7zM126 98h7v6h-7zM179 112h7v6h-7zM231 96h7v6h-7zM284 112h7v6h-7zM340 99h7v6h-7zM94 148h7v6h-7zM202 148h7v6h-7zM258 130h7v6h-7z"/></g>
-            <g class="gamcheon-bunting" fill="var(--scene-light)"><path d="M128 79l9 2l-6 7zM143 82l9 1l-5 8zM158 83l9-1l-3 9z"/></g>
-            <g class="gamcheon-alleys" fill="none" stroke-linejoin="round">
-                <path d="M108 200v-20h9v-17" stroke="var(--scene-hill)" stroke-width="7"/><path d="M108 200v-20h9v-17" stroke="var(--scene-house)" stroke-width="1.2" opacity=".7"/>
-                <path d="M235 200v-24h9v-17" stroke="var(--scene-hill)" stroke-width="7"/><path d="M235 200v-24h9v-17" stroke="var(--scene-house)" stroke-width="1.2" opacity=".7"/>
-                <path d="M347 175v-16h8v-17" stroke="var(--scene-hill)" stroke-width="6"/><path d="M347 175v-16h8v-17" stroke="var(--scene-house)" stroke-width="1.1" opacity=".65"/>
+        <path d="M0 131Q52 93 111 106Q165 52 218 88Q274 52 326 91Q360 74 400 82V200H0Z" fill="var(--scene-hill)"/>
+        <path d="M0 170Q86 133 174 146Q267 112 400 126V200H0Z" fill="var(--scene-ink)" opacity=".12"/>
+        <path class="gamcheon-cloud-shadow" d="M-96 119q34-20 77-3q31 13 64 1q35-13 70 4q-26 18-79 12q-63-7-132 7Z" fill="var(--scene-ink)" opacity=".09"/>
+        <g class="scene-landmark gamcheon-landmark" stroke="var(--scene-ink)" stroke-width="1.4" stroke-linejoin="round">
+            <g class="gamcheon-upper-row">
+                <path d="M53 122V96h48v26Z" fill="var(--scene-house)"/>
+                <path d="M105 105V76h52v29Z" fill="var(--scene-pop-1)"/>
+                <path d="M166 116V88h55v28Z" fill="var(--scene-pop-2)"/>
+                <path d="M232 99V70h53v29Z" fill="var(--scene-house)"/>
+                <path d="M296 111V82h56v29Z" fill="var(--scene-pop-1)"/>
             </g>
-            <g class="gamcheon-rooftops" fill="var(--scene-house)" stroke="var(--scene-ink)" stroke-width="1"><path d="M75 101h17v7H75zM228 78h18v9h-18zM337 80h18v10h-18z"/><circle cx="83" cy="98" r="4"/><circle cx="237" cy="75" r="4"/><circle cx="346" cy="77" r="4"/></g>
-            <g fill="none" stroke="var(--scene-house)" stroke-width="1.3" opacity=".8"><path d="M10 154h48M64 137h43M113 122h44M165 135h48M219 118h45M271 135h47M326 123h54"/></g>
+            <g class="gamcheon-lower-row">
+                <path d="M10 162v-35h61v35Z" fill="var(--scene-pop-1)"/>
+                <path d="M78 151v-36h64v36Z" fill="var(--scene-pop-2)"/>
+                <path d="M150 169v-38h65v38Z" fill="var(--scene-pop-3)"/>
+                <path d="M224 147v-36h67v36Z" fill="var(--scene-pop-2)"/>
+                <path d="M300 158v-38h67v38Z" fill="var(--scene-house)"/>
+                <path d="M31 200v-29h76v29ZM118 200v-38h80v38ZM210 200v-40h78v40ZM300 200v-32h86v32Z" fill="var(--scene-pop-3)"/>
+            </g>
+            <g fill="none" stroke="var(--scene-line)" stroke-width="3" opacity=".9"><path d="M53 96h48M105 76h52M166 88h55M232 70h53M296 82h56M10 127h61M78 115h64M150 131h65M224 111h67M300 120h67"/></g>
+            <g fill="var(--scene-window)" class="scene-night-lights gamcheon-window-glow" stroke="none"><path d="M68 106h9v8h-9zM120 87h9v8h-9zM183 98h9v8h-9zM249 80h9v8h-9zM315 93h9v8h-9zM29 140h10v9H29zM99 127h10v9H99zM174 144h10v9h-10zM247 123h10v9h-10zM325 133h10v9h-10zM57 181h10v9H57zM148 174h10v9h-10zM241 173h10v9h-10zM337 179h10v9h-10z"/></g>
+            <g class="gamcheon-bunting" stroke="var(--scene-ink)" stroke-width="1">
+                <path d="M107 70q25 7 49 0" fill="none"/>
+                <path d="M114 72l8 2l-5 7ZM128 73l8 1l-4 8ZM142 73l8-2l-2 8Z" fill="var(--scene-light)"/>
+            </g>
+            <g class="gamcheon-lookout" fill="var(--scene-ink)" stroke="none"><circle cx="268" cy="63" r="4"/><path d="M265 67h6v6h-6z"/><path d="M257 69h9v2h-9z"/></g>
         </g>`;
 }
 
@@ -438,7 +457,9 @@ function createNurimaruSceneSvg() {
             <path d="M128 111q72-28 145-8" fill="none" stroke="var(--scene-line)" stroke-width="2"/>
             <path d="M132 110Q199 91 270 106v44H132Z" fill="var(--scene-glass)" stroke="var(--scene-ink)" stroke-width="2"/>
             <g stroke="var(--scene-line)" opacity=".72"><path d="M146 108v41M164 103v46M183 99v50M202 97v52M221 98v51M240 101v48M258 105v44"/></g>
+            <path class="nurimaru-glass-shimmer" d="M151 111l28-8l35 47h-27Z" fill="var(--scene-line)" opacity=".14"/>
             <path class="nurimaru-light-sweep scene-night-lights" d="M146 138q55 11 111-2" fill="none" stroke="var(--scene-light)" stroke-width="3" stroke-linecap="round"/>
+            <g class="nurimaru-distant-lights scene-night-lights" fill="var(--scene-light)"><circle cx="297" cy="96" r="1.6"/><circle cx="317" cy="112" r="1.3"/><circle cx="337" cy="96" r="1.6"/></g>
             <path d="M112 150h176l20 11H93Z" fill="var(--scene-ink)"/><path d="M126 154h151" stroke="var(--scene-line)" stroke-width="2"/>
         </g>
         <g class="scene-water-lines nurimaru-reflection" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M48 170q49-7 98 0t98 0t98 0M92 187q38-6 76 0t76 0t76 0"/></g>`;
@@ -446,23 +467,25 @@ function createNurimaruSceneSvg() {
 
 function createHuinnyeoulSceneSvg() {
     return `
-        <rect y="112" width="400" height="88" fill="var(--scene-sea-top)"/><path d="M128 168q90-15 180 0t180 0v32H128Z" fill="var(--scene-sea-bottom)"/><path d="M0 48q87 19 146 72l25 80H0Z" fill="var(--scene-hill)"/>
+        <rect y="96" width="400" height="104" fill="var(--scene-sea-top)"/><path d="M124 157q90-18 180 0t180 0v43H124Z" fill="var(--scene-sea-bottom)"/><path d="M0 52Q76 58 123 91q35 24 56 62l-22 47H0Z" fill="var(--scene-hill)"/>
         <g class="scene-landmark huinnyeoul-landmark">
-            <g class="white-cliff-houses" stroke="var(--scene-ink)" stroke-width="1.2">
-                <path d="M5 68h48v29H5zM47 80h58v34H47zM14 103h51v32H14zM67 117h56v35H67zM8 142h58v35H8zM74 158h55v42H74z" fill="var(--scene-house)"/>
-                <path d="M1 64h57v8H1zM43 75h68v9H43zM10 98h61v9H10zM62 112h67v9H62zM4 137h68v9H4zM69 153h66v9H69z" fill="var(--scene-pop-2)"/>
+            <path d="M0 137q67-7 124 24l33 39H0Z" fill="var(--scene-ink)" opacity=".16"/>
+            <g class="white-cliff-houses" stroke="var(--scene-ink)" stroke-width="1.4" stroke-linejoin="round">
+                <path d="M5 64h59v38H5ZM67 75h57v40H67ZM13 108h62v42H13ZM78 120h55v42H78ZM3 156h73v44H3Z" fill="var(--scene-house)"/>
+                <path d="M1 59h68v9H1ZM62 70h67v9H62ZM8 103h72v9H8ZM73 115h65v9H73ZM0 151h81v9H0Z" fill="var(--scene-pop-2)"/>
             </g>
-            <g fill="var(--scene-window)" class="scene-night-lights"><path d="M16 78h10v8H16zM62 91h12v10H62zM26 115h11v9H26zM83 130h12v10H83zM21 154h12v10H21zM93 173h12v10H93z"/></g>
-            <g class="huinnyeoul-laundry" stroke="var(--scene-ink)" stroke-width="1"><path d="M71 104h45"/><path d="M78 105l8 2l-4 8zM90 105l8 1l-4 8zM102 105l8 2l-5 7z" fill="var(--scene-pop-1)"/></g>
-            <g class="coastal-promenade" fill="none" stroke-linejoin="round" stroke-linecap="round">
-                <path class="coastal-steps" d="M108 111h14v8h13v9h13v10h13v11h13v12h16v16" stroke="var(--scene-house)" stroke-width="7"/>
-                <path d="M108 106l16 8l14 9l14 10l14 12l14 13l15 15" stroke="var(--scene-pop-2)" stroke-width="2.2"/>
-                <g class="coastal-railing" stroke="var(--scene-ink-soft)" stroke-width="1.15"><path d="M112 108v9M126 115v10M140 124v10M154 135v10M168 147v10M182 160v10"/></g>
-                <g class="stair-treads" stroke="var(--scene-ink)" stroke-width="1.2" opacity=".72"><path d="M118 118h10M131 127h10M144 137h10M157 148h10M170 160h10M183 173h10"/></g>
+            <g fill="var(--scene-window)" class="scene-night-lights"><path d="M18 76h11v9H18zM81 87h11v9H81zM28 121h12v10H28zM94 134h12v10H94zM22 171h12v10H22z"/></g>
+            <g class="coastal-promenade" stroke-linejoin="round" stroke-linecap="round">
+                <path d="M96 105c31 12 57 31 86 59l-17 15c-26-28-49-45-81-58Z" fill="var(--scene-house)" stroke="var(--scene-ink)" stroke-width="1.6"/>
+                <path class="coastal-route-line" d="M91 110c31 12 56 30 84 58" fill="none" stroke="var(--scene-pop-1)" stroke-width="4.5" stroke-dasharray="12 5"/>
+                <path d="M90 101c33 12 61 32 92 62" fill="none" stroke="var(--scene-line)" stroke-width="2.4"/>
+                <g class="huinnyeoul-walker" fill="var(--scene-ink)" stroke="none"><circle cx="133" cy="128" r="3"/><path d="M131 132h5l2 9l-4 5l-4-6Z"/></g>
             </g>
-            <g class="huinnyeoul-boat"><path d="M278 147h58l-11 14h-35Z" fill="var(--scene-pop-1)" stroke="var(--scene-ink)" stroke-width="1.5"/><path d="M307 147v-22" stroke="var(--scene-ink)"/><path d="M310 127l19 11h-19Z" fill="var(--scene-light)"/></g>
+            <path class="huinnyeoul-tunnel" d="M87 200v-22a17 17 0 0 1 34 0v22Z" fill="var(--scene-ink)"/><path d="M94 200v-20a10 10 0 0 1 20 0v20Z" fill="var(--scene-sky-bottom)" opacity=".45"/>
+            <g class="huinnyeoul-seagulls" fill="none" stroke="var(--scene-ink-soft)" stroke-width="1.8" stroke-linecap="round"><path d="M223 74q8-9 16 0q8-9 16 0M266 91q5-6 10 0q5-6 10 0"/></g>
+            <g class="huinnyeoul-boat"><path d="M287 149h64l-13 15h-38Z" fill="var(--scene-pop-1)" stroke="var(--scene-ink)" stroke-width="1.6"/><path d="M318 149v-24" stroke="var(--scene-ink)" stroke-width="1.4"/><path d="M321 127l21 12h-21Z" fill="var(--scene-light)"/></g>
         </g>
-        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M168 164q45-7 90 0t90 0t90 0M146 188q54-8 108 0t108 0t108 0"/></g>`;
+        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M184 128q48-7 96 0t96 0M167 181q54-8 108 0t108 0"/></g>`;
 }
 
 function createJagalchiSceneSvg() {
@@ -477,8 +500,9 @@ function createJagalchiSceneSvg() {
             <g class="scene-night-lights" fill="var(--scene-light)"><path d="M120 92h12v10h-12zM142 92h12v10h-12zM233 92h12v10h-12zM255 111h12v10h-12z"/></g>
             <rect x="141" y="116" width="103" height="22" rx="3" fill="var(--scene-pop-1)" stroke="var(--scene-ink)"/>
             <g class="market-fish-mark" fill="var(--scene-ink)"><path d="M156 127q9-8 19 0q-10 8-19 0Zm-6 0l7-6v12Z"/><path d="M188 127q9-8 19 0q-10 8-19 0Zm-6 0l7-6v12Z"/><path d="M220 127q6-6 13 0q-7 6-13 0Zm-5 0l6-5v10Z"/></g>
-            <g class="market-awnings"><path d="M286 137h104v12H286Z" fill="var(--scene-house)" stroke="var(--scene-ink)"/><path d="M286 137h13v12h-13zM312 137h13v12h-13zM338 137h13v12h-13zM364 137h13v12h-13z" fill="var(--scene-pop-1)"/><g fill="var(--scene-pop-3)" stroke="var(--scene-ink)"><path d="M295 149h25v20h-25zM324 149h26v20h-26zM354 149h27v20h-27z"/></g></g>
+            <g class="market-awnings"><path d="M286 137h104v12H286Z" fill="var(--scene-house)" stroke="var(--scene-ink)"/><path class="market-awning-stripes" d="M286 137h13v12h-13zM312 137h13v12h-13zM338 137h13v12h-13zM364 137h13v12h-13z" fill="var(--scene-pop-1)"/><g fill="var(--scene-pop-3)" stroke="var(--scene-ink)"><path d="M295 149h25v20h-25zM324 149h26v20h-26zM354 149h27v20h-27z"/></g></g>
             <g class="jagalchi-boat"><path d="M15 157h81l-13 19H33Z" fill="var(--scene-pop-3)" stroke="var(--scene-ink)" stroke-width="2"/><path d="M45 157v-26h35v26" fill="var(--scene-house)" stroke="var(--scene-ink)"/><path d="M63 131v-18" stroke="var(--scene-ink)" stroke-width="2"/><path d="M65 116l20 10H65Z" fill="var(--scene-light)"/><path d="M24 151h67" stroke="var(--scene-pop-1)" stroke-width="3"/></g>
+            <g class="jagalchi-harbor-gulls" fill="none" stroke="var(--scene-ink-soft)" stroke-width="1.5" stroke-linecap="round"><path d="M22 82q6-7 12 0q6-7 12 0M52 97q4-5 8 0q4-5 8 0"/></g>
         </g>
         <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M-20 178q45-6 90 0t90 0t90 0t90 0t90 0M70 191q42-5 84 0t84 0t84 0"/></g>`;
 }
@@ -590,6 +614,30 @@ function collapseCinematicIntro(overlay, target, duration) {
         .finally(() => overlay.remove());
 }
 
+function initSceneVisibilityOptimization() {
+    const sceneCards = [...document.querySelectorAll('.hero-cover .busan-scene-card')];
+    if (sceneCards.length === 0) return;
+
+    const syncDocumentVisibility = () => {
+        sceneCards.forEach((card) => {
+            card.classList.toggle('is-document-hidden', document.hidden);
+        });
+    };
+
+    document.addEventListener('visibilitychange', syncDocumentVisibility, { passive: true });
+    syncDocumentVisibility();
+
+    if (!('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            entry.target.classList.toggle('is-scene-paused', !entry.isIntersecting);
+        });
+    }, { rootMargin: '80px 0px', threshold: 0.01 });
+
+    sceneCards.forEach((card) => observer.observe(card));
+}
+
 // 전체 페이지 렌더링 및 시네마틱 인트로 전환 제어
 function renderPage(data) {
     document.title = data.pageTitle;
@@ -637,8 +685,8 @@ function renderPage(data) {
     // 스텝 카드 영역 렌더링
     const stepContainer = document.getElementById('step-container');
     if (stepContainer) {
-        stepContainer.innerHTML = '';
         const userOS = getMobileOS();
+        const stepFragment = document.createDocumentFragment();
 
         const stepsToRender = data.giftStep
             ? [...data.steps, data.giftStep]
@@ -736,13 +784,17 @@ function renderPage(data) {
                 ${actionMarkup}
             `;
 
-            stepContainer.appendChild(stepElement);
+            stepFragment.appendChild(stepElement);
         });
+
+        stepContainer.replaceChildren(stepFragment);
     }
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const litePerformance = document.documentElement.dataset.performance === 'lite';
     const bridgeTarget = headerContainer?.querySelector('.bridge-illustration-card');
     const cinematicIntro = reduceMotion ? null : createCinematicIntro(data, bridgeTarget, sceneKey);
+    initSceneVisibilityOptimization();
 
     // 전체 화면 광안대교 인트로 -> 최종 헤더 크롭 전환
     let transitioned = false;
@@ -758,12 +810,19 @@ function renderPage(data) {
             return;
         }
 
-        collapseCinematicIntro(cinematicIntro, bridgeTarget, isUserSkip ? 520 : 1080)
+        const collapseDuration = isUserSkip
+            ? (litePerformance ? 380 : 520)
+            : (litePerformance ? 760 : 1080);
+
+        collapseCinematicIntro(cinematicIntro, bridgeTarget, collapseDuration)
             .finally(() => document.body.classList.remove('is-intro'));
     }
 
     // 전체 화면 비주얼을 충분히 보여준 뒤 최종 헤더로 접습니다.
-    const transitionTimer = setTimeout(triggerPageTransition, reduceMotion ? 0 : 950);
+    const transitionTimer = setTimeout(
+        triggerPageTransition,
+        reduceMotion ? 0 : (litePerformance ? 520 : 950)
+    );
 
     // 사용자가 화면을 탭/클릭하면 즉시 인트로를 건너뛰고 전환
     function handleUserSkip() {

@@ -725,24 +725,77 @@ html[data-time-theme="night"] .night-firework {
     animation: waterDrift 8s ease-in-out infinite alternate;
 }
 
+.bridge-led-flow {
+    opacity: 0.62;
+    animation: bridgeLedFlow 11s linear infinite;
+}
+
+.gwangan-reflection {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: gwanganReflection 5.8s ease-in-out infinite alternate;
+}
+
 .gamcheon-bunting {
     transform-box: fill-box;
     transform-origin: center top;
     animation: buntingSway 3.6s ease-in-out infinite alternate;
 }
 
+.gamcheon-cloud-shadow {
+    animation: gamcheonShadowPass 19s linear infinite;
+}
+
+.gamcheon-lookout {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: lookoutPause 6.4s ease-in-out infinite;
+}
+
+.dongbaek-pines {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: pineSway 7.2s ease-in-out infinite alternate;
+}
+
+.nurimaru-glass-shimmer {
+    animation: glassSweep 8.5s ease-in-out infinite;
+}
+
 .nurimaru-light-sweep {
     animation: landmarkSignal 4.6s ease-in-out infinite alternate;
 }
 
-.huinnyeoul-laundry {
+.huinnyeoul-seagulls {
     transform-box: fill-box;
-    transform-origin: center top;
-    animation: laundrySway 3.8s ease-in-out infinite alternate;
+    transform-origin: center;
+    animation: huinnyeoulGlide 6.8s ease-in-out infinite alternate;
+}
+
+.coastal-route-line {
+    animation: coastalRoute 8.8s linear infinite;
+}
+
+.huinnyeoul-walker {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: promenadeWalk 9s ease-in-out infinite alternate;
 }
 
 .jagalchi-crane-hook {
     animation: craneHook 5.2s ease-in-out infinite alternate;
+}
+
+.market-awning-stripes {
+    transform-box: fill-box;
+    transform-origin: center top;
+    animation: awningFlutter 4.8s ease-in-out infinite alternate;
+}
+
+.jagalchi-harbor-gulls {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: harborGulls 8.2s ease-in-out infinite alternate;
 }
 
 .huinnyeoul-boat,
@@ -754,9 +807,110 @@ html[data-time-theme="night"] .bridge-traffic {
     animation: bridgeTraffic 5s linear infinite;
 }
 
+html[data-time-theme="morning"] .bridge-led-flow {
+    opacity: 0.38;
+    animation-duration: 15s;
+}
+
+html[data-time-theme="day"] .bridge-led-flow {
+    opacity: 0.55;
+}
+
+html[data-time-theme="sunset"] .bridge-led-flow {
+    opacity: 0.82;
+    animation-duration: 8s;
+}
+
+html[data-time-theme="night"] .bridge-led-flow {
+    opacity: 1;
+    animation-duration: 5.8s;
+}
+
+html[data-time-theme="night"] .gamcheon-cloud-shadow {
+    animation: none;
+    opacity: 0;
+}
+
+html[data-time-theme="night"] .gamcheon-window-glow {
+    animation-duration: 4.4s;
+}
+
+html[data-time-theme="night"] .nurimaru-glass-shimmer {
+    animation: none;
+    opacity: 0.04;
+}
+
+html[data-time-theme="night"] .market-fish-mark {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: marketSign 4.2s ease-in-out infinite;
+}
+
 @keyframes morningWake {
     from { opacity: 0.68; }
     to { opacity: 1; }
+}
+
+@keyframes bridgeLedFlow {
+    to { stroke-dashoffset: -72; }
+}
+
+@keyframes gwanganReflection {
+    from { transform: scaleY(0.72); opacity: 0.07; }
+    to { transform: scaleY(1.04); opacity: 0.18; }
+}
+
+@keyframes huinnyeoulGlide {
+    from { transform: translate(-4px, 1px); }
+    to { transform: translate(8px, -3px); }
+}
+
+@keyframes gamcheonShadowPass {
+    0% { transform: translateX(0); opacity: 0; }
+    14%, 76% { opacity: 0.1; }
+    100% { transform: translateX(510px); opacity: 0; }
+}
+
+@keyframes lookoutPause {
+    0%, 68%, 100% { transform: translateY(0) rotate(0); }
+    76% { transform: translateY(-2px) rotate(-2deg); }
+    86% { transform: translateY(0) rotate(2deg); }
+}
+
+@keyframes pineSway {
+    from { transform: rotate(-0.45deg); }
+    to { transform: rotate(0.55deg); }
+}
+
+@keyframes glassSweep {
+    0%, 14% { transform: translateX(-24px); opacity: 0; }
+    38%, 58% { opacity: 0.2; }
+    82%, 100% { transform: translateX(48px); opacity: 0; }
+}
+
+@keyframes coastalRoute {
+    to { stroke-dashoffset: -34; }
+}
+
+@keyframes promenadeWalk {
+    0%, 10% { transform: translate(0, 0) rotate(-1deg); }
+    45% { transform: translate(5px, 3px) rotate(1deg); }
+    100% { transform: translate(11px, 8px) rotate(-1deg); }
+}
+
+@keyframes awningFlutter {
+    from { transform: skewX(-1.5deg) scaleY(0.96); }
+    to { transform: skewX(1.5deg) scaleY(1.04); }
+}
+
+@keyframes harborGulls {
+    from { transform: translate(-5px, 2px); opacity: 0.58; }
+    to { transform: translate(11px, -4px); opacity: 0.96; }
+}
+
+@keyframes marketSign {
+    0%, 62%, 100% { transform: scale(1); opacity: 0.78; }
+    72%, 86% { transform: scale(1.035); opacity: 1; }
 }
 
 @keyframes morningMist {
@@ -1720,9 +1874,9 @@ body {
 }
 
 .step-card {
-    width: calc(100% - 1rem);
+    width: 100%;
     overflow: visible;
-    align-self: flex-start;
+    align-self: stretch;
     padding: 1.05rem 1.05rem 1.08rem;
     border: 1px solid color-mix(in srgb, var(--card-accent) 34%, var(--line-soft));
     border-radius: 4px 22px 4px 4px;
@@ -1734,9 +1888,9 @@ body {
 }
 
 .step-card:nth-child(2) {
-    width: calc(100% - 1.35rem);
-    align-self: flex-end;
-    border-radius: 22px 4px 4px 4px;
+    width: 100%;
+    align-self: stretch;
+    border-radius: 4px 22px 4px 4px;
 }
 
 .step-card:nth-child(3) {
@@ -1932,9 +2086,9 @@ body {
     }
 
     .step-list {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        align-items: start;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
         gap: 1.35rem;
         padding: 2rem 1.5rem 0;
     }
@@ -1946,28 +2100,25 @@ body {
     .step-card,
     .step-card:nth-child(2) {
         width: 100%;
-        min-height: 276px;
+        min-height: 0;
         padding: 1.15rem;
     }
 
     .step-card:nth-child(2) {
-        margin-top: 2.25rem;
+        margin-top: 0;
     }
 
     .step-card:nth-child(3) {
         width: 100%;
         min-height: 0;
-        grid-column: 1 / -1;
-        margin-top: 0.15rem;
+        margin-top: 0;
         padding: 1.25rem;
     }
 
     .step-card:nth-child(-n + 2) .card-action {
-        position: absolute;
-        right: 1.15rem;
-        bottom: 1.15rem;
-        left: 1.15rem;
-        width: auto;
+        position: relative;
+        inset: auto;
+        width: 100%;
     }
 
     .gift-offer-list.is-double {
@@ -1984,4 +2135,45 @@ body {
         width: 100%;
         justify-content: space-between;
     }
+}
+
+/* ========================================================================== 
+   Quality-preserving performance safeguards
+   ========================================================================== */
+
+.step-card {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 270px;
+}
+
+.hero-cover,
+.cinematic-intro {
+    contain: layout paint;
+}
+
+.busan-scene-card.is-scene-paused *,
+.busan-scene-card.is-document-hidden *,
+body.is-intro .app-container .busan-scene-svg *,
+body.is-intro .cinematic-intro .busan-scene-svg * {
+    animation-play-state: paused !important;
+}
+
+html[data-performance="lite"] .day-rays,
+html[data-performance="lite"] .night-firework,
+html[data-performance="lite"] .gamcheon-lookout,
+html[data-performance="lite"] .nurimaru-distant-lights,
+html[data-performance="lite"] .jagalchi-harbor-gulls {
+    animation: none;
+}
+
+html[data-performance="lite"] .night-firework {
+    opacity: 0.52;
+}
+
+html[data-performance="lite"] .scene-water-lines,
+html[data-performance="lite"] .bridge-led-flow,
+html[data-performance="lite"] .gamcheon-cloud-shadow,
+html[data-performance="lite"] .nurimaru-glass-shimmer,
+html[data-performance="lite"] .coastal-route-line {
+    animation-duration: 14s;
 }

@@ -9,7 +9,8 @@
     <script>
         (() => {
             const themes = ['morning', 'day', 'sunset', 'night'];
-            const forcedTheme = new URLSearchParams(location.search).get('theme');
+            const params = new URLSearchParams(location.search);
+            const forcedTheme = params.get('theme');
             const hour = new Date().getHours();
             const autoTheme = hour >= 5 && hour < 11
                 ? 'morning'
@@ -22,6 +23,25 @@
             document.documentElement.dataset.timeTheme = themes.includes(forcedTheme)
                 ? forcedTheme
                 : autoTheme;
+
+            const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            const forcedPerformance = params.get('performance');
+            const slowNetwork = connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType || '');
+            const lowEndDevice = Boolean(
+                navigator.deviceMemory && navigator.deviceMemory <= 4
+                && navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4
+            );
+
+            document.documentElement.dataset.performance = forcedPerformance === 'lite'
+                || (!['full', 'lite'].includes(forcedPerformance) && (slowNetwork || lowEndDevice))
+                ? 'lite'
+                : 'full';
+
+            // CSS와 JavaScript를 내려받는 동안 CMS 데이터 요청을 먼저 시작합니다.
+            window.__eventDataPromise = fetch('data.json', {
+                cache: 'no-cache',
+                credentials: 'same-origin'
+            }).catch((error) => ({ __eventDataError: error }));
         })();
     </script>
     <link rel="stylesheet" href="style.css">
