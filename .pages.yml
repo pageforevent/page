@@ -30,6 +30,18 @@ content:
         required: true
         description: 광안대교 이미지 아래에 표시되는 제목입니다.
 
+      - name: eyebrow
+        label: 영문 상단 문구
+        type: string
+        required: true
+        description: 화면 상단의 작은 영문 라벨입니다.
+
+      - name: subtitle
+        label: 소개 문구
+        type: text
+        required: true
+        description: 메인 제목 아래에 표시되는 짧은 안내 문구입니다.
+
       - name: steps
         label: 안내 버튼
         type: object
@@ -57,6 +69,12 @@ content:
             label: 제목
             type: string
             required: true
+
+          - name: tagline
+            label: 영문 태그
+            type: string
+            required: true
+            description: 카드 우측 상단에 표시되는 짧은 영문 문구입니다.
 
           - name: description
             label: 설명
