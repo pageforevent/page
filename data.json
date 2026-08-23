@@ -6,21 +6,21 @@
     {
       "id": "step1",
       "stepNum": "STEP 01",
-      "title": "백화점 앱 설치",
       "tagline": "DOWNLOAD THE APP",
+      "title": "백화점 앱 설치",
       "description": "앱 설치 후 다양한 할인 쿠폰과 혜택을 확인하세요",
       "buttonText": "바로가기",
-      "link": "https://play.google.com/store/apps/details?id=com.innov.lottecoupon&pcampaignid=web_share",
       "link_android": "https://play.google.com/store/apps/details?id=com.innov.lottecoupon&pcampaignid=web_share",
       "link_ios": "https://apps.apple.com/kr/app/%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90/id785952884",
+      "link": "https://play.google.com/store/apps/details?id=com.innov.lottecoupon&pcampaignid=web_share",
       "target": "_blank",
       "iconSvg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"5\" y=\"2\" width=\"14\" height=\"20\" rx=\"3\" ry=\"3\"></rect><line x1=\"12\" y1=\"18\" x2=\"12.01\" y2=\"18\"></line><path d=\"M9 6h6\"></path></svg>"
     },
     {
       "id": "step2",
       "stepNum": "STEP 02",
-      "title": "카카오톡 채널 추가",
       "tagline": "GET EVENT UPDATES",
+      "title": "카카오톡 채널 추가",
       "description": "실시간 행사 소식과 전용 쿠폰 알림을 받아보세요",
       "buttonText": "바로가기",
       "link": "https://pf.kakao.com/_xlZaqM",
@@ -36,9 +36,9 @@
     "description": "구매 금액별로 준비된 사은 혜택을 확인하세요",
     "showSecondOffer": true,
     "primaryOffer": {
-      "title": "10만원 이상 구매 시 5천원 상품권 증정",
+      "title": "10만원 이상 구매 시 1만원 상품권 증정",
       "buttonText": "바로가기",
-      "link": "https://m.lotteshopping.com/cpn/gate/4f8870d53f701a1f/C10902?utm_source=kakao&utm_medium=plusfriend"
+      "link": "https://m.lotteshopping.com/cpn/gate/630454decc98e134/C10902?utm_source=&utm_medium=plusfriend"
     },
     "secondaryOffer": {
       "title": "20만원/40만원 이상 구매 시 1.5만원/3만원 상품권 증정",

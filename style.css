@@ -1244,23 +1244,49 @@ html[data-time-theme="night"] .bridge-traffic {
 .gift-offer-list {
     position: relative;
     z-index: 1;
-    overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--card-accent) 32%, var(--line-soft));
-    border-radius: 16px 16px 16px 6px;
-    background: color-mix(in srgb, var(--card-accent) 4%, var(--surface-elevated));
+    display: grid;
+    gap: 0.62rem;
 }
 
 .gift-offer-row {
+    --offer-accent: var(--card-accent);
     min-height: 76px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 0.72rem;
+    position: relative;
+    overflow: hidden;
     padding: 0.76rem 0.72rem 0.76rem 0.84rem;
+    border: 1px solid color-mix(in srgb, var(--offer-accent) 48%, var(--line-soft));
+    border-radius: 16px 8px 16px 8px;
+    background:
+        linear-gradient(110deg, color-mix(in srgb, var(--offer-accent) 11%, var(--surface-elevated)), var(--surface-soft) 68%);
+    box-shadow:
+        inset 3px 0 0 color-mix(in srgb, var(--offer-accent) 82%, transparent),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
 }
 
-.gift-offer-row + .gift-offer-row {
-    border-top: 1px dashed color-mix(in srgb, var(--card-accent) 30%, var(--line-soft));
+.gift-offer-row:nth-child(2) {
+    --offer-accent: var(--accent-three);
+    margin-left: 0.38rem;
+    border-radius: 8px 16px 8px 16px;
+    background:
+        linear-gradient(110deg, color-mix(in srgb, var(--offer-accent) 12%, var(--surface-elevated)), var(--surface-soft) 70%);
+}
+
+.gift-offer-row::after {
+    content: attr(data-offer-number);
+    position: absolute;
+    right: 4.4rem;
+    bottom: -0.58rem;
+    color: var(--offer-accent);
+    opacity: 0.075;
+    font-size: 3.7rem;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -0.09em;
+    pointer-events: none;
 }
 
 .gift-offer-list.is-single .gift-offer-row {
@@ -1270,15 +1296,37 @@ html[data-time-theme="night"] .bridge-traffic {
 
 .gift-offer-copy {
     min-width: 0;
+    position: relative;
+    z-index: 1;
 }
 
 .gift-offer-label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.34rem;
     margin-bottom: 0.26rem;
-    color: var(--card-accent);
+    color: var(--offer-accent);
     font-size: 0.51rem;
     font-weight: 900;
     letter-spacing: 0.1em;
+}
+
+.gift-offer-label strong {
+    min-width: 25px;
+    display: inline-grid;
+    place-items: center;
+    padding: 0.18rem 0.28rem;
+    border: 1px solid color-mix(in srgb, var(--offer-accent) 58%, transparent);
+    border-radius: 5px 5px 5px 2px;
+    color: var(--ink);
+    background: var(--offer-accent);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.58);
+    font-size: 0.49rem;
+    letter-spacing: 0;
+}
+
+.gift-offer-label span {
+    opacity: 0.9;
 }
 
 .gift-offer-copy h3 {
@@ -1300,17 +1348,15 @@ html[data-time-theme="night"] .bridge-traffic {
     border: 1px solid rgba(0, 0, 0, 0.72);
     border-radius: 10px 10px 10px 4px;
     color: var(--ink);
-    background: var(--card-accent);
+    position: relative;
+    z-index: 1;
+    background: var(--offer-accent);
     box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.68);
     font-size: 0.7rem;
     font-weight: 900;
     white-space: nowrap;
     text-decoration: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.gift-offer-row:nth-child(2) .gift-offer-link {
-    background: color-mix(in srgb, var(--card-accent) 72%, var(--accent));
 }
 
 .gift-offer-link svg {
@@ -1482,6 +1528,15 @@ body.is-intro .app-container .gwangan-bridge-svg * {
         grid-template-columns: 1fr;
         gap: 0.58rem;
         padding: 0.8rem;
+    }
+
+    .gift-offer-row:nth-child(2) {
+        margin-left: 0;
+    }
+
+    .gift-offer-row::after {
+        right: 0.7rem;
+        bottom: 2.65rem;
     }
 
     .gift-offer-link {

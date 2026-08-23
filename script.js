@@ -680,9 +680,12 @@ function renderPage(data) {
                 ? `
                     <div class="gift-offer-list ${visibleGiftOffers.length === 1 ? 'is-single' : 'is-double'}">
                         ${visibleGiftOffers.map((offer, offerIndex) => `
-                            <article class="gift-offer-row">
+                            <article class="gift-offer-row" data-offer-number="${String(offerIndex + 1).padStart(2, '0')}">
                                 <div class="gift-offer-copy">
-                                    <span class="gift-offer-label">BENEFIT ${String(offerIndex + 1).padStart(2, '0')}</span>
+                                    <span class="gift-offer-label">
+                                        <strong>${String(offerIndex + 1).padStart(2, '0')}</strong>
+                                        <span>GIFT BENEFIT</span>
+                                    </span>
                                     <h3>${offer.title}</h3>
                                 </div>
                                 <a href="${offer.link}" class="gift-offer-link" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${offer.title}: ${offer.buttonText || '바로가기'}">
