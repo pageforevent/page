@@ -1,13 +1,12 @@
 {
   "pageTitle": "사은 행사 안내",
   "headerTitle": "사은 행사 안내",
-  "eyebrow": "BUSAN GIFT CLUB",
   "subtitle": "앱 설치부터 사은 행사 참여까지, 오늘의 혜택을 한 번에.",
   "steps": [
     {
       "id": "step1",
       "stepNum": "STEP 01",
-      "tagline": "GET THE APP",
+      "tagline": "DOWNLOAD THE APP",
       "title": "백화점 앱 설치",
       "description": "앱 설치 후 다양한 할인 쿠폰과 혜택을 확인하세요",
       "buttonText": "바로가기",
@@ -20,24 +19,33 @@
     {
       "id": "step2",
       "stepNum": "STEP 02",
-      "tagline": "STAY TUNED",
+      "tagline": "GET EVENT UPDATES",
       "title": "카카오톡 채널 추가",
       "description": "실시간 행사 소식과 전용 쿠폰 알림을 받아보세요",
       "buttonText": "바로가기",
       "link": "https://pf.kakao.com/_xlZaqM",
       "target": "_blank",
       "iconSvg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z\"></path><circle cx=\"9\" cy=\"11.5\" r=\"0.5\" fill=\"currentColor\"></circle><circle cx=\"12\" cy=\"11.5\" r=\"0.5\" fill=\"currentColor\"></circle><circle cx=\"15\" cy=\"11.5\" r=\"0.5\" fill=\"currentColor\"></circle></svg>"
-    },
-    {
-      "id": "step3",
-      "stepNum": "STEP 03",
-      "tagline": "CLAIM YOUR GIFT",
-      "title": "사은 행사 참여하기",
-      "description": "준비된 사은 혜택을 확인하고 지금 바로 참여하세요",
-      "buttonText": "바로가기",
-      "link": "https://m.lotteshopping.com/cpn/gate/630454decc98e134/C10902?utm_source=&utm_medium=plusfriend",
-      "target": "_blank",
-      "iconSvg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 12 20 22 4 22 4 12\"></polyline><rect x=\"2\" y=\"7\" width=\"20\" height=\"5\"></rect><line x1=\"12\" y1=\"22\" x2=\"12\" y2=\"7\"></line><path d=\"M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z\"></path><path d=\"M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z\"></path></svg>"
     }
-  ]
+  ],
+  "giftStep": {
+    "id": "step3",
+    "stepNum": "STEP 03",
+    "tagline": "VIEW GIFT BENEFITS",
+    "title": "사은 행사 참여하기",
+    "description": "구매 금액별로 준비된 사은 혜택을 확인하세요",
+    "showSecondOffer": true,
+    "primaryOffer": {
+      "title": "10만원 이상 구매 시 1만원 상품권 증정",
+      "buttonText": "바로가기",
+      "link": "https://m.lotteshopping.com/cpn/gate/630454decc98e134/C10902?utm_source=&utm_medium=plusfriend"
+    },
+    "secondaryOffer": {
+      "title": "20만원/40만원 이상 구매 시 1.5만원/3만원 상품권 증정",
+      "buttonText": "바로가기",
+      "link": "https://m.lotteshopping.com/cpn/gate/630454decc98e134/C10902?utm_source=&utm_medium=plusfriend"
+    },
+    "target": "_blank",
+    "iconSvg": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polyline points=\"20 12 20 22 4 22 4 12\"></polyline><rect x=\"2\" y=\"7\" width=\"20\" height=\"5\"></rect><line x1=\"12\" y1=\"22\" x2=\"12\" y2=\"7\"></line><path d=\"M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z\"></path><path d=\"M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z\"></path></svg>"
+  }
 }

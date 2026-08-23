@@ -7,6 +7,8 @@
     color-scheme: dark;
     --page-top: #07091A;
     --page-bottom: #101D38;
+    --time-page-top: #07091A;
+    --time-page-bottom: #101D38;
     --ambient-one: rgba(73, 228, 255, 0.18);
     --ambient-two: rgba(255, 76, 174, 0.15);
     --ambient-three: rgba(218, 255, 68, 0.10);
@@ -29,6 +31,9 @@
     --accent: #E7FF4A;
     --accent-two: #76F3FF;
     --accent-three: #FF5BA7;
+    --time-accent: #E7FF4A;
+    --time-accent-two: #76F3FF;
+    --time-accent-three: #FF5BA7;
     --hero-tint: rgba(75, 95, 255, 0.06);
     --theme-glow: rgba(118, 243, 255, 0.16);
 }
@@ -37,6 +42,8 @@ html[data-time-theme="morning"] {
     color-scheme: light dark;
     --page-top: #F7D7AC;
     --page-bottom: #83C9D0;
+    --time-page-top: #F7D7AC;
+    --time-page-bottom: #83C9D0;
     --ambient-one: rgba(255, 111, 135, 0.28);
     --ambient-two: rgba(255, 233, 112, 0.26);
     --ambient-three: rgba(53, 113, 232, 0.17);
@@ -50,6 +57,9 @@ html[data-time-theme="morning"] {
     --accent: #FFD95C;
     --accent-two: #70E5E1;
     --accent-three: #FF7899;
+    --time-accent: #FFD95C;
+    --time-accent-two: #70E5E1;
+    --time-accent-three: #FF7899;
     --hero-tint: rgba(255, 183, 89, 0.10);
     --theme-glow: rgba(255, 213, 100, 0.16);
 }
@@ -57,6 +67,8 @@ html[data-time-theme="morning"] {
 html[data-time-theme="day"] {
     --page-top: #2677EB;
     --page-bottom: #F4D27C;
+    --time-page-top: #2677EB;
+    --time-page-bottom: #F4D27C;
     --ambient-one: rgba(109, 245, 212, 0.26);
     --ambient-two: rgba(255, 230, 81, 0.28);
     --ambient-three: rgba(255, 83, 145, 0.19);
@@ -70,6 +82,9 @@ html[data-time-theme="day"] {
     --accent: #FFE34F;
     --accent-two: #72F3D4;
     --accent-three: #FF6096;
+    --time-accent: #FFE34F;
+    --time-accent-two: #72F3D4;
+    --time-accent-three: #FF6096;
     --hero-tint: rgba(35, 128, 255, 0.08);
     --theme-glow: rgba(114, 243, 212, 0.16);
 }
@@ -77,6 +92,8 @@ html[data-time-theme="day"] {
 html[data-time-theme="sunset"] {
     --page-top: #35123E;
     --page-bottom: #E95F4C;
+    --time-page-top: #35123E;
+    --time-page-bottom: #E95F4C;
     --ambient-one: rgba(255, 195, 73, 0.24);
     --ambient-two: rgba(255, 83, 176, 0.28);
     --ambient-three: rgba(100, 240, 225, 0.16);
@@ -90,6 +107,9 @@ html[data-time-theme="sunset"] {
     --accent: #FFD05B;
     --accent-two: #6DE9E2;
     --accent-three: #FF72BE;
+    --time-accent: #FFD05B;
+    --time-accent-two: #6DE9E2;
+    --time-accent-three: #FF72BE;
     --hero-tint: rgba(255, 94, 101, 0.11);
     --theme-glow: rgba(255, 114, 190, 0.17);
 }
@@ -97,12 +117,80 @@ html[data-time-theme="sunset"] {
 html[data-time-theme="night"] {
     --page-top: #07091A;
     --page-bottom: #101D38;
+    --time-page-top: #07091A;
+    --time-page-bottom: #101D38;
     --ambient-one: rgba(73, 228, 255, 0.18);
     --ambient-two: rgba(255, 76, 174, 0.15);
     --ambient-three: rgba(218, 255, 68, 0.10);
     --accent: #E7FF4A;
     --accent-two: #76F3FF;
     --accent-three: #FF5BA7;
+    --time-accent: #E7FF4A;
+    --time-accent-two: #76F3FF;
+    --time-accent-three: #FF5BA7;
+}
+
+/* Location identity. These colors are mixed with the active time palette below. */
+html[data-scene-theme="gwangan"] {
+    --place-top: #082B63;
+    --place-bottom: #12A8C8;
+    --place-accent: #DDFB49;
+    --place-accent-two: #63E9FF;
+    --place-accent-three: #FF5A9F;
+    --place-surface: #07182E;
+}
+
+html[data-scene-theme="gamcheon"] {
+    --place-top: #FF637D;
+    --place-bottom: #6652C9;
+    --place-accent: #FFDD4A;
+    --place-accent-two: #38DABE;
+    --place-accent-three: #FF628A;
+    --place-surface: #261530;
+}
+
+html[data-scene-theme="nurimaru"] {
+    --place-top: #236D63;
+    --place-bottom: #D8B76B;
+    --place-accent: #F6D875;
+    --place-accent-two: #5DD8C0;
+    --place-accent-three: #F29B7C;
+    --place-surface: #102823;
+}
+
+html[data-scene-theme="huinnyeoul"] {
+    --place-top: #176FCB;
+    --place-bottom: #35C9CF;
+    --place-accent: #FFF07B;
+    --place-accent-two: #65EAF2;
+    --place-accent-three: #FF637C;
+    --place-surface: #092442;
+}
+
+html[data-scene-theme="jagalchi"] {
+    --place-top: #071D3B;
+    --place-bottom: #CE385B;
+    --place-accent: #E7FF4A;
+    --place-accent-two: #5CE4EE;
+    --place-accent-three: #FF4F73;
+    --place-surface: #11172B;
+}
+
+html[data-scene-theme] {
+    --page-top: color-mix(in srgb, var(--time-page-top) 58%, var(--place-top));
+    --page-bottom: color-mix(in srgb, var(--time-page-bottom) 58%, var(--place-bottom));
+    --accent: color-mix(in srgb, var(--time-accent) 48%, var(--place-accent));
+    --accent-two: color-mix(in srgb, var(--time-accent-two) 48%, var(--place-accent-two));
+    --accent-three: color-mix(in srgb, var(--time-accent-three) 48%, var(--place-accent-three));
+    --ambient-one: color-mix(in srgb, var(--place-accent) 22%, transparent);
+    --ambient-two: color-mix(in srgb, var(--place-accent-three) 22%, transparent);
+    --ambient-three: color-mix(in srgb, var(--place-accent-two) 16%, transparent);
+    --surface: color-mix(in srgb, var(--place-surface) 28%, #070A19);
+    --surface-soft: color-mix(in srgb, var(--place-surface) 32%, #0F152A);
+    --surface-elevated: color-mix(in srgb, var(--place-surface) 34%, #141C36);
+    --surface-border: color-mix(in srgb, var(--place-accent-two) 25%, transparent);
+    --hero-tint: color-mix(in srgb, var(--place-accent-three) 10%, transparent);
+    --theme-glow: color-mix(in srgb, var(--place-accent-two) 17%, transparent);
 }
 
 *, *::before, *::after {
@@ -248,13 +336,6 @@ body.is-intro {
 .cinematic-visual .gwangan-bridge-svg {
     width: 100%;
     height: 100%;
-}
-
-.cinematic-visual .bridge-coordinate-bar {
-    top: 0.7rem;
-    left: 0.75rem;
-    right: 0.75rem;
-    font-size: 0.52rem;
 }
 
 .cinematic-visual .hero-sticker {
@@ -655,7 +736,6 @@ html[data-time-theme="night"] .night-firework {
     animation: buntingSway 3.6s ease-in-out infinite alternate;
 }
 
-.gamcheon-stairs,
 .nurimaru-light-sweep {
     animation: landmarkSignal 4.6s ease-in-out infinite alternate;
 }
@@ -752,21 +832,6 @@ html[data-time-theme="night"] .bridge-traffic {
     from { transform: translateX(-80px); opacity: 0; }
     12%, 88% { opacity: 1; }
     to { transform: translateX(80px); opacity: 0; }
-}
-
-.bridge-coordinate-bar {
-    position: absolute;
-    top: 0.7rem;
-    left: 0.75rem;
-    right: 0.75rem;
-    z-index: 3;
-    display: flex;
-    justify-content: space-between;
-    color: rgba(255, 255, 255, 0.76);
-    font-size: 0.52rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .hero-sticker {
@@ -1172,6 +1237,87 @@ html[data-time-theme="night"] .bridge-traffic {
     width: 100%;
 }
 
+.gift-step-card .card-body {
+    margin-bottom: 0.72rem;
+}
+
+.gift-offer-list {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 32%, var(--line-soft));
+    border-radius: 16px 16px 16px 6px;
+    background: color-mix(in srgb, var(--card-accent) 4%, var(--surface-elevated));
+}
+
+.gift-offer-row {
+    min-height: 76px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.72rem;
+    padding: 0.76rem 0.72rem 0.76rem 0.84rem;
+}
+
+.gift-offer-row + .gift-offer-row {
+    border-top: 1px dashed color-mix(in srgb, var(--card-accent) 30%, var(--line-soft));
+}
+
+.gift-offer-list.is-single .gift-offer-row {
+    min-height: 88px;
+    padding-block: 0.9rem;
+}
+
+.gift-offer-copy {
+    min-width: 0;
+}
+
+.gift-offer-label {
+    display: block;
+    margin-bottom: 0.26rem;
+    color: var(--card-accent);
+    font-size: 0.51rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+}
+
+.gift-offer-copy h3 {
+    color: var(--text-main);
+    font-size: 0.82rem;
+    font-weight: 780;
+    line-height: 1.42;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+}
+
+.gift-offer-link {
+    min-height: 39px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.36rem;
+    padding: 0.48rem 0.58rem 0.48rem 0.7rem;
+    border: 1px solid rgba(0, 0, 0, 0.72);
+    border-radius: 10px 10px 10px 4px;
+    color: var(--ink);
+    background: var(--card-accent);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.68);
+    font-size: 0.7rem;
+    font-weight: 900;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gift-offer-row:nth-child(2) .gift-offer-link {
+    background: color-mix(in srgb, var(--card-accent) 72%, var(--accent));
+}
+
+.gift-offer-link svg {
+    width: 14px;
+    height: 14px;
+}
+
 .btn-action {
     width: 100%;
     min-height: 50px;
@@ -1237,6 +1383,11 @@ html[data-time-theme="night"] .bridge-traffic {
     .btn-action:hover .btn-arrow {
         transform: translateX(3px);
     }
+
+    .gift-offer-link:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.68);
+    }
 }
 
 .btn-action:active {
@@ -1244,6 +1395,11 @@ html[data-time-theme="night"] .bridge-traffic {
     box-shadow:
         1px 1px 0 rgba(0, 0, 0, 0.72),
         inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.gift-offer-link:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.68);
 }
 
 /* ========================================================================== 
@@ -1320,6 +1476,18 @@ body.is-intro .app-container .gwangan-bridge-svg * {
 
     .step-heading {
         font-size: 0.98rem;
+    }
+
+    .gift-offer-row {
+        grid-template-columns: 1fr;
+        gap: 0.58rem;
+        padding: 0.8rem;
+    }
+
+    .gift-offer-link {
+        width: 100%;
+        justify-content: space-between;
+        padding-inline: 0.72rem;
     }
 }
 

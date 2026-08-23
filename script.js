@@ -59,6 +59,20 @@ function initTimeTheme() {
     window.setInterval(applyTimeTheme, 60 * 1000);
 }
 
+function getCurrentDateDisplay(date = new Date()) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const weekday = new Intl.DateTimeFormat('en-US', { weekday: 'short' })
+        .format(date)
+        .toUpperCase();
+
+    return {
+        label: `${year}.${month}.${day} · ${weekday}`,
+        iso: `${year}-${month}-${day}`
+    };
+}
+
 // 사용자의 모바일 OS 판별
 function getMobileOS() {
     const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -306,13 +320,8 @@ function createGwanganBridgeIllustrationSvg(idSuffix = '') {
                 <path d="M40,182 C100,178 160,186 220,182 C280,178 340,186 400,182" fill="none" stroke="#FCD34D" stroke-width="1.2" stroke-linecap="round" opacity="0.6" class="wave-shimmer-2"/>
             </g>
         </svg>
-        <div class="bridge-coordinate-bar" aria-hidden="true">
-            <span>GWANGAN BRIDGE</span>
-            <span>35°09'N · 129°07'E</span>
-        </div>
         <div class="hero-sticker" aria-hidden="true">
             <span>BUSAN</span>
-            <strong>ONLY</strong>
         </div>
     </div>
     `;
@@ -320,18 +329,44 @@ function createGwanganBridgeIllustrationSvg(idSuffix = '') {
 
 // 다섯 장소의 실루엣은 고정하고, 네 시간대의 팔레트와 모션은 CSS로 바꿉니다.
 const BUSAN_SCENES = {
-    gwangan: { label: 'GWANGAN BRIDGE', coordinate: "35°09'N · 129°07'E" },
-    gamcheon: { label: 'GAMCHEON VILLAGE', coordinate: "35°05'N · 129°00'E" },
-    nurimaru: { label: 'NURIMARU APEC', coordinate: "35°09'N · 129°09'E" },
-    huinnyeoul: { label: 'HUINNYEOUL VILLAGE', coordinate: "35°04'N · 129°02'E" },
-    jagalchi: { label: 'JAGALCHI MARKET', coordinate: "35°05'N · 129°02'E" }
+    gwangan: true,
+    gamcheon: true,
+    nurimaru: true,
+    huinnyeoul: true,
+    jagalchi: true
 };
 
 function chooseRandomBusanScene() {
     const keys = Object.keys(BUSAN_SCENES);
     const previewScene = new URLSearchParams(window.location.search).get('scene');
     if (previewScene && BUSAN_SCENES[previewScene]) return previewScene;
-    return keys[Math.floor(Math.random() * keys.length)];
+
+    // 한 장소가 연속으로 뽑히지 않고, 다섯 장소를 모두 본 뒤 다시 섞습니다.
+    try {
+        const bagKey = 'busan-scene-bag-v2';
+        const lastKey = 'busan-scene-last-v2';
+        const lastScene = window.localStorage.getItem(lastKey);
+        let sceneBag = JSON.parse(window.localStorage.getItem(bagKey) || '[]')
+            .filter((key) => keys.includes(key));
+
+        if (sceneBag.length === 0) {
+            sceneBag = [...keys];
+            for (let index = sceneBag.length - 1; index > 0; index -= 1) {
+                const swapIndex = Math.floor(Math.random() * (index + 1));
+                [sceneBag[index], sceneBag[swapIndex]] = [sceneBag[swapIndex], sceneBag[index]];
+            }
+            if (sceneBag[0] === lastScene && sceneBag.length > 1) {
+                [sceneBag[0], sceneBag[1]] = [sceneBag[1], sceneBag[0]];
+            }
+        }
+
+        const selectedScene = sceneBag.shift();
+        window.localStorage.setItem(bagKey, JSON.stringify(sceneBag));
+        window.localStorage.setItem(lastKey, selectedScene);
+        return selectedScene;
+    } catch (error) {
+        return keys[Math.floor(Math.random() * keys.length)];
+    }
 }
 
 function createAtmosphereSvg() {
@@ -380,7 +415,11 @@ function createGamcheonSceneSvg() {
             <g fill="var(--scene-pop-3)"><path d="M0 174h42v26H0zM51 180h56v20H51zM116 164h55v36h-55zM180 177h55v23h-55zM244 160h54v40h-54zM307 175h55v25h-55zM370 165h30v35h-30z"/></g>
             <g fill="var(--scene-window)" class="scene-night-lights"><path d="M20 132h7v6h-7zM76 116h7v6h-7zM126 98h7v6h-7zM179 112h7v6h-7zM231 96h7v6h-7zM284 112h7v6h-7zM340 99h7v6h-7zM94 148h7v6h-7zM202 148h7v6h-7zM258 130h7v6h-7z"/></g>
             <g class="gamcheon-bunting" fill="var(--scene-light)"><path d="M128 79l9 2l-6 7zM143 82l9 1l-5 8zM158 83l9-1l-3 9z"/></g>
-            <g class="gamcheon-stairs" fill="none" stroke="var(--scene-house)" stroke-width="3" stroke-linejoin="round"><path d="M211 200v-12h12v-12h-12v-12h12v-12h-12v-12h12v-12"/><path d="M44 174v-9h10v-9h-10v-9"/></g>
+            <g class="gamcheon-alleys" fill="none" stroke-linejoin="round">
+                <path d="M108 200v-20h9v-17" stroke="var(--scene-hill)" stroke-width="7"/><path d="M108 200v-20h9v-17" stroke="var(--scene-house)" stroke-width="1.2" opacity=".7"/>
+                <path d="M235 200v-24h9v-17" stroke="var(--scene-hill)" stroke-width="7"/><path d="M235 200v-24h9v-17" stroke="var(--scene-house)" stroke-width="1.2" opacity=".7"/>
+                <path d="M347 175v-16h8v-17" stroke="var(--scene-hill)" stroke-width="6"/><path d="M347 175v-16h8v-17" stroke="var(--scene-house)" stroke-width="1.1" opacity=".65"/>
+            </g>
             <g class="gamcheon-rooftops" fill="var(--scene-house)" stroke="var(--scene-ink)" stroke-width="1"><path d="M75 101h17v7H75zM228 78h18v9h-18zM337 80h18v10h-18z"/><circle cx="83" cy="98" r="4"/><circle cx="237" cy="75" r="4"/><circle cx="346" cy="77" r="4"/></g>
             <g fill="none" stroke="var(--scene-house)" stroke-width="1.3" opacity=".8"><path d="M10 154h48M64 137h43M113 122h44M165 135h48M219 118h45M271 135h47M326 123h54"/></g>
         </g>`;
@@ -415,9 +454,12 @@ function createHuinnyeoulSceneSvg() {
             </g>
             <g fill="var(--scene-window)" class="scene-night-lights"><path d="M16 78h10v8H16zM62 91h12v10H62zM26 115h11v9H26zM83 130h12v10H83zM21 154h12v10H21zM93 173h12v10H93z"/></g>
             <g class="huinnyeoul-laundry" stroke="var(--scene-ink)" stroke-width="1"><path d="M71 104h45"/><path d="M78 105l8 2l-4 8zM90 105l8 1l-4 8zM102 105l8 2l-5 7z" fill="var(--scene-pop-1)"/></g>
-            <path class="coastal-wall" d="M111 111q48 24 86 69" fill="none" stroke="var(--scene-house)" stroke-width="12" stroke-linecap="round"/><path d="M111 108q51 24 91 68" fill="none" stroke="var(--scene-pop-2)" stroke-width="2.5"/>
-            <g class="coastal-railing" stroke="var(--scene-ink-soft)" stroke-width="1.2"><path d="M116 111v17M133 120v18M151 132v18M169 145v18M186 160v17"/><path d="M115 113q50 22 86 65" fill="none"/></g>
-            <g class="huinnyeoul-stairs" fill="none" stroke="var(--scene-ink)" stroke-width="2"><path d="M117 149h11v7h11v7h11v7h11v7h11"/></g>
+            <g class="coastal-promenade" fill="none" stroke-linejoin="round" stroke-linecap="round">
+                <path class="coastal-steps" d="M108 111h14v8h13v9h13v10h13v11h13v12h16v16" stroke="var(--scene-house)" stroke-width="7"/>
+                <path d="M108 106l16 8l14 9l14 10l14 12l14 13l15 15" stroke="var(--scene-pop-2)" stroke-width="2.2"/>
+                <g class="coastal-railing" stroke="var(--scene-ink-soft)" stroke-width="1.15"><path d="M112 108v9M126 115v10M140 124v10M154 135v10M168 147v10M182 160v10"/></g>
+                <g class="stair-treads" stroke="var(--scene-ink)" stroke-width="1.2" opacity=".72"><path d="M118 118h10M131 127h10M144 137h10M157 148h10M170 160h10M183 173h10"/></g>
+            </g>
             <g class="huinnyeoul-boat"><path d="M278 147h58l-11 14h-35Z" fill="var(--scene-pop-1)" stroke="var(--scene-ink)" stroke-width="1.5"/><path d="M307 147v-22" stroke="var(--scene-ink)"/><path d="M310 127l19 11h-19Z" fill="var(--scene-light)"/></g>
         </g>
         <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M168 164q45-7 90 0t90 0t90 0M146 188q54-8 108 0t108 0t108 0"/></g>`;
@@ -433,7 +475,8 @@ function createJagalchiSceneSvg() {
             <path d="M101 70q47-26 89-7q48 22 96-10" fill="none" stroke="var(--scene-pop-2)" stroke-width="8" stroke-linecap="round"/>
             <path d="M115 88h157v58H115Z" fill="var(--scene-glass)"/><g stroke="var(--scene-line)" opacity=".68"><path d="M135 88v58M158 88v58M181 88v58M204 88v58M227 88v58M250 88v58M115 107h157M115 126h157"/></g>
             <g class="scene-night-lights" fill="var(--scene-light)"><path d="M120 92h12v10h-12zM142 92h12v10h-12zM233 92h12v10h-12zM255 111h12v10h-12z"/></g>
-            <rect x="141" y="116" width="103" height="22" rx="3" fill="var(--scene-pop-1)" stroke="var(--scene-ink)"/><text x="192" y="131" text-anchor="middle" fill="var(--scene-ink)" font-size="12" font-weight="900" letter-spacing="3">JAGALCHI</text>
+            <rect x="141" y="116" width="103" height="22" rx="3" fill="var(--scene-pop-1)" stroke="var(--scene-ink)"/>
+            <g class="market-fish-mark" fill="var(--scene-ink)"><path d="M156 127q9-8 19 0q-10 8-19 0Zm-6 0l7-6v12Z"/><path d="M188 127q9-8 19 0q-10 8-19 0Zm-6 0l7-6v12Z"/><path d="M220 127q6-6 13 0q-7 6-13 0Zm-5 0l6-5v10Z"/></g>
             <g class="market-awnings"><path d="M286 137h104v12H286Z" fill="var(--scene-house)" stroke="var(--scene-ink)"/><path d="M286 137h13v12h-13zM312 137h13v12h-13zM338 137h13v12h-13zM364 137h13v12h-13z" fill="var(--scene-pop-1)"/><g fill="var(--scene-pop-3)" stroke="var(--scene-ink)"><path d="M295 149h25v20h-25zM324 149h26v20h-26zM354 149h27v20h-27z"/></g></g>
             <g class="jagalchi-boat"><path d="M15 157h81l-13 19H33Z" fill="var(--scene-pop-3)" stroke="var(--scene-ink)" stroke-width="2"/><path d="M45 157v-26h35v26" fill="var(--scene-house)" stroke="var(--scene-ink)"/><path d="M63 131v-18" stroke="var(--scene-ink)" stroke-width="2"/><path d="M65 116l20 10H65Z" fill="var(--scene-light)"/><path d="M24 151h67" stroke="var(--scene-pop-1)" stroke-width="3"/></g>
         </g>
@@ -442,7 +485,6 @@ function createJagalchiSceneSvg() {
 
 function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
     const safeSceneKey = BUSAN_SCENES[sceneKey] ? sceneKey : 'gwangan';
-    const scene = BUSAN_SCENES[safeSceneKey];
     const artworkByScene = { gwangan: createGwanganSceneSvg, gamcheon: createGamcheonSceneSvg, nurimaru: createNurimaruSceneSvg, huinnyeoul: createHuinnyeoulSceneSvg, jagalchi: createJagalchiSceneSvg };
     const gradientId = `busanSceneSky${idSuffix || 'Header'}`;
 
@@ -453,13 +495,12 @@ function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
             <rect width="400" height="200" rx="16" fill="url(#${gradientId})"/>
             ${createAtmosphereSvg()}${artworkByScene[safeSceneKey]()}
         </svg>
-        <div class="bridge-coordinate-bar" aria-hidden="true"><span>${scene.label}</span><span>${scene.coordinate}</span></div>
-        <div class="hero-sticker" aria-hidden="true"><span>BUSAN</span><strong>ONLY</strong></div>
+        <div class="hero-sticker" aria-hidden="true"><strong>BUSAN</strong></div>
     </div>`;
 }
 
 function createCinematicIntro(data, target, sceneKey) {
-    const scene = BUSAN_SCENES[sceneKey] || BUSAN_SCENES.gwangan;
+    const currentDate = getCurrentDateDisplay();
     const overlay = document.createElement('div');
     overlay.className = 'cinematic-intro';
     overlay.setAttribute('aria-hidden', 'true');
@@ -468,12 +509,12 @@ function createCinematicIntro(data, target, sceneKey) {
             ${createBusanSceneIllustrationSvg(sceneKey, 'Intro')}
         </div>
         <div class="cinematic-copy">
-            <span class="cinematic-kicker">${data.eyebrow || 'BUSAN GIFT CLUB'}</span>
+            <time class="cinematic-kicker" datetime="${currentDate.iso}">${currentDate.label}</time>
             <h2>${data.headerTitle}</h2>
             <p>${data.subtitle || '앱 설치부터 사은 행사 참여까지, 오늘의 혜택을 한 번에.'}</p>
         </div>
-        <span class="cinematic-corner cinematic-corner-top">01 / SPECIAL GIFT</span>
-        <span class="cinematic-corner cinematic-corner-bottom">${scene.label} · BUSAN</span>
+        <span class="cinematic-corner cinematic-corner-top">SPECIAL GIFT</span>
+        <span class="cinematic-corner cinematic-corner-bottom">BUSAN · COASTAL EDITION</span>
     `;
     document.body.appendChild(overlay);
 
@@ -554,6 +595,8 @@ function collapseCinematicIntro(overlay, target, duration) {
 function renderPage(data) {
     document.title = data.pageTitle;
     const sceneKey = chooseRandomBusanScene();
+    const currentDate = getCurrentDateDisplay();
+    document.documentElement.dataset.sceneTheme = sceneKey;
 
     const appContainer = document.querySelector('.app-container');
     if (appContainer) {
@@ -568,7 +611,7 @@ function renderPage(data) {
             <div class="hero-toolbar">
                 <span class="hero-brand">
                     <span class="brand-spark" aria-hidden="true">✦</span>
-                    ${data.eyebrow || 'BUSAN GIFT CLUB'}
+                    <time datetime="${currentDate.iso}">${currentDate.label}</time>
                 </span>
                 <span class="time-chip" aria-label="현재 시간대 테마">
                     <span class="time-dot" aria-hidden="true"></span>
@@ -579,7 +622,7 @@ function renderPage(data) {
             </div>
             ${createBusanSceneIllustrationSvg(sceneKey)}
             <div class="header-content">
-                <span class="title-overline">01 / EVENT GUIDE</span>
+                <span class="title-overline">EVENT GUIDE</span>
                 <div class="title-row">
                     <h1 class="festival-title">${data.headerTitle}</h1>
                     <span class="title-kitsch-mark" aria-hidden="true">✳</span>
@@ -596,7 +639,11 @@ function renderPage(data) {
         stepContainer.innerHTML = '';
         const userOS = getMobileOS();
 
-        data.steps.forEach((step, index) => {
+        const stepsToRender = data.giftStep
+            ? [...data.steps, data.giftStep]
+            : data.steps;
+
+        stepsToRender.forEach((step, index) => {
             const stepElement = document.createElement('section');
             stepElement.className = 'step-card';
             stepElement.style.setProperty('--step-index', index);
@@ -619,6 +666,48 @@ function renderPage(data) {
                 }
             }
 
+            const isGiftStep = step.id === 'step3' && step.primaryOffer;
+            if (isGiftStep) stepElement.classList.add('gift-step-card');
+
+            const visibleGiftOffers = isGiftStep
+                ? [
+                    step.primaryOffer,
+                    ...(step.showSecondOffer && step.secondaryOffer ? [step.secondaryOffer] : [])
+                ].filter((offer) => offer?.title && offer?.link)
+                : [];
+
+            const actionMarkup = isGiftStep
+                ? `
+                    <div class="gift-offer-list ${visibleGiftOffers.length === 1 ? 'is-single' : 'is-double'}">
+                        ${visibleGiftOffers.map((offer, offerIndex) => `
+                            <article class="gift-offer-row">
+                                <div class="gift-offer-copy">
+                                    <span class="gift-offer-label">BENEFIT ${String(offerIndex + 1).padStart(2, '0')}</span>
+                                    <h3>${offer.title}</h3>
+                                </div>
+                                <a href="${offer.link}" class="gift-offer-link" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${offer.title}: ${offer.buttonText || '바로가기'}">
+                                    <span>${offer.buttonText || '바로가기'}</span>
+                                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                    </svg>
+                                </a>
+                            </article>
+                        `).join('')}
+                    </div>
+                `
+                : `
+                    <div class="card-action">
+                        <a href="${finalLink}" class="btn-action" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${step.title}: ${step.buttonText}">
+                            <span class="btn-label">${step.buttonText}</span>
+                            <span class="btn-icon" aria-hidden="true">
+                                <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                `;
+
             stepElement.innerHTML = `
                 <div class="card-glow-bg"></div>
                 <div class="card-header-row">
@@ -640,16 +729,7 @@ function renderPage(data) {
                         <p class="step-desc">${step.description || ''}</p>
                     </div>
                 </div>
-                <div class="card-action">
-                    <a href="${finalLink}" class="btn-action" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${step.title}: ${step.buttonText}">
-                        <span class="btn-label">${step.buttonText}</span>
-                        <span class="btn-icon" aria-hidden="true">
-                            <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                            </svg>
-                        </span>
-                    </a>
-                </div>
+                ${actionMarkup}
             `;
 
             stepContainer.appendChild(stepElement);
