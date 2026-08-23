@@ -514,7 +514,6 @@ function createCinematicIntro(data, target, sceneKey) {
             <p>${data.subtitle || '앱 설치부터 사은 행사 참여까지, 오늘의 혜택을 한 번에.'}</p>
         </div>
         <span class="cinematic-corner cinematic-corner-top">SPECIAL GIFT</span>
-        <span class="cinematic-corner cinematic-corner-bottom">BUSAN · COASTAL EDITION</span>
     `;
     document.body.appendChild(overlay);
 
@@ -608,19 +607,21 @@ function renderPage(data) {
     const headerContainer = document.getElementById('header-container');
     if (headerContainer) {
         headerContainer.innerHTML = `
-            <div class="hero-toolbar">
-                <span class="hero-brand">
-                    <span class="brand-spark" aria-hidden="true">✦</span>
-                    <time datetime="${currentDate.iso}">${currentDate.label}</time>
-                </span>
-                <span class="time-chip" aria-label="현재 시간대 테마">
-                    <span class="time-dot" aria-hidden="true"></span>
-                    <span id="time-period-label">NEON NIGHT</span>
-                    <span class="time-divider" aria-hidden="true"></span>
-                    <time id="time-label">--:--</time>
-                </span>
+            <div class="hero-cover">
+                ${createBusanSceneIllustrationSvg(sceneKey)}
+                <div class="hero-toolbar">
+                    <span class="hero-brand">
+                        <span class="brand-spark" aria-hidden="true">✦</span>
+                        <time datetime="${currentDate.iso}">${currentDate.label}</time>
+                    </span>
+                    <span class="time-chip" aria-label="현재 시간대 테마">
+                        <span class="time-dot" aria-hidden="true"></span>
+                        <span id="time-period-label">NEON NIGHT</span>
+                        <span class="time-divider" aria-hidden="true"></span>
+                        <time id="time-label">--:--</time>
+                    </span>
+                </div>
             </div>
-            ${createBusanSceneIllustrationSvg(sceneKey)}
             <div class="header-content">
                 <span class="title-overline">EVENT GUIDE</span>
                 <div class="title-row">

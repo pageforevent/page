@@ -422,11 +422,6 @@ body.is-intro {
     left: clamp(1.45rem, 7vw, 5rem);
 }
 
-.cinematic-corner-bottom {
-    right: clamp(1.45rem, 7vw, 5rem);
-    bottom: max(1.65rem, env(safe-area-inset-bottom));
-}
-
 .cinematic-intro.is-collapsing .cinematic-copy {
     opacity: 0;
     transform: translate3d(0, -20px, 0);
@@ -1248,9 +1243,13 @@ html[data-time-theme="night"] .bridge-traffic {
     gap: 0.62rem;
 }
 
+.gift-offer-list.is-double {
+    grid-auto-rows: 1fr;
+}
+
 .gift-offer-row {
     --offer-accent: var(--card-accent);
-    min-height: 76px;
+    min-height: 88px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
@@ -1259,20 +1258,12 @@ html[data-time-theme="night"] .bridge-traffic {
     overflow: hidden;
     padding: 0.76rem 0.72rem 0.76rem 0.84rem;
     border: 1px solid color-mix(in srgb, var(--offer-accent) 48%, var(--line-soft));
-    border-radius: 16px 8px 16px 8px;
+    border-radius: 14px 14px 14px 6px;
     background:
         linear-gradient(110deg, color-mix(in srgb, var(--offer-accent) 11%, var(--surface-elevated)), var(--surface-soft) 68%);
     box-shadow:
         inset 3px 0 0 color-mix(in srgb, var(--offer-accent) 82%, transparent),
         inset 0 1px 0 rgba(255, 255, 255, 0.035);
-}
-
-.gift-offer-row:nth-child(2) {
-    --offer-accent: var(--accent-three);
-    margin-left: 0.38rem;
-    border-radius: 8px 16px 8px 16px;
-    background:
-        linear-gradient(110deg, color-mix(in srgb, var(--offer-accent) 12%, var(--surface-elevated)), var(--surface-soft) 70%);
 }
 
 .gift-offer-row::after {
@@ -1339,12 +1330,13 @@ html[data-time-theme="night"] .bridge-traffic {
 }
 
 .gift-offer-link {
-    min-height: 39px;
+    min-width: 86px;
+    min-height: 42px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.36rem;
-    padding: 0.48rem 0.58rem 0.48rem 0.7rem;
+    padding: 0.5rem 0.62rem;
     border: 1px solid rgba(0, 0, 0, 0.72);
     border-radius: 10px 10px 10px 4px;
     color: var(--ink);
@@ -1557,5 +1549,439 @@ body.is-intro .app-container .gwangan-bridge-svg * {
 
     .step-card {
         padding: 1.15rem;
+    }
+}
+
+/* ========================================================================== 
+   BUSAN GIFT ISSUE — editorial poster redesign
+   ========================================================================== */
+
+body {
+    padding: 0 0 3rem;
+}
+
+.app-container,
+.app-container.is-intro {
+    max-width: 540px;
+    overflow: visible;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.app-container::before,
+.app-container::after {
+    display: none;
+}
+
+.header {
+    margin-bottom: 0;
+}
+
+.hero-cover {
+    position: relative;
+    isolation: isolate;
+}
+
+.hero-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(to bottom, rgba(3, 8, 22, 0.42), transparent 34%, transparent 70%, rgba(3, 8, 22, 0.18));
+}
+
+.hero-cover .bridge-illustration-card {
+    height: clamp(220px, 58vw, 292px);
+    margin: 0;
+    border: 0;
+    border-radius: 0 0 42px 0;
+    box-shadow: 0 26px 55px -34px rgba(0, 0, 0, 0.92);
+}
+
+.hero-cover .gwangan-bridge-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.hero-cover .hero-sticker {
+    right: 0.85rem;
+    bottom: 1.05rem;
+}
+
+.hero-toolbar {
+    position: absolute;
+    inset: max(0.9rem, env(safe-area-inset-top)) 0.9rem auto;
+    z-index: 4;
+    min-height: 32px;
+    margin: 0;
+    padding: 0;
+}
+
+.hero-brand {
+    padding: 0.42rem 0.56rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 3px;
+    color: rgba(255, 255, 255, 0.92);
+    background: rgba(5, 12, 28, 0.72);
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.6);
+}
+
+.time-chip {
+    border-color: rgba(255, 255, 255, 0.25);
+    border-radius: 3px;
+    color: rgba(255, 255, 255, 0.78);
+    background: rgba(5, 12, 28, 0.76);
+}
+
+#time-label {
+    color: #FFFFFF;
+}
+
+.header-content {
+    width: calc(100% - 1.5rem);
+    z-index: 6;
+    margin: -2.05rem auto 0;
+    padding: 1.08rem 1.15rem 1.22rem;
+    border: 1px solid color-mix(in srgb, var(--accent-two) 32%, var(--line-soft));
+    border-radius: 3px 24px 3px 3px;
+    background:
+        linear-gradient(135deg, color-mix(in srgb, var(--place-surface) 24%, var(--surface)) 0 72%, var(--surface-soft));
+    box-shadow:
+        8px 9px 0 color-mix(in srgb, var(--accent-two) 9%, transparent),
+        0 22px 42px -28px rgba(0, 0, 0, 0.92);
+}
+
+.header-content::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 1.1rem;
+    width: 86px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-two));
+}
+
+.header-content::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(225deg, var(--accent-three) 0 48%, transparent 50%);
+    opacity: 0.82;
+}
+
+.title-overline {
+    margin-bottom: 0.38rem;
+    color: var(--accent-two);
+}
+
+.title-row {
+    align-items: flex-end;
+}
+
+.festival-title {
+    font-size: clamp(2.05rem, 9.2vw, 2.8rem);
+    line-height: 1.02;
+    letter-spacing: -0.068em;
+}
+
+.title-kitsch-mark {
+    margin-bottom: 0.12rem;
+    font-size: 1.6rem;
+}
+
+.festival-subtitle {
+    margin-top: 0.64rem;
+    padding-top: 0.58rem;
+    border-top: 1px dashed color-mix(in srgb, var(--accent-two) 24%, var(--line-soft));
+}
+
+.step-list {
+    gap: 1.35rem;
+    position: relative;
+    padding: 1.7rem 0.85rem 0;
+}
+
+.step-list::before {
+    content: '';
+    position: absolute;
+    top: 0.8rem;
+    bottom: 1rem;
+    left: 1.22rem;
+    width: 1px;
+    z-index: -1;
+    background: repeating-linear-gradient(to bottom, var(--line-strong) 0 4px, transparent 4px 10px);
+}
+
+.step-card {
+    width: calc(100% - 1rem);
+    overflow: visible;
+    align-self: flex-start;
+    padding: 1.05rem 1.05rem 1.08rem;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 34%, var(--line-soft));
+    border-radius: 4px 22px 4px 4px;
+    background:
+        linear-gradient(145deg, color-mix(in srgb, var(--card-accent) 5%, var(--surface-elevated)), var(--surface-soft));
+    box-shadow:
+        7px 8px 0 color-mix(in srgb, var(--card-accent) 9%, transparent),
+        0 18px 34px -26px rgba(0, 0, 0, 0.95);
+}
+
+.step-card:nth-child(2) {
+    width: calc(100% - 1.35rem);
+    align-self: flex-end;
+    border-radius: 22px 4px 4px 4px;
+}
+
+.step-card:nth-child(3) {
+    width: 100%;
+    border-radius: 4px 28px 4px 4px;
+}
+
+.step-card::before {
+    top: -0.15rem;
+    right: 0.35rem;
+    font-size: 5rem;
+    color: color-mix(in srgb, var(--card-accent) 9%, transparent);
+}
+
+.step-card::after {
+    top: 0.92rem;
+    left: -1px;
+    width: 4px;
+    height: 62px;
+    border-radius: 0 4px 4px 0;
+}
+
+.card-glow-bg {
+    display: none;
+}
+
+.card-header-row {
+    margin-bottom: 0.9rem;
+}
+
+.step-num-pill {
+    min-height: 27px;
+    padding: 0.31rem 0.62rem;
+    border-radius: 2px;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.7);
+    transform: rotate(-1deg);
+}
+
+.card-tagline {
+    min-height: auto;
+    padding: 0.22rem 0;
+    border: 0;
+    border-bottom: 1px dotted color-mix(in srgb, var(--card-accent) 42%, var(--line-soft));
+    border-radius: 0;
+    color: color-mix(in srgb, var(--card-accent) 68%, var(--text-muted));
+    background: transparent;
+}
+
+.card-body {
+    gap: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.icon-avatar {
+    width: 54px;
+    height: 54px;
+}
+
+.icon-pulse {
+    inset: 6px -5px -5px 6px;
+    border-radius: 2px 12px 2px 12px;
+    opacity: 0.25;
+}
+
+.icon-inner {
+    border-width: 2px;
+    border-radius: 2px 14px 2px 14px;
+    transform: rotate(-1deg);
+}
+
+.step-heading {
+    font-size: 1.08rem;
+}
+
+.btn-action {
+    min-height: 53px;
+    border-radius: 3px 14px 3px 3px;
+    box-shadow:
+        4px 4px 0 rgba(0, 0, 0, 0.72),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-icon {
+    border-radius: 2px 9px 2px 9px;
+}
+
+.gift-step-card {
+    padding-bottom: 1.15rem;
+    background:
+        linear-gradient(155deg, color-mix(in srgb, var(--card-accent) 7%, var(--surface-elevated)), var(--surface-soft));
+}
+
+.gift-step-card .card-body {
+    padding-bottom: 0.8rem;
+    border-bottom: 1px dashed color-mix(in srgb, var(--card-accent) 28%, var(--line-soft));
+}
+
+.gift-offer-list {
+    gap: 0.72rem;
+}
+
+.gift-offer-row {
+    min-height: 92px;
+    border-style: dashed;
+    border-radius: 2px;
+    background:
+        linear-gradient(100deg, color-mix(in srgb, var(--card-accent) 9%, var(--surface-elevated)), var(--surface-soft) 72%);
+    box-shadow: inset 4px 0 0 var(--card-accent);
+}
+
+.gift-offer-label strong {
+    border-radius: 2px;
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.gift-offer-link {
+    border-radius: 2px 10px 2px 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .step-card:hover {
+        border-color: color-mix(in srgb, var(--card-accent) 58%, transparent);
+        box-shadow:
+            9px 10px 0 color-mix(in srgb, var(--card-accent) 12%, transparent),
+            0 22px 38px -27px rgba(0, 0, 0, 0.96);
+    }
+}
+
+@media (max-width: 385px) {
+    .app-container {
+        padding: 0;
+        border-radius: 0;
+    }
+
+    .hero-cover .bridge-illustration-card {
+        height: 215px;
+    }
+
+    .hero-toolbar {
+        inset-inline: 0.65rem;
+    }
+
+    .hero-brand {
+        max-width: 145px;
+        padding-inline: 0.42rem;
+    }
+
+    .header-content {
+        width: calc(100% - 1rem);
+        margin-top: -1.72rem;
+        padding: 1rem 0.92rem 1.08rem;
+    }
+
+    .festival-title {
+        font-size: 1.9rem;
+    }
+
+    .step-list {
+        padding-inline: 0.58rem;
+    }
+
+    .step-card,
+    .step-card:nth-child(2),
+    .step-card:nth-child(3) {
+        width: 100%;
+        padding: 0.92rem 0.82rem 0.98rem;
+    }
+}
+
+@media (min-width: 600px) {
+    body {
+        padding: 2rem 1rem 4rem;
+    }
+
+    .app-container,
+    .app-container.is-intro {
+        max-width: 680px;
+    }
+
+    .hero-cover .bridge-illustration-card {
+        height: 336px;
+        border-radius: 28px 28px 54px 0;
+    }
+
+    .hero-toolbar {
+        inset: 1.15rem 1.2rem auto;
+    }
+
+    .header-content {
+        width: calc(100% - 3rem);
+        margin-top: -2.6rem;
+        padding: 1.32rem 1.45rem 1.38rem;
+    }
+
+    .step-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+        gap: 1.35rem;
+        padding: 2rem 1.5rem 0;
+    }
+
+    .step-list::before {
+        display: none;
+    }
+
+    .step-card,
+    .step-card:nth-child(2) {
+        width: 100%;
+        min-height: 276px;
+        padding: 1.15rem;
+    }
+
+    .step-card:nth-child(2) {
+        margin-top: 2.25rem;
+    }
+
+    .step-card:nth-child(3) {
+        width: 100%;
+        min-height: 0;
+        grid-column: 1 / -1;
+        margin-top: 0.15rem;
+        padding: 1.25rem;
+    }
+
+    .step-card:nth-child(-n + 2) .card-action {
+        position: absolute;
+        right: 1.15rem;
+        bottom: 1.15rem;
+        left: 1.15rem;
+        width: auto;
+    }
+
+    .gift-offer-list.is-double {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-auto-rows: 1fr;
+    }
+
+    .gift-offer-row {
+        grid-template-columns: 1fr;
+        align-content: space-between;
+    }
+
+    .gift-offer-link {
+        width: 100%;
+        justify-content: space-between;
     }
 }
