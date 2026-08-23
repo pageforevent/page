@@ -28,13 +28,7 @@ content:
         label: 화면 제목
         type: string
         required: true
-        description: 광안대교 이미지 아래에 표시되는 제목입니다.
-
-      - name: eyebrow
-        label: 영문 상단 문구
-        type: string
-        required: true
-        description: 화면 상단의 작은 영문 라벨입니다.
+        description: 부산 랜덤 이미지 아래에 표시되는 제목입니다.
 
       - name: subtitle
         label: 소개 문구
@@ -43,12 +37,12 @@ content:
         description: 메인 제목 아래에 표시되는 짧은 안내 문구입니다.
 
       - name: steps
-        label: 안내 버튼
+        label: STEP 01~02 안내 버튼
         type: object
         required: true
         list:
-          min: 3
-          max: 3
+          min: 2
+          max: 2
           collapsible:
             collapsed: true
             summary: "{stepNum} · {title}"
@@ -101,6 +95,100 @@ content:
             label: iOS 전용 링크
             type: string
             description: 앱 설치 단계에서만 사용합니다. 비워두면 기본 링크를 사용합니다.
+
+          - name: target
+            label: 링크 열기 방식
+            type: string
+            hidden: true
+
+          - name: iconSvg
+            label: 아이콘 SVG
+            type: code
+            hidden: true
+            options:
+              format: html
+
+      - name: giftStep
+        label: STEP 03 사은 행사
+        type: object
+        required: true
+        fields:
+          - name: id
+            label: 내부 ID
+            type: string
+            hidden: true
+
+          - name: stepNum
+            label: 단계 표시
+            type: string
+            required: true
+            readonly: true
+
+          - name: title
+            label: 카드 제목
+            type: string
+            required: true
+
+          - name: tagline
+            label: 영문 태그
+            type: string
+            required: true
+            description: 카드 우측 상단에 표시됩니다. 예) VIEW GIFT BENEFITS
+
+          - name: description
+            label: 카드 설명
+            type: text
+            required: true
+
+          - name: primaryOffer
+            label: 첫 번째 사은 혜택
+            type: object
+            required: true
+            fields:
+              - name: title
+                label: 혜택 내용
+                type: string
+                required: true
+                description: 예) 10만원 이상 구매 시 1만원 상품권 증정
+
+              - name: buttonText
+                label: 버튼 문구
+                type: string
+                required: true
+
+              - name: link
+                label: 연결 링크
+                type: string
+                required: true
+                description: https://로 시작하는 전체 주소를 입력하세요.
+
+          - name: showSecondOffer
+            label: 두 번째 혜택 표시
+            type: boolean
+            default: false
+            description: 끄면 첫 번째 혜택만, 켜면 두 개의 혜택이 표시됩니다.
+
+          - name: secondaryOffer
+            label: 두 번째 사은 혜택
+            type: object
+            description: 위의 '두 번째 혜택 표시'를 켰을 때만 화면에 노출됩니다.
+            fields:
+              - name: title
+                label: 혜택 내용
+                type: string
+                required: true
+                description: 예) 20만원/40만원 이상 구매 시 1.5만원/3만원 상품권 증정
+
+              - name: buttonText
+                label: 버튼 문구
+                type: string
+                required: true
+
+              - name: link
+                label: 연결 링크
+                type: string
+                required: true
+                description: https://로 시작하는 전체 주소를 입력하세요.
 
           - name: target
             label: 링크 열기 방식
