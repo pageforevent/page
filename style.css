@@ -176,6 +176,42 @@ html[data-scene-theme="jagalchi"] {
     --place-surface: #11172B;
 }
 
+html[data-scene-theme="haeundae"] {
+    --place-top: #2049A4;
+    --place-bottom: #24B8CE;
+    --place-accent: #FFE15A;
+    --place-accent-two: #5CE7F2;
+    --place-accent-three: #FF668F;
+    --place-surface: #0B2449;
+}
+
+html[data-scene-theme="lotteBusan"] {
+    --place-top: #6D351F;
+    --place-bottom: #C79648;
+    --place-accent: #F7D872;
+    --place-accent-two: #E9B85B;
+    --place-accent-three: #EF4F67;
+    --place-surface: #2C1715;
+}
+
+html[data-scene-theme="busanTower"] {
+    --place-top: #17483E;
+    --place-bottom: #D89B3B;
+    --place-accent: #F5DE74;
+    --place-accent-two: #64D7AF;
+    --place-accent-three: #F26363;
+    --place-surface: #102A25;
+}
+
+html[data-scene-theme="cinemaCenter"] {
+    --place-top: #25195E;
+    --place-bottom: #7C3EAA;
+    --place-accent: #E5FF51;
+    --place-accent-two: #61E5F0;
+    --place-accent-three: #FF5CAE;
+    --place-surface: #181438;
+}
+
 html[data-scene-theme] {
     --page-top: color-mix(in srgb, var(--time-page-top) 58%, var(--place-top));
     --page-bottom: color-mix(in srgb, var(--time-page-bottom) 58%, var(--place-bottom));
@@ -535,7 +571,7 @@ body.is-intro {
     overflow: hidden;
     margin-bottom: 1.05rem;
     border: 1px solid var(--line-strong);
-    border-radius: 23px 23px 16px 16px;
+    border-radius: 20px;
     background: #07101F;
     box-shadow:
         0 18px 34px -22px rgba(0, 0, 0, 0.95),
@@ -798,6 +834,50 @@ html[data-time-theme="night"] .night-firework {
     animation: harborGulls 8.2s ease-in-out infinite alternate;
 }
 
+.beach-parasols {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: parasolSway 6.4s ease-in-out infinite alternate;
+}
+
+.haeundae-yacht {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: boatBob 4.8s ease-in-out infinite alternate;
+}
+
+.lotte-screen-scan {
+    animation: billboardScan 7.2s ease-in-out infinite;
+}
+
+.lotte-facade-glint {
+    animation: facadeGlint 9.5s ease-in-out infinite;
+}
+
+.seomyeon-traffic {
+    animation: cityTraffic 5.8s ease-in-out infinite alternate;
+}
+
+.busan-tower-beacon {
+    animation: towerBeacon 3.8s ease-in-out infinite;
+}
+
+.park-trees {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: parkBreeze 7.6s ease-in-out infinite alternate;
+}
+
+.cinema-roof-leds {
+    animation: cinemaLedWave 4.6s ease-in-out infinite alternate;
+}
+
+.cinema-projector {
+    transform-box: fill-box;
+    transform-origin: center top;
+    animation: projectorBreath 6.8s ease-in-out infinite alternate;
+}
+
 .huinnyeoul-boat,
 .jagalchi-boat {
     animation: boatBob 4.2s ease-in-out infinite alternate;
@@ -911,6 +991,48 @@ html[data-time-theme="night"] .market-fish-mark {
 @keyframes marketSign {
     0%, 62%, 100% { transform: scale(1); opacity: 0.78; }
     72%, 86% { transform: scale(1.035); opacity: 1; }
+}
+
+@keyframes parasolSway {
+    from { transform: rotate(-0.8deg); }
+    to { transform: rotate(0.9deg); }
+}
+
+@keyframes billboardScan {
+    0%, 12% { transform: translateX(0); opacity: 0.5; }
+    48%, 68% { transform: translateX(40px); opacity: 0.82; }
+    100% { transform: translateX(0); opacity: 0.5; }
+}
+
+@keyframes facadeGlint {
+    0%, 18% { transform: translateX(-32px); opacity: 0; }
+    42%, 57% { opacity: 0.18; }
+    82%, 100% { transform: translateX(58px); opacity: 0; }
+}
+
+@keyframes cityTraffic {
+    from { transform: translateX(-7px); }
+    to { transform: translateX(8px); }
+}
+
+@keyframes towerBeacon {
+    0%, 58%, 100% { opacity: 0.48; transform: scale(0.9); }
+    68%, 84% { opacity: 1; transform: scale(1.28); }
+}
+
+@keyframes parkBreeze {
+    from { transform: skewX(-0.6deg); }
+    to { transform: skewX(0.7deg); }
+}
+
+@keyframes cinemaLedWave {
+    from { opacity: 0.42; transform: translateX(-2px); }
+    to { opacity: 1; transform: translateX(2px); }
+}
+
+@keyframes projectorBreath {
+    from { transform: scaleX(0.88); opacity: 0.04; }
+    to { transform: scaleX(1.04); opacity: 0.16; }
 }
 
 @keyframes morningMist {
@@ -1737,6 +1859,9 @@ body {
 .hero-cover {
     position: relative;
     isolation: isolate;
+    overflow: hidden;
+    border-radius: 22px;
+    background: #07101F;
 }
 
 .hero-cover::after {
@@ -1745,6 +1870,7 @@ body {
     inset: 0;
     z-index: 1;
     pointer-events: none;
+    border-radius: inherit;
     background: linear-gradient(to bottom, rgba(3, 8, 22, 0.42), transparent 34%, transparent 70%, rgba(3, 8, 22, 0.18));
 }
 
@@ -1752,7 +1878,7 @@ body {
     height: clamp(220px, 58vw, 292px);
     margin: 0;
     border: 0;
-    border-radius: 0 0 42px 0;
+    border-radius: inherit;
     box-shadow: 0 26px 55px -34px rgba(0, 0, 0, 0.92);
 }
 
@@ -1763,7 +1889,7 @@ body {
 
 .hero-cover .hero-sticker {
     right: 0.85rem;
-    bottom: 1.05rem;
+    bottom: 2.75rem;
 }
 
 .hero-toolbar {
@@ -2029,6 +2155,14 @@ body {
         height: 215px;
     }
 
+    .hero-cover {
+        border-radius: 18px;
+    }
+
+    .hero-cover .hero-sticker {
+        bottom: 2.45rem;
+    }
+
     .hero-toolbar {
         inset-inline: 0.65rem;
     }
@@ -2070,9 +2204,17 @@ body {
         max-width: 680px;
     }
 
+    .hero-cover {
+        border-radius: 28px;
+    }
+
     .hero-cover .bridge-illustration-card {
         height: 336px;
-        border-radius: 28px 28px 54px 0;
+        border-radius: inherit;
+    }
+
+    .hero-cover .hero-sticker {
+        bottom: 3.35rem;
     }
 
     .hero-toolbar {
@@ -2162,7 +2304,11 @@ html[data-performance="lite"] .day-rays,
 html[data-performance="lite"] .night-firework,
 html[data-performance="lite"] .gamcheon-lookout,
 html[data-performance="lite"] .nurimaru-distant-lights,
-html[data-performance="lite"] .jagalchi-harbor-gulls {
+html[data-performance="lite"] .jagalchi-harbor-gulls,
+html[data-performance="lite"] .beach-parasols,
+html[data-performance="lite"] .lotte-facade-glint,
+html[data-performance="lite"] .park-trees,
+html[data-performance="lite"] .cinema-projector {
     animation: none;
 }
 

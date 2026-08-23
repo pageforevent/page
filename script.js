@@ -337,7 +337,11 @@ const BUSAN_SCENES = {
     gamcheon: true,
     nurimaru: true,
     huinnyeoul: true,
-    jagalchi: true
+    jagalchi: true,
+    haeundae: true,
+    lotteBusan: true,
+    busanTower: true,
+    cinemaCenter: true
 };
 
 function chooseRandomBusanScene() {
@@ -347,8 +351,8 @@ function chooseRandomBusanScene() {
 
     // 한 장소가 연속으로 뽑히지 않고, 다섯 장소를 모두 본 뒤 다시 섞습니다.
     try {
-        const bagKey = 'busan-scene-bag-v2';
-        const lastKey = 'busan-scene-last-v2';
+        const bagKey = 'busan-scene-bag-v3';
+        const lastKey = 'busan-scene-last-v3';
         const lastScene = window.localStorage.getItem(lastKey);
         let sceneBag = JSON.parse(window.localStorage.getItem(bagKey) || '[]')
             .filter((key) => keys.includes(key));
@@ -405,6 +409,10 @@ function createGwanganSceneSvg() {
             <path class="bridge-led-flow" d="M8 128Q78 112 145 66Q200 119 255 66Q323 112 392 128" fill="none" stroke="var(--scene-light)" stroke-width="2.1" stroke-linecap="round" stroke-dasharray="2 16"/>
             <g stroke="var(--scene-structure)" stroke-width="3" stroke-linecap="round"><path d="M141 126V61M149 126V61M251 126V61M259 126V61"/></g>
             <g stroke="var(--scene-pop-2)" stroke-width="1.1"><path d="M141 76l8 12m0-12l-8 12m0 9l8 12m0-12l-8 12M251 76l8 12m0-12l-8 12m0 9l8 12m0-12l-8 12"/></g>
+            <g class="bridge-piers" fill="var(--scene-structure)" stroke="var(--scene-ink)" stroke-width="1.2">
+                <path d="M138 126h14l-3 34h-8Z"/><path d="M248 126h14l-3 34h-8Z"/>
+                <path d="M136 157h18v5h-18ZM246 157h18v5h-18Z" fill="var(--scene-ink)"/>
+            </g>
             <path d="M0 125H400" stroke="var(--scene-ink)" stroke-width="7"/><path d="M0 124H400" stroke="var(--scene-line)" stroke-width="1.3"/>
             <g class="scene-night-lights" fill="var(--scene-light)"><circle cx="145" cy="58" r="2"/><circle cx="170" cy="90" r="1.8"/><circle cx="200" cy="112" r="2"/><circle cx="230" cy="90" r="1.8"/><circle cx="255" cy="58" r="2"/></g>
             <g class="bridge-traffic" stroke-width="2" stroke-linecap="round"><path d="M10 122h38" stroke="var(--scene-pop-1)"/><path d="M352 128h38" stroke="var(--scene-light)"/></g>
@@ -467,32 +475,32 @@ function createNurimaruSceneSvg() {
 
 function createHuinnyeoulSceneSvg() {
     return `
-        <rect y="96" width="400" height="104" fill="var(--scene-sea-top)"/><path d="M124 157q90-18 180 0t180 0v43H124Z" fill="var(--scene-sea-bottom)"/><path d="M0 52Q76 58 123 91q35 24 56 62l-22 47H0Z" fill="var(--scene-hill)"/>
+        <rect y="96" width="400" height="104" fill="var(--scene-sea-top)"/><path d="M192 157q90-18 180 0t180 0v43H192Z" fill="var(--scene-sea-bottom)"/><path d="M0 50Q91 51 146 84q55 31 101 72l-23 44H0Z" fill="var(--scene-hill)"/>
         <g class="scene-landmark huinnyeoul-landmark">
-            <path d="M0 137q67-7 124 24l33 39H0Z" fill="var(--scene-ink)" opacity=".16"/>
+            <path d="M0 137q91-8 153 24l42 39H0Z" fill="var(--scene-ink)" opacity=".16"/>
             <g class="white-cliff-houses" stroke="var(--scene-ink)" stroke-width="1.4" stroke-linejoin="round">
                 <path d="M5 64h59v38H5ZM67 75h57v40H67ZM13 108h62v42H13ZM78 120h55v42H78ZM3 156h73v44H3Z" fill="var(--scene-house)"/>
                 <path d="M1 59h68v9H1ZM62 70h67v9H62ZM8 103h72v9H8ZM73 115h65v9H73ZM0 151h81v9H0Z" fill="var(--scene-pop-2)"/>
             </g>
             <g fill="var(--scene-window)" class="scene-night-lights"><path d="M18 76h11v9H18zM81 87h11v9H81zM28 121h12v10H28zM94 134h12v10H94zM22 171h12v10H22z"/></g>
             <g class="coastal-promenade" stroke-linejoin="round" stroke-linecap="round">
-                <path d="M96 105c31 12 57 31 86 59l-17 15c-26-28-49-45-81-58Z" fill="var(--scene-house)" stroke="var(--scene-ink)" stroke-width="1.6"/>
-                <path class="coastal-route-line" d="M91 110c31 12 56 30 84 58" fill="none" stroke="var(--scene-pop-1)" stroke-width="4.5" stroke-dasharray="12 5"/>
-                <path d="M90 101c33 12 61 32 92 62" fill="none" stroke="var(--scene-line)" stroke-width="2.4"/>
-                <g class="huinnyeoul-walker" fill="var(--scene-ink)" stroke="none"><circle cx="133" cy="128" r="3"/><path d="M131 132h5l2 9l-4 5l-4-6Z"/></g>
+                <path d="M154 103C183 115 210 136 237 161L220 179C196 151 173 134 147 122Z" fill="var(--scene-house)" stroke="var(--scene-ink)" stroke-width="1.6"/>
+                <path class="coastal-route-line" d="M155 110C183 121 208 140 229 165" fill="none" stroke="var(--scene-pop-1)" stroke-width="4.5" stroke-dasharray="12 5"/>
+                <path d="M153 100C184 112 211 132 239 158" fill="none" stroke="var(--scene-line)" stroke-width="2.4"/>
+                <g class="huinnyeoul-walker" fill="var(--scene-ink)" stroke="none"><circle cx="190" cy="129" r="3"/><path d="M188 133h5l2 9l-4 5l-4-6Z"/></g>
             </g>
-            <path class="huinnyeoul-tunnel" d="M87 200v-22a17 17 0 0 1 34 0v22Z" fill="var(--scene-ink)"/><path d="M94 200v-20a10 10 0 0 1 20 0v20Z" fill="var(--scene-sky-bottom)" opacity=".45"/>
+            <path class="huinnyeoul-tunnel" d="M184 200v-22a17 17 0 0 1 34 0v22Z" fill="var(--scene-ink)"/><path d="M191 200v-20a10 10 0 0 1 20 0v20Z" fill="var(--scene-sky-bottom)" opacity=".45"/>
             <g class="huinnyeoul-seagulls" fill="none" stroke="var(--scene-ink-soft)" stroke-width="1.8" stroke-linecap="round"><path d="M223 74q8-9 16 0q8-9 16 0M266 91q5-6 10 0q5-6 10 0"/></g>
             <g class="huinnyeoul-boat"><path d="M287 149h64l-13 15h-38Z" fill="var(--scene-pop-1)" stroke="var(--scene-ink)" stroke-width="1.6"/><path d="M318 149v-24" stroke="var(--scene-ink)" stroke-width="1.4"/><path d="M321 127l21 12h-21Z" fill="var(--scene-light)"/></g>
         </g>
-        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M184 128q48-7 96 0t96 0M167 181q54-8 108 0t108 0"/></g>`;
+        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M240 128q48-7 96 0t96 0M226 181q54-8 108 0t108 0"/></g>`;
 }
 
 function createJagalchiSceneSvg() {
     return `
         <rect y="139" width="400" height="61" fill="var(--scene-sea-top)"/><path d="M0 177q100-14 200 0t200 0v23H0Z" fill="var(--scene-sea-bottom)"/>
         <g class="scene-landmark jagalchi-landmark">
-            <g class="harbor-crane" fill="none" stroke="var(--scene-ink)" stroke-width="2"><path d="M337 53v86M321 54h63M337 54l30 29M367 83v31"/><path class="jagalchi-crane-hook" d="M367 108v14q0 8 8 8"/></g>
+            <g class="harbor-crane" fill="none" stroke="var(--scene-ink)" stroke-width="2"><path d="M378 91v48M340 92h56M378 92l16 18M394 110v12"/><path class="jagalchi-crane-hook" d="M394 119v10q0 6 5 6"/></g>
             <path d="M103 65h181v91H103Z" fill="var(--scene-structure)" stroke="var(--scene-ink)" stroke-width="2"/>
             <path class="jagalchi-wave-roof" d="M92 70q48-35 101-8q47 24 103-17q-6 24-18 39q-45 24-91-2q-42-24-84 5Z" fill="var(--scene-house)" stroke="var(--scene-ink)" stroke-width="2.2"/>
             <path d="M101 70q47-26 89-7q48 22 96-10" fill="none" stroke="var(--scene-pop-2)" stroke-width="8" stroke-linecap="round"/>
@@ -507,16 +515,104 @@ function createJagalchiSceneSvg() {
         <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M-20 178q45-6 90 0t90 0t90 0t90 0t90 0M70 191q42-5 84 0t84 0t84 0"/></g>`;
 }
 
+function createHaeundaeSceneSvg() {
+    return `
+        <rect y="143" width="400" height="57" fill="var(--scene-sea-top)"/><path d="M0 176q95-14 190 0t210 0v24H0Z" fill="var(--scene-sea-bottom)"/>
+        <path d="M0 137q92-13 184 0t216-2v18H0Z" fill="var(--scene-house)"/>
+        <g class="scene-landmark haeundae-landmark" stroke="var(--scene-ink)" stroke-linejoin="round">
+            <g class="marine-city-buildings" stroke-width="1.2">
+                <path d="M28 137V91h31v46ZM64 137V72h35v65ZM105 137V84h30v53ZM141 137V62h38v75ZM184 137V78h31v59ZM220 137V69h32v68Z" fill="var(--scene-glass)"/>
+                <path d="M36 97h15v40H36ZM74 79h16v58H74ZM113 91h14v46h-14ZM151 70h18v67h-18ZM192 85h15v52h-15ZM228 76h16v61h-16Z" fill="var(--scene-structure)" opacity=".38"/>
+                <g stroke="var(--scene-line)" stroke-width=".8" opacity=".58"><path d="M28 106h31M64 93h35M64 114h35M105 105h30M141 88h38M141 111h38M184 99h31M220 91h32M220 114h32"/></g>
+            </g>
+            <g class="lct-cluster" stroke-width="1.5">
+                <path d="M266 137V48l12-14l14 14v89Z" fill="var(--scene-structure)"/>
+                <path d="M299 137V25l13-15l14 15v112Z" fill="var(--scene-glass)"/>
+                <path d="M333 137V51l12-13l13 13v86Z" fill="var(--scene-structure)"/>
+                <path d="M274 52h10v85h-10ZM307 30h11v107h-11ZM341 55h9v82h-9Z" fill="var(--scene-pop-2)" opacity=".48"/>
+                <g class="haeundae-window-lights scene-night-lights" fill="var(--scene-light)" stroke="none"><path d="M277 62h4v5h-4zM277 82h4v5h-4zM277 105h4v5h-4zM310 42h5v6h-5zM310 65h5v6h-5zM310 90h5v6h-5zM310 115h5v6h-5zM343 68h4v5h-4zM343 92h4v5h-4zM343 115h4v5h-4z"/></g>
+            </g>
+            <g class="beach-parasols" stroke-width="1.2"><path d="M78 141q12-17 24 0Z" fill="var(--scene-pop-1)"/><path d="M90 141v12M161 141q12-17 24 0Z" fill="var(--scene-pop-3)"/><path d="M173 141v12M368 141q10-14 20 0Z" fill="var(--scene-light)"/><path d="M378 141v12"/></g>
+            <g class="haeundae-yacht"><path d="M18 160h54l-10 12H29Z" fill="var(--scene-pop-1)" stroke-width="1.4"/><path d="M46 160v-18"/><path d="M49 144l15 9H49Z" fill="var(--scene-light)" stroke="none"/></g>
+        </g>
+        <g class="scene-water-lines haeundae-reflection" fill="none" stroke="var(--scene-water-line)" stroke-width="1.2" opacity=".72"><path d="M88 164q48-6 96 0t96 0t96 0M44 188q54-7 108 0t108 0t108 0"/></g>`;
+}
+
+function createLotteBusanSceneSvg() {
+    return `
+        <path d="M0 136V91h42v45V73h30v63V99h34v37V82h31v54H0Z" fill="var(--scene-ink)" opacity=".2"/>
+        <rect y="158" width="400" height="42" fill="var(--scene-ink)"/><path d="M0 171h400" stroke="var(--scene-line)" stroke-width="2" stroke-dasharray="22 13" opacity=".55"/>
+        <g class="scene-landmark lotte-busan-landmark" stroke="var(--scene-ink)" stroke-linejoin="round">
+            <path d="M47 158V56h242v102Z" fill="var(--scene-house)" stroke-width="2"/>
+            <path d="M250 158V31h64v127Z" fill="var(--scene-glass)" stroke-width="2"/>
+            <g class="lotte-facade-slats" stroke="var(--scene-light)" stroke-width="3" opacity=".76"><path d="M60 58v98M73 58v98M86 58v98M99 58v98M112 58v98M125 58v98M138 58v98M151 58v98M164 58v98M177 58v98M190 58v98M203 58v98M216 58v98M229 58v98M242 58v98M255 58v98M268 58v98"/></g>
+            <path d="M141 83h105v52H141Z" fill="var(--scene-glass)" stroke-width="1.6"/>
+            <g class="lotte-screen"><path d="M149 91h89v36h-89Z" fill="var(--scene-pop-3)" stroke="none"/><path class="lotte-screen-scan" d="M153 96h26v26h-26Z" fill="var(--scene-light)" opacity=".68"/><path d="M184 101h47M184 111h35M184 120h42" stroke="var(--scene-line)" stroke-width="3" stroke-linecap="round"/></g>
+            <g class="lotte-roundel" stroke="none"><circle cx="77" cy="77" r="12" fill="var(--scene-pop-1)"/><circle cx="77" cy="77" r="5" fill="var(--scene-house)"/></g>
+            <g class="lotte-hotel-windows scene-night-lights" fill="var(--scene-light)" stroke="none"><path d="M259 48h8v7h-8zM278 48h8v7h-8zM297 48h8v7h-8zM259 68h8v7h-8zM278 68h8v7h-8zM297 68h8v7h-8zM259 90h8v7h-8zM278 90h8v7h-8zM297 90h8v7h-8zM259 112h8v7h-8zM278 112h8v7h-8zM297 112h8v7h-8z"/></g>
+            <path class="lotte-facade-glint" d="M102 61l28-2l45 96h-29Z" fill="var(--scene-line)" opacity=".12" stroke="none"/>
+            <g class="seomyeon-traffic" stroke="none"><path d="M18 178h49l8 13H10Z" fill="var(--scene-pop-1)"/><circle cx="23" cy="192" r="4" fill="var(--scene-structure)"/><circle cx="62" cy="192" r="4" fill="var(--scene-structure)"/><path d="M315 176h59l10 15h-78Z" fill="var(--scene-pop-3)"/><circle cx="320" cy="192" r="4" fill="var(--scene-structure)"/><circle cx="369" cy="192" r="4" fill="var(--scene-structure)"/></g>
+        </g>`;
+}
+
+function createBusanTowerSceneSvg() {
+    return `
+        <path d="M0 143q62-28 126-11q72-29 144 1q66-22 130 8v59H0Z" fill="var(--scene-hill)"/>
+        <path d="M0 169q90-19 180 2q105-27 220 2v27H0Z" fill="var(--scene-ink)" opacity=".2"/>
+        <g class="scene-landmark busan-tower-landmark" stroke="var(--scene-ink)" stroke-linejoin="round">
+            <g class="yongdusan-pavilion" stroke-width="1.4"><path d="M34 126h94v12H34Z" fill="var(--scene-pop-1)"/><path d="M45 138h72v30H45Z" fill="var(--scene-house)"/><path d="M27 125q54-30 108 0q-54-12-108 0Z" fill="var(--scene-pop-2)"/><path d="M55 139v29M81 139v29M107 139v29"/></g>
+            <g class="busan-tower" stroke-width="1.8">
+                <path d="M190 147l7-69h18l7 69Z" fill="var(--scene-structure)"/>
+                <path d="M181 76l8-18h34l10 18l-13 12h-27Z" fill="var(--scene-house)"/>
+                <path d="M185 63h43" stroke="var(--scene-pop-1)" stroke-width="5"/>
+                <path d="M198 55V34h17v21Z" fill="var(--scene-glass)"/>
+                <path d="M206 34V17" stroke="var(--scene-structure)" stroke-width="3"/>
+                <circle class="busan-tower-beacon" cx="206" cy="15" r="3" fill="var(--scene-light)" stroke="none"/>
+                <g class="tower-light-ring scene-night-lights" fill="var(--scene-light)" stroke="none"><path d="M189 68h39v5h-39Z"/></g>
+            </g>
+            <g class="park-trees" fill="var(--scene-ink)" stroke="none"><path d="M12 173q4-32 23-44q18 12 21 44ZM130 173q5-36 25-49q18 14 22 49ZM274 174q5-38 27-52q21 15 25 52ZM335 174q5-31 22-43q18 12 22 43Z"/></g>
+            <g class="tower-city-lights scene-night-lights" fill="var(--scene-light)" stroke="none"><circle cx="246" cy="147" r="2"/><circle cx="259" cy="153" r="1.6"/><circle cx="342" cy="148" r="2"/><circle cx="367" cy="154" r="1.6"/></g>
+        </g>`;
+}
+
+function createCinemaCenterSceneSvg() {
+    return `
+        <rect y="155" width="400" height="45" fill="var(--scene-ink)"/><path d="M0 177h400" stroke="var(--scene-line)" stroke-width="1.4" opacity=".56"/>
+        <g class="scene-landmark cinema-center-landmark" stroke="var(--scene-ink)" stroke-linejoin="round">
+            <path class="cinema-big-roof" d="M18 56h317l47 16l-42 18H27L5 73Z" fill="var(--scene-house)" stroke-width="2"/>
+            <path d="M27 76h320" stroke="var(--scene-pop-2)" stroke-width="7"/>
+            <g class="cinema-roof-leds scene-night-lights" fill="var(--scene-light)" stroke="none"><circle cx="45" cy="66" r="2"/><circle cx="70" cy="73" r="2"/><circle cx="98" cy="65" r="2"/><circle cx="128" cy="74" r="2"/><circle cx="158" cy="65" r="2"/><circle cx="189" cy="74" r="2"/><circle cx="220" cy="65" r="2"/><circle cx="251" cy="74" r="2"/><circle cx="282" cy="65" r="2"/><circle cx="314" cy="73" r="2"/></g>
+            <path class="cinema-projector" d="M75 89h238l48 66H28Z" fill="var(--scene-pop-3)" opacity=".09" stroke="none"/>
+            <path d="M171 89h59l22 66H148Z" fill="var(--scene-glass)" stroke-width="2"/>
+            <path d="M182 90h36l13 65h-63Z" fill="var(--scene-structure)" opacity=".48"/>
+            <path d="M38 95h109v60H38Z" fill="var(--scene-structure)" stroke-width="1.8"/><path d="M254 97h103v58H254Z" fill="var(--scene-structure)" stroke-width="1.8"/>
+            <path d="M50 107h84v35H50ZM267 108h77v34h-77Z" fill="var(--scene-glass)" stroke-width="1.2"/>
+            <g stroke="var(--scene-line)" stroke-width="1" opacity=".64"><path d="M71 107v35M92 107v35M113 107v35M286 108v34M305 108v34M324 108v34"/></g>
+            <path d="M145 155h110" stroke="var(--scene-pop-1)" stroke-width="5"/>
+            <g class="cinema-people" fill="var(--scene-light)" stroke="none"><circle cx="113" cy="149" r="3"/><path d="M110 153h6v8h-6Z"/><circle cx="286" cy="149" r="3"/><path d="M283 153h6v8h-6Z"/></g>
+        </g>`;
+}
+
 function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
     const safeSceneKey = BUSAN_SCENES[sceneKey] ? sceneKey : 'gwangan';
-    const artworkByScene = { gwangan: createGwanganSceneSvg, gamcheon: createGamcheonSceneSvg, nurimaru: createNurimaruSceneSvg, huinnyeoul: createHuinnyeoulSceneSvg, jagalchi: createJagalchiSceneSvg };
+    const artworkByScene = {
+        gwangan: createGwanganSceneSvg,
+        gamcheon: createGamcheonSceneSvg,
+        nurimaru: createNurimaruSceneSvg,
+        huinnyeoul: createHuinnyeoulSceneSvg,
+        jagalchi: createJagalchiSceneSvg,
+        haeundae: createHaeundaeSceneSvg,
+        lotteBusan: createLotteBusanSceneSvg,
+        busanTower: createBusanTowerSceneSvg,
+        cinemaCenter: createCinemaCenterSceneSvg
+    };
     const gradientId = `busanSceneSky${idSuffix || 'Header'}`;
 
     return `
     <div class="bridge-illustration-card busan-scene-card scene-${safeSceneKey}" data-scene="${safeSceneKey}">
         <svg class="gwangan-bridge-svg busan-scene-svg" viewBox="0 0 400 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs><linearGradient id="${gradientId}" x1="0" y1="0" x2="0" y2="1"><stop stop-color="var(--scene-sky-top)"/><stop offset="1" stop-color="var(--scene-sky-bottom)"/></linearGradient></defs>
-            <rect width="400" height="200" rx="16" fill="url(#${gradientId})"/>
+            <rect width="400" height="200" fill="url(#${gradientId})"/>
             ${createAtmosphereSvg()}${artworkByScene[safeSceneKey]()}
         </svg>
         <div class="hero-sticker" aria-hidden="true"><strong>BUSAN</strong></div>
@@ -574,7 +670,8 @@ function collapseCinematicIntro(overlay, target, duration) {
     const right = Math.max(0, window.innerWidth - rect.right);
     const bottom = Math.max(0, window.innerHeight - rect.bottom);
     const left = Math.max(0, rect.left);
-    const targetClip = `inset(${top}px ${right}px ${bottom}px ${left}px round 23px)`;
+    const targetRadius = window.getComputedStyle(target).borderTopLeftRadius || '22px';
+    const targetClip = `inset(${top}px ${right}px ${bottom}px ${left}px round ${targetRadius})`;
 
     overlay.classList.add('is-collapsing');
 
