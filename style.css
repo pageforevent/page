@@ -212,6 +212,51 @@ html[data-scene-theme="cinemaCenter"] {
     --place-surface: #181438;
 }
 
+html[data-scene-theme="gadeokdo"] {
+    --place-top: #174B70;
+    --place-bottom: #D06152;
+    --place-accent: #FFF078;
+    --place-accent-two: #62DFE7;
+    --place-accent-three: #FF665F;
+    --place-surface: #10283A;
+}
+
+html[data-scene-theme="eulsukdo"] {
+    --place-top: #315E55;
+    --place-bottom: #B88A4B;
+    --place-accent: #F6E572;
+    --place-accent-two: #69D9B4;
+    --place-accent-three: #F28D69;
+    --place-surface: #152C29;
+}
+
+html[data-scene-theme="beomeosa"] {
+    --place-top: #492F49;
+    --place-bottom: #9D573C;
+    --place-accent: #F5CE63;
+    --place-accent-two: #65C99A;
+    --place-accent-three: #D9585E;
+    --place-surface: #271C27;
+}
+
+html[data-scene-theme="sajik"] {
+    --place-top: #173D82;
+    --place-bottom: #CE4162;
+    --place-accent: #FFE85A;
+    --place-accent-two: #5CE5EA;
+    --place-accent-three: #FF597F;
+    --place-surface: #101D3F;
+}
+
+html[data-scene-theme="ahopsan"] {
+    --place-top: #123D36;
+    --place-bottom: #6E8A46;
+    --place-accent: #E8F260;
+    --place-accent-two: #63D59A;
+    --place-accent-three: #F39A68;
+    --place-surface: #102923;
+}
+
 html[data-scene-theme] {
     --page-top: color-mix(in srgb, var(--time-page-top) 58%, var(--place-top));
     --page-bottom: color-mix(in srgb, var(--time-page-bottom) 58%, var(--place-bottom));
@@ -647,6 +692,36 @@ body.is-intro {
     --map-pop: #BA69EC;
     --map-light: #E7FF50;
     --map-glass: #6FE5ED;
+}
+
+.map-landmark[data-map-scene="gadeokdo"] {
+    --map-pop: #FF665F;
+    --map-light: #FFF078;
+    --map-glass: #62DFE7;
+}
+
+.map-landmark[data-map-scene="eulsukdo"] {
+    --map-pop: #E98C68;
+    --map-light: #F6E572;
+    --map-glass: #69D9B4;
+}
+
+.map-landmark[data-map-scene="beomeosa"] {
+    --map-pop: #D9585E;
+    --map-light: #F5CE63;
+    --map-glass: #65C99A;
+}
+
+.map-landmark[data-map-scene="sajik"] {
+    --map-pop: #FF597F;
+    --map-light: #FFE85A;
+    --map-glass: #5CE5EA;
+}
+
+.map-landmark[data-map-scene="ahopsan"] {
+    --map-pop: #F39A68;
+    --map-light: #E8F260;
+    --map-glass: #63D59A;
 }
 
 .map-landmark-motion {
@@ -1285,6 +1360,79 @@ html[data-time-theme="night"] .night-firework {
     animation: projectorBreath 6.8s ease-in-out infinite alternate;
 }
 
+.gadeokdo-beam {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: lighthouseSweep 6.2s ease-in-out infinite alternate;
+}
+
+.gadeokdo-gulls {
+    animation: islandGulls 7.6s ease-in-out infinite alternate;
+}
+
+.eulsukdo-reeds {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: reedSway 5.8s ease-in-out infinite alternate;
+}
+
+.eulsukdo-flock {
+    animation: birdFlock 10.5s ease-in-out infinite alternate;
+}
+
+.eulsukdo-ripples {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: wetlandRipple 7.8s ease-in-out infinite alternate;
+}
+
+.beomeosa-trees {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: templeBreeze 7.4s ease-in-out infinite alternate;
+}
+
+.beomeosa-leaves {
+    animation: templeLeaves 8.8s ease-in-out infinite;
+}
+
+.sajik-scoreboard-glow {
+    animation: scoreboardPulse 3.4s steps(2, end) infinite;
+}
+
+.sajik-crowd {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: crowdWave 2.8s ease-in-out infinite alternate;
+}
+
+.sajik-cheer-streamer {
+    animation: cheerRun 6.4s linear infinite;
+}
+
+.ahopsan-bamboo {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+}
+
+.ahopsan-bamboo-left {
+    animation: bambooSwayLeft 7.2s ease-in-out infinite alternate;
+}
+
+.ahopsan-bamboo-right {
+    animation: bambooSwayRight 8.1s ease-in-out infinite alternate;
+}
+
+.ahopsan-light-shafts {
+    animation: forestLight 8.8s ease-in-out infinite alternate;
+}
+
+.ahopsan-walker {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: forestWalker 6.8s ease-in-out infinite alternate;
+}
+
 .huinnyeoul-boat,
 .jagalchi-boat {
     animation: boatBob 4.2s ease-in-out infinite alternate;
@@ -1292,6 +1440,24 @@ html[data-time-theme="night"] .night-firework {
 
 html[data-time-theme="night"] .bridge-traffic {
     animation: bridgeTraffic 5s linear infinite;
+}
+
+html[data-time-theme="morning"] .gadeokdo-beam,
+html[data-time-theme="day"] .gadeokdo-beam {
+    opacity: 0.07;
+}
+
+html[data-time-theme="sunset"] .gadeokdo-beam {
+    opacity: 0.28;
+}
+
+html[data-time-theme="night"] .gadeokdo-beam {
+    opacity: 0.68;
+    animation-duration: 4.8s;
+}
+
+html:not([data-time-theme="night"]) .ahopsan-fireflies {
+    opacity: 0.08;
 }
 
 html[data-time-theme="morning"] .bridge-led-flow {
@@ -1440,6 +1606,76 @@ html[data-time-theme="night"] .market-fish-mark {
 @keyframes projectorBreath {
     from { transform: scaleX(0.88); opacity: 0.04; }
     to { transform: scaleX(1.04); opacity: 0.16; }
+}
+
+@keyframes lighthouseSweep {
+    from { transform: scaleX(0.76) skewY(-2deg); opacity: 0.12; }
+    to { transform: scaleX(1.08) skewY(2deg); opacity: 0.72; }
+}
+
+@keyframes islandGulls {
+    from { transform: translate(-7px, 3px); opacity: 0.55; }
+    to { transform: translate(14px, -5px); opacity: 1; }
+}
+
+@keyframes reedSway {
+    from { transform: skewX(-1.2deg); }
+    to { transform: skewX(1.4deg); }
+}
+
+@keyframes birdFlock {
+    from { transform: translate(-10px, 5px); opacity: 0.54; }
+    to { transform: translate(21px, -8px); opacity: 0.98; }
+}
+
+@keyframes wetlandRipple {
+    from { transform: scaleX(0.91) translateX(-4px); opacity: 0.44; }
+    to { transform: scaleX(1.04) translateX(5px); opacity: 0.82; }
+}
+
+@keyframes templeBreeze {
+    from { transform: skewX(-0.55deg); }
+    to { transform: skewX(0.65deg); }
+}
+
+@keyframes templeLeaves {
+    0% { transform: translate(0, -8px) rotate(0); opacity: 0; }
+    18%, 72% { opacity: 0.88; }
+    100% { transform: translate(18px, 25px) rotate(75deg); opacity: 0; }
+}
+
+@keyframes scoreboardPulse {
+    0%, 58%, 100% { opacity: 0.58; }
+    65%, 86% { opacity: 1; }
+}
+
+@keyframes crowdWave {
+    from { transform: translateY(1px) scaleY(0.94); opacity: 0.62; }
+    to { transform: translateY(-3px) scaleY(1.06); opacity: 1; }
+}
+
+@keyframes cheerRun {
+    to { stroke-dashoffset: -68; }
+}
+
+@keyframes bambooSwayLeft {
+    from { transform: rotate(-0.45deg); }
+    to { transform: rotate(0.7deg); }
+}
+
+@keyframes bambooSwayRight {
+    from { transform: rotate(0.55deg); }
+    to { transform: rotate(-0.65deg); }
+}
+
+@keyframes forestLight {
+    from { transform: translateX(-7px) skewX(-2deg); opacity: 0.06; }
+    to { transform: translateX(9px) skewX(2deg); opacity: 0.2; }
+}
+
+@keyframes forestWalker {
+    from { transform: translateY(1px) rotate(-0.5deg); }
+    to { transform: translateY(-4px) rotate(0.6deg); }
 }
 
 @keyframes morningMist {
@@ -2747,7 +2983,12 @@ html[data-performance="lite"] .jagalchi-harbor-gulls,
 html[data-performance="lite"] .beach-parasols,
 html[data-performance="lite"] .lotte-facade-glint,
 html[data-performance="lite"] .park-trees,
-html[data-performance="lite"] .cinema-projector {
+html[data-performance="lite"] .cinema-projector,
+html[data-performance="lite"] .eulsukdo-flock,
+html[data-performance="lite"] .beomeosa-leaves,
+html[data-performance="lite"] .sajik-crowd,
+html[data-performance="lite"] .ahopsan-light-shafts,
+html[data-performance="lite"] .ahopsan-walker {
     animation: none;
 }
 
@@ -2759,6 +3000,9 @@ html[data-performance="lite"] .scene-water-lines,
 html[data-performance="lite"] .bridge-led-flow,
 html[data-performance="lite"] .gamcheon-cloud-shadow,
 html[data-performance="lite"] .nurimaru-glass-shimmer,
-html[data-performance="lite"] .coastal-route-line {
+html[data-performance="lite"] .coastal-route-line,
+html[data-performance="lite"] .gadeokdo-beam,
+html[data-performance="lite"] .eulsukdo-ripples,
+html[data-performance="lite"] .sajik-cheer-streamer {
     animation-duration: 14s;
 }

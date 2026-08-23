@@ -331,7 +331,7 @@ function createGwanganBridgeIllustrationSvg(idSuffix = '') {
     `;
 }
 
-// 다섯 장소의 실루엣은 고정하고, 네 시간대의 팔레트와 모션은 CSS로 바꿉니다.
+// 열네 장소의 실루엣은 고정하고, 네 시간대의 팔레트와 모션은 CSS로 바꿉니다.
 const BUSAN_SCENES = {
     gwangan: true,
     gamcheon: true,
@@ -341,7 +341,12 @@ const BUSAN_SCENES = {
     haeundae: true,
     lotteBusan: true,
     busanTower: true,
-    cinemaCenter: true
+    cinemaCenter: true,
+    gadeokdo: true,
+    eulsukdo: true,
+    beomeosa: true,
+    sajik: true,
+    ahopsan: true
 };
 
 // 부산시·관광 포털에서 쓰는 영문 장소명과 각 랜드마크의 대표 좌표입니다.
@@ -400,6 +405,36 @@ const BUSAN_SCENE_LOCATIONS = {
         coordinates: '35.1712° N · 129.1272° E',
         latitude: 35.1712,
         longitude: 129.1272
+    },
+    gadeokdo: {
+        name: 'GADEOKDO LIGHTHOUSE',
+        coordinates: '34.9904° N · 128.8291° E',
+        latitude: 34.9904,
+        longitude: 128.8291
+    },
+    eulsukdo: {
+        name: 'EULSUKDO MIGRATORY BIRD PARK',
+        coordinates: '35.1063° N · 128.9573° E',
+        latitude: 35.1063,
+        longitude: 128.9573
+    },
+    beomeosa: {
+        name: 'BEOMEOSA TEMPLE',
+        coordinates: '35.2841° N · 129.0687° E',
+        latitude: 35.2841,
+        longitude: 129.0687
+    },
+    sajik: {
+        name: 'SAJIK BASEBALL STADIUM',
+        coordinates: '35.1942° N · 129.0615° E',
+        latitude: 35.1942,
+        longitude: 129.0615
+    },
+    ahopsan: {
+        name: 'AHOPSAN FOREST',
+        coordinates: '35.2863° N · 129.1770° E',
+        latitude: 35.2863,
+        longitude: 129.1770
     }
 };
 
@@ -436,6 +471,11 @@ function projectBusanCoordinate(longitude, latitude) {
 
 // 실제 핀은 경위도 위치에 고정하고, 랜드마크 그림만 연결선과 함께 조금씩 벌립니다.
 const BUSAN_MAP_LANDMARK_LAYOUT = {
+    gadeokdo: { x: 145, y: 920 },
+    eulsukdo: { x: 180, y: 740 },
+    beomeosa: { x: 480, y: 350 },
+    sajik: { x: 515, y: 465 },
+    ahopsan: { x: 735, y: 385 },
     gamcheon: { x: 330, y: 700 },
     lotteBusan: { x: 500, y: 580 },
     busanTower: { x: 440, y: 810 },
@@ -485,10 +525,10 @@ function chooseRandomBusanScene() {
     const previewScene = new URLSearchParams(window.location.search).get('scene');
     if (previewScene && BUSAN_SCENES[previewScene]) return previewScene;
 
-    // 한 장소가 연속으로 뽑히지 않고, 아홉 장소를 모두 본 뒤 다시 섞습니다.
+    // 한 장소가 연속으로 뽑히지 않고, 열네 장소를 모두 본 뒤 다시 섞습니다.
     try {
-        const bagKey = 'busan-scene-bag-v3';
-        const lastKey = 'busan-scene-last-v3';
+        const bagKey = 'busan-scene-bag-v4';
+        const lastKey = 'busan-scene-last-v4';
         const lastScene = window.localStorage.getItem(lastKey);
         let sceneBag = JSON.parse(window.localStorage.getItem(bagKey) || '[]')
             .filter((key) => keys.includes(key));
@@ -741,6 +781,140 @@ function createCinemaCenterSceneSvg() {
         </g>`;
 }
 
+function createGadeokdoSceneSvg() {
+    return `
+        <rect y="126" width="400" height="74" fill="var(--scene-sea-top)"/>
+        <path d="M0 171q78-13 156 0t156 0t156 0v29H0Z" fill="var(--scene-sea-bottom)"/>
+        <path d="M0 117Q58 77 118 91q44 11 83 51l25 58H0Z" fill="var(--scene-hill)"/>
+        <g class="gadeokdo-beam" opacity=".18">
+            <path d="M248 55L400 12V78Z" fill="var(--scene-light)"/>
+        </g>
+        <g class="scene-landmark gadeokdo-landmark scene-kitsch">
+            <path class="kitsch-shadow" d="M91 165h235v9H91Z"/>
+            <g class="gadeokdo-keeper-house kitsch-main">
+                <path d="M111 112h95v53h-95Z" fill="var(--scene-house)"/>
+                <path d="M101 112l59-31l58 31Z" fill="var(--scene-pop-1)"/>
+                <path d="M128 129h22v36h-22ZM169 127h22v19h-22Z" fill="var(--scene-glass)"/>
+                <path d="M108 165h103" fill="none" stroke="var(--scene-line)" stroke-width="4"/>
+            </g>
+            <g class="gadeokdo-lighthouse kitsch-main">
+                <path d="M222 160l9-88h36l9 88Z" fill="var(--scene-structure)"/>
+                <path d="M228 100h42M225 124h48" fill="none" stroke="var(--scene-pop-2)" stroke-width="7"/>
+                <path d="M226 72l7-20h32l7 20Z" fill="var(--scene-house)"/>
+                <path d="M232 49h34v12h-34Z" fill="var(--scene-glass)"/>
+                <path d="M225 49h48l-24-18Z" fill="var(--scene-pop-1)"/>
+                <circle class="gadeokdo-beacon scene-night-lights" cx="249" cy="48" r="5" fill="var(--scene-light)" stroke="none"/>
+                <path d="M249 31V18" fill="none" stroke-width="4"/>
+            </g>
+            <g class="gadeokdo-rocks kitsch-main" fill="var(--scene-ink)">
+                <path d="M0 174l23-25l22 11l25-27l29 41ZM279 176l22-22l17 8l22-28l36 42Z"/>
+            </g>
+            <g class="gadeokdo-gulls" fill="none" stroke="var(--scene-ink-soft)" stroke-width="2.2" stroke-linecap="round">
+                <path d="M304 87q8-9 16 0q8-9 16 0M342 105q5-6 10 0q5-6 10 0"/>
+            </g>
+        </g>
+        <g class="scene-water-lines" fill="none" stroke="var(--scene-water-line)" stroke-width="1.4" opacity=".72"><path d="M212 148q50-7 100 0t100 0M186 184q58-8 116 0t116 0"/></g>`;
+}
+
+function createEulsukdoSceneSvg() {
+    return `
+        <rect y="111" width="400" height="89" fill="var(--scene-sea-top)"/>
+        <path d="M0 159q87-14 174 0t174 0t174 0v41H0Z" fill="var(--scene-sea-bottom)"/>
+        <path d="M0 132Q67 110 128 123q67 13 132-4q71-18 140 5v30H0Z" fill="var(--scene-hill)"/>
+        <g class="scene-landmark eulsukdo-landmark scene-kitsch">
+            <g class="eulsukdo-reeds kitsch-detail" stroke="var(--scene-pop-3)" stroke-width="3" stroke-linecap="round">
+                <path d="M18 190q5-40 0-73M29 190q-2-49 8-83M43 190q3-40 15-70M67 190q-4-45-1-77M82 190q4-39 16-65M304 190q-4-48 1-80M320 190q3-43 16-73M344 190q-2-51 7-84M369 190q2-42 14-71M389 190q-3-37-2-68"/>
+                <path d="M13 122q11 0 17 9M34 111q9 2 14 11M60 119q10-1 16 8M299 116q10-1 17 8M342 112q10 1 15 10M377 124q8-1 13 7" stroke="var(--scene-light)"/>
+            </g>
+            <g class="eulsukdo-eco-center kitsch-main">
+                <path d="M118 151V87h142v64Z" fill="var(--scene-house)"/>
+                <path d="M102 91l88-42l88 42Z" fill="var(--scene-pop-2)"/>
+                <path d="M135 99h109v38H135Z" fill="var(--scene-glass)"/>
+                <g class="kitsch-detail" opacity=".72"><path d="M157 99v38M189 99v38M221 99v38M135 118h109"/></g>
+                <path d="M107 151h166" fill="none" stroke="var(--scene-pop-1)" stroke-width="6"/>
+                <path d="M174 118h31v33h-31Z" fill="var(--scene-ink)"/>
+            </g>
+            <g class="eulsukdo-flock" fill="none" stroke="var(--scene-ink-soft)" stroke-width="2.1" stroke-linecap="round">
+                <path d="M46 57q8-8 16 0q8-8 16 0M79 41q6-7 12 0q6-7 12 0M292 59q8-9 16 0q8-9 16 0M326 42q5-6 10 0q5-6 10 0"/>
+            </g>
+            <path class="eulsukdo-boardwalk" d="M78 190L153 147h71l82 43" fill="none" stroke="var(--scene-house)" stroke-width="9" stroke-linecap="round"/>
+            <path d="M78 190L153 147h71l82 43" fill="none" stroke="var(--scene-pop-1)" stroke-width="2" stroke-dasharray="10 8"/>
+        </g>
+        <g class="scene-water-lines eulsukdo-ripples" fill="none" stroke="var(--scene-water-line)" stroke-width="1.4" opacity=".7"><path d="M91 167q42-6 84 0t84 0M224 181q38-6 76 0t76 0"/></g>`;
+}
+
+function createBeomeosaSceneSvg() {
+    return `
+        <path d="M0 113Q54 56 112 89q54-65 111-20q55-49 110 3q34-24 67 2v126H0Z" fill="var(--scene-hill)"/>
+        <path d="M0 151q81-27 162-4q94-34 238 4v49H0Z" fill="var(--scene-ink)" opacity=".16"/>
+        <g class="scene-landmark beomeosa-landmark scene-kitsch">
+            <g class="beomeosa-trees" fill="var(--scene-ink)"><path d="M5 174q4-58 35-83q30 24 34 83ZM324 174q5-64 39-91q31 27 35 91Z"/></g>
+            <g class="beomeosa-gate kitsch-main">
+                <path d="M52 101Q77 92 91 76Q137 61 183 76Q197 92 222 101Q178 95 137 95Q95 95 52 101Z" fill="var(--scene-ink)"/>
+                <path d="M65 96Q137 75 209 96L218 105Q137 91 56 105Z" fill="var(--scene-pop-2)"/>
+                <path d="M61 105h151v14H61Z" fill="var(--scene-house)"/>
+                <path d="M78 119h118v54H78Z" fill="var(--scene-house)"/>
+                <path d="M88 119h12v54H88ZM119 119h12v54h-12ZM150 119h12v54h-12ZM181 119h12v54h-12Z" fill="var(--scene-pop-1)"/>
+                <path d="M91 133h92v27H91Z" fill="var(--scene-glass)"/>
+                <path d="M118 108h38v16h-38Z" fill="var(--scene-ink)"/><path d="M126 113h22" fill="none" stroke="var(--scene-light)" stroke-width="3"/>
+                <path d="M54 173h166" fill="none" stroke="var(--scene-pop-1)" stroke-width="6"/>
+            </g>
+            <g class="beomeosa-pagoda kitsch-main">
+                <path d="M272 165h61v9h-61ZM282 151h41v14h-41ZM276 148h53l-9-8h-35ZM286 127h33v13h-33ZM280 124h45l-8-8h-29ZM292 98h21v18h-21ZM285 96h35l-17-12Z" fill="var(--scene-structure)"/>
+            </g>
+            <g class="beomeosa-lanterns scene-night-lights" fill="var(--scene-light)">
+                <circle cx="103" cy="128" r="5"/><circle cx="170" cy="128" r="5"/><circle cx="238" cy="144" r="4"/>
+            </g>
+            <g class="beomeosa-leaves" fill="var(--scene-pop-1)"><path d="M46 64q10-8 16 4q-11 7-16-4ZM231 69q9-8 15 3q-10 8-15-3ZM354 54q10-7 15 5q-11 6-15-5Z"/></g>
+            <path class="beomeosa-path" d="M111 200q26-38 52-38h37q31 8 54 38Z" fill="var(--scene-house)" opacity=".72"/>
+        </g>`;
+}
+
+function createSajikSceneSvg() {
+    return `
+        <path d="M0 159H400V200H0Z" fill="var(--scene-ink)"/>
+        <path d="M0 183q95-13 190 0t210 0v17H0Z" fill="var(--scene-hill)" opacity=".75"/>
+        <g class="scene-landmark sajik-landmark scene-kitsch">
+            <g class="sajik-light-towers kitsch-detail"><path d="M38 151V48M29 49h37M51 49v102M337 151V48M328 49h37M350 49v102" fill="none"/><g fill="var(--scene-light)" stroke="none"><circle cx="34" cy="49" r="4"/><circle cx="47" cy="49" r="4"/><circle cx="61" cy="49" r="4"/><circle cx="333" cy="49" r="4"/><circle cx="347" cy="49" r="4"/><circle cx="361" cy="49" r="4"/></g></g>
+            <g class="sajik-stadium kitsch-main">
+                <path d="M54 99Q200 31 346 99L326 170H74Z" fill="var(--scene-structure)"/>
+                <path d="M71 103Q200 52 329 103l-15 39H86Z" fill="var(--scene-pop-3)"/>
+                <path d="M99 111Q200 76 301 111l-10 35H109Z" fill="var(--scene-glass)"/>
+                <path d="M127 131Q200 104 273 131l-19 32H146Z" fill="var(--scene-hill)"/>
+                <path d="M54 100Q200 31 346 100" fill="none" stroke="var(--scene-pop-1)" stroke-width="7"/>
+            </g>
+            <g class="sajik-scoreboard kitsch-main">
+                <path d="M163 61h74v44h-74Z" fill="var(--scene-ink)"/>
+                <path class="sajik-scoreboard-glow" d="M172 70h56v25h-56Z" fill="var(--scene-light)" stroke="none"/>
+                <path d="M182 78h10v10h-10ZM208 78h10v10h-10Z" fill="var(--scene-pop-1)" stroke="none"/>
+            </g>
+            <g class="sajik-crowd" fill="var(--scene-light)"><circle cx="96" cy="110" r="3"/><circle cx="116" cy="101" r="3"/><circle cx="139" cy="94" r="3"/><circle cx="261" cy="94" r="3"/><circle cx="284" cy="101" r="3"/><circle cx="304" cy="110" r="3"/></g>
+            <path class="sajik-cheer-streamer" d="M88 121q53-24 106 0t112 0" fill="none" stroke="var(--scene-light)" stroke-width="3" stroke-dasharray="9 8"/>
+            <path d="M23 170H377" stroke="var(--scene-pop-2)" stroke-width="5"/>
+        </g>`;
+}
+
+function createAhopsanSceneSvg() {
+    return `
+        <path d="M0 118Q69 57 133 85q63-39 124 0q72-31 143 24v91H0Z" fill="var(--scene-hill)"/>
+        <path class="ahopsan-path" d="M151 200q28-77 53-101q23 28 53 101Z" fill="var(--scene-house)" opacity=".78"/>
+        <g class="scene-landmark ahopsan-landmark scene-kitsch">
+            <g class="ahopsan-light-shafts" fill="var(--scene-light)" opacity=".12"><path d="M61 0h30l79 200h-47ZM290 0h26l-42 200h-50Z"/></g>
+            <g class="ahopsan-bamboo ahopsan-bamboo-left kitsch-main" fill="var(--scene-pop-2)">
+                <path d="M25 200L42 15h18L49 200ZM80 200L92 31h17l-4 169ZM126 200l5-151h16l4 151Z"/>
+                <g class="kitsch-detail"><path d="M35 83h20M32 125h20M87 88h19M84 132h20M128 96h20M128 139h21"/></g>
+                <g fill="var(--scene-hill)" stroke="none"><path d="M47 54q-34-18-39 10q27 12 39-10ZM55 76q33-20 43 6q-27 15-43-6ZM97 60q-31-20-40 6q25 16 40-6ZM104 96q29-18 40 6q-23 15-40-6ZM139 73q-24-14-32 7q20 12 32-7Z"/></g>
+            </g>
+            <g class="ahopsan-bamboo ahopsan-bamboo-right kitsch-main" fill="var(--scene-pop-2)">
+                <path d="M351 200L340 19h18l16 181ZM301 200l-7-165h17l15 165ZM258 200l-1-148h16l10 148Z"/>
+                <g class="kitsch-detail"><path d="M343 81h20M347 124h20M294 91h20M298 134h21M256 98h19M259 141h19"/></g>
+                <g fill="var(--scene-hill)" stroke="none"><path d="M350 54q32-20 41 7q-25 16-41-7ZM341 82q-31-18-41 7q25 14 41-7ZM304 62q28-18 39 6q-22 15-39-6ZM298 102q-28-17-38 7q23 14 38-7ZM265 76q24-15 33 6q-19 12-33-6Z"/></g>
+            </g>
+            <g class="ahopsan-fireflies scene-night-lights" fill="var(--scene-light)"><circle cx="173" cy="91" r="2.8"/><circle cx="223" cy="76" r="2.2"/><circle cx="187" cy="133" r="2.4"/><circle cx="237" cy="148" r="2.7"/><circle cx="207" cy="112" r="1.8"/></g>
+            <g class="ahopsan-walker" fill="var(--scene-ink)"><circle cx="204" cy="133" r="5"/><path d="M199 139h10l3 21l-8 12l-8-12Z"/></g>
+        </g>`;
+}
+
 function createBusanMapLandmarkArtwork(sceneKey) {
     const artwork = {
         gwangan: `
@@ -817,6 +991,51 @@ function createBusanMapLandmarkArtwork(sceneKey) {
                 <path d="M-15-13h36l16 70h-69Z" fill="var(--map-glass)"/>
                 <path d="M-77-5h58v62h-58ZM30-3h48v60H30Z" fill="var(--map-structure)"/>
                 <g fill="var(--map-light)" stroke="none"><circle cx="-65" cy="-36" r="3"/><circle cx="-35" cy="-29" r="3"/><circle cx="-4" cy="-37" r="3"/><circle cx="27" cy="-29" r="3"/><circle cx="57" cy="-36" r="3"/></g>
+            </g>`,
+        gadeokdo: `
+            <path class="map-water" d="M-90 38q44-10 88 0t92 0v31H-90Z"/>
+            <path class="map-hill" d="M-91 45Q-62 5-25 23Q2 38 19 69H-91Z"/>
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M3 58L12-31H45L54 58Z" fill="var(--map-structure)"/>
+                <path d="M8-31l7-18h27l7 18Z" fill="var(--map-paper)"/>
+                <path d="M11-52h35L28-69Z" fill="var(--map-pop)"/>
+                <path d="M8 4h41" stroke="var(--map-light)" stroke-width="7"/>
+                <path d="M-64 22h63v43h-63Z" fill="var(--map-paper)"/>
+                <path d="M-71 22l39-24L7 22Z" fill="var(--map-pop)"/>
+            </g>`,
+        eulsukdo: `
+            <path class="map-water" d="M-91 20q45-10 90 0t91 0v49H-91Z"/>
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-58 43V-17H57V43Z" fill="var(--map-paper)"/>
+                <path d="M-69-14L0-52L69-14Z" fill="var(--map-pop)"/>
+                <path d="M-43-5H42V27H-43Z" fill="var(--map-glass)"/>
+                <path d="M-88 65L-38 40H37L88 65" fill="none" stroke="var(--map-light)" stroke-width="7"/>
+                <path d="M-82-43q8-8 16 0q8-8 16 0M46-37q7-8 14 0q7-8 14 0" fill="none" stroke="var(--map-paper)"/>
+            </g>`,
+        beomeosa: `
+            <path class="map-hill" d="M-92 29Q-45-33 0 5Q40-39 92 18V69H-92Z"/>
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-72-4Q0-58 72-4Q0-22-72-4Z" fill="var(--map-pop)"/>
+                <path d="M-79 2H79V17H-79Z" fill="var(--map-paper)"/>
+                <path d="M-62 17H62V63H-62Z" fill="var(--map-structure)"/>
+                <path d="M-45 18v45M-15 18v45M15 18v45M45 18v45" fill="none" stroke="var(--map-light)"/>
+                <path d="M-88 64H88" stroke="var(--map-pop)" stroke-width="7"/>
+            </g>`,
+        sajik: `
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-88-5Q0-58 88-5L72 57H-72Z" fill="var(--map-structure)"/>
+                <path d="M-70 0Q0-35 70 0L58 34H-58Z" fill="var(--map-pop)"/>
+                <path d="M-42 18Q0-5 42 18L28 50H-28Z" fill="var(--map-glass)"/>
+                <path d="M-25-47h50v35h-50Z" fill="var(--map-ink)"/>
+                <path d="M-17-39h34v18h-34Z" fill="var(--map-light)" stroke="none"/>
+                <path d="M-88-4Q0-58 88-4" fill="none" stroke="var(--map-paper)" stroke-width="6"/>
+            </g>`,
+        ahopsan: `
+            <path class="map-hill" d="M-92 17Q-44-25 0 6Q43-31 92 12V69H-92Z"/>
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-72 67L-58-67h18L-47 67ZM-30 67L-23-54h17L-7 67ZM49 67L39-62h18L70 67ZM9 67L8-49h17l4 116Z" fill="var(--map-glass)"/>
+                <path d="M-53-38q-31-17-37 9q25 14 37-9ZM-45-10q31-18 39 7q-25 13-39-7ZM50-32q30-18 39 7q-24 14-39-7ZM43 1q-28-17-37 6q23 14 37-6Z" fill="var(--map-pop)" stroke="none"/>
+                <path d="M-19 69Q0 8 18 69Z" fill="var(--map-paper)"/>
             </g>`
     };
 
@@ -877,7 +1096,12 @@ function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
         haeundae: createHaeundaeSceneSvg,
         lotteBusan: createLotteBusanSceneSvg,
         busanTower: createBusanTowerSceneSvg,
-        cinemaCenter: createCinemaCenterSceneSvg
+        cinemaCenter: createCinemaCenterSceneSvg,
+        gadeokdo: createGadeokdoSceneSvg,
+        eulsukdo: createEulsukdoSceneSvg,
+        beomeosa: createBeomeosaSceneSvg,
+        sajik: createSajikSceneSvg,
+        ahopsan: createAhopsanSceneSvg
     };
     const gradientId = `busanSceneSky${idSuffix || 'Header'}`;
 
