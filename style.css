@@ -481,7 +481,6 @@ body.is-intro {
     --map-sea-bottom: color-mix(in srgb, var(--time-page-bottom) 72%, #062B55);
     --map-land-top: color-mix(in srgb, var(--time-accent-two) 38%, #235F5A);
     --map-land-bottom: color-mix(in srgb, var(--time-page-bottom) 56%, #13372F);
-    --map-cloud: color-mix(in srgb, #FFFFFF 78%, var(--time-accent-two));
     clip-path: none;
     background:
         radial-gradient(circle at 50% 46%, color-mix(in srgb, var(--time-accent-two) 19%, transparent), transparent 38%),
@@ -526,6 +525,11 @@ body.is-intro {
     isolation: isolate;
     contain: layout style;
     border-radius: 4.8%;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--time-accent-two) 24%, transparent);
+    background:
+        radial-gradient(circle at 52% 44%, color-mix(in srgb, var(--time-accent-two) 12%, transparent), transparent 42%),
+        linear-gradient(160deg, var(--map-sea-top), var(--map-sea-bottom));
     box-shadow: 0 28px 48px rgba(0, 0, 0, 0.28);
     backface-visibility: hidden;
     will-change: transform, opacity;
@@ -540,40 +544,27 @@ body.is-intro {
     filter: none;
 }
 
-.map-district-glow {
-    fill: none;
-    stroke: color-mix(in srgb, var(--time-accent) 58%, #FFFFFF);
-    stroke-width: 12;
-    stroke-linejoin: round;
-    opacity: 0.17;
-}
-
 .map-district-geometry {
-    stroke: color-mix(in srgb, var(--time-accent-two) 54%, #DDFDFF);
-    stroke-width: 2.4;
+    stroke: url(#mapLandGradient);
+    stroke-width: 3;
     stroke-linejoin: round;
+    filter:
+        drop-shadow(0 0 1px color-mix(in srgb, var(--time-accent-two) 84%, #FFFFFF))
+        drop-shadow(0 0 5px color-mix(in srgb, var(--time-accent-two) 54%, transparent))
+        drop-shadow(0 12px 18px rgba(0, 9, 24, 0.24));
 }
 
 .map-district-geometry path {
-    transition: opacity 0.4s ease;
-}
-
-.map-river {
-    fill: none;
-    stroke: color-mix(in srgb, var(--map-sea-top) 82%, var(--time-accent-two));
-    stroke-width: 9;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    opacity: 0.48;
+    shape-rendering: geometricPrecision;
 }
 
 .map-location-guide {
     fill: none;
-    stroke: color-mix(in srgb, var(--time-accent-two) 72%, #FFFFFF);
-    stroke-width: 2.2;
+    stroke: color-mix(in srgb, var(--time-accent-two) 84%, #FFFFFF);
+    stroke-width: 2.8;
     stroke-linecap: round;
-    stroke-dasharray: 4 7;
-    opacity: 0.52;
+    stroke-dasharray: 5 7;
+    opacity: 0.74;
     transition: opacity 0.45s ease;
 }
 
@@ -590,79 +581,12 @@ body.is-intro {
 
 .map-location-guide.is-selected {
     stroke: var(--time-accent);
-    stroke-width: 3.2;
+    stroke-width: 4;
     opacity: 1;
 }
 
 .map-location-guide.is-selected circle:first-of-type {
     filter: drop-shadow(0 0 8px color-mix(in srgb, var(--time-accent) 76%, transparent));
-}
-
-.map-wave-lines {
-    stroke: color-mix(in srgb, var(--time-accent-two) 62%, #FFFFFF);
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-dasharray: 34 18;
-    opacity: 0.44;
-    animation: mapWaveDrift 10s linear infinite;
-}
-
-.map-clouds {
-    opacity: 0.72;
-    animation: mapCloudDrift 11s ease-in-out infinite alternate;
-}
-
-.map-time-layer {
-    opacity: 0;
-}
-
-html[data-time-theme="morning"] .map-morning-layer,
-html[data-time-theme="day"] .map-day-layer,
-html[data-time-theme="sunset"] .map-sunset-layer,
-html[data-time-theme="night"] .map-night-layer {
-    opacity: 1;
-}
-
-.map-morning-layer circle {
-    fill: var(--time-accent);
-    opacity: 0.76;
-}
-
-.map-morning-layer path {
-    fill: none;
-    stroke: var(--map-cloud);
-    stroke-width: 22;
-    stroke-linecap: round;
-    opacity: 0.34;
-}
-
-.map-day-layer circle {
-    fill: var(--time-accent);
-}
-
-.map-day-layer path {
-    fill: none;
-    stroke: var(--time-accent);
-    stroke-width: 8;
-    stroke-linecap: round;
-}
-
-.map-sunset-layer circle {
-    fill: var(--time-accent);
-    opacity: 0.82;
-}
-
-.map-sunset-layer path {
-    fill: var(--time-accent);
-    opacity: 0.12;
-}
-
-.map-night-layer path {
-    fill: color-mix(in srgb, var(--time-accent) 80%, #FFFFFF);
-}
-
-.map-night-layer circle {
-    fill: var(--time-accent-two);
 }
 
 .map-landmark {
@@ -732,6 +656,20 @@ html[data-time-theme="night"] .map-night-layer {
     animation-delay: calc(var(--map-order) * -0.31s);
 }
 
+.map-landmark-badge {
+    fill: color-mix(in srgb, var(--map-ink) 90%, var(--map-pop));
+    stroke: color-mix(in srgb, var(--map-light) 46%, #FFFFFF);
+    stroke-width: 2.5;
+    filter: drop-shadow(0 7px 0 rgba(0, 8, 20, 0.22));
+    transition: fill 0.35s ease, stroke 0.35s ease;
+}
+
+.map-landmark.is-selected .map-landmark-badge {
+    fill: color-mix(in srgb, var(--map-ink) 76%, var(--map-pop));
+    stroke: var(--map-light);
+    stroke-width: 4;
+}
+
 .map-landmark-shadow {
     fill: rgba(1, 10, 22, 0.22);
     stroke: none;
@@ -760,10 +698,9 @@ html[data-time-theme="night"] .map-night-layer {
 }
 
 .map-focus-ring {
-    fill: color-mix(in srgb, var(--map-light) 13%, transparent);
+    fill: color-mix(in srgb, var(--map-light) 11%, transparent);
     stroke: var(--map-light);
-    stroke-width: 5;
-    stroke-dasharray: 9 10;
+    stroke-width: 4;
     opacity: 0;
     transform-box: fill-box;
     transform-origin: center;
@@ -783,10 +720,49 @@ html[data-time-theme="night"] .map-night-layer {
 }
 
 .busan-map-intro.is-focusing .map-landmark-motion,
-.busan-map-intro.is-focusing .map-focus-ring,
-.busan-map-intro.is-focusing .map-wave-lines,
-.busan-map-intro.is-focusing .map-clouds {
+.busan-map-intro.is-focusing .map-focus-ring {
     animation: none !important;
+}
+
+.map-selected-caption {
+    position: absolute;
+    top: max(1.2rem, env(safe-area-inset-top));
+    left: 50%;
+    z-index: 7;
+    display: grid;
+    gap: 0.28rem;
+    width: max-content;
+    max-width: calc(100vw - 2rem);
+    padding: 0.7rem 0.86rem 0.72rem;
+    border: 1px solid color-mix(in srgb, var(--time-accent-two) 46%, #FFFFFF);
+    border-radius: 10px;
+    color: #F8FBFF;
+    background: color-mix(in srgb, #07172A 88%, var(--time-accent));
+    box-shadow: 5px 5px 0 rgba(0, 8, 20, 0.42);
+    transform: translateX(-50%);
+    text-align: center;
+    pointer-events: none;
+    transition: opacity 0.28s ease, transform 0.34s ease;
+}
+
+.map-selected-caption strong {
+    font-size: clamp(0.68rem, 2vw, 0.84rem);
+    font-weight: 950;
+    line-height: 1.1;
+    letter-spacing: 0.075em;
+}
+
+.map-selected-caption span {
+    font-size: clamp(0.56rem, 1.55vw, 0.68rem);
+    font-weight: 780;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    opacity: 0.72;
+}
+
+.busan-map-intro.is-focusing .map-selected-caption {
+    opacity: 0;
+    transform: translate(-50%, 10px);
 }
 
 .map-intro-grain {
@@ -821,22 +797,22 @@ html[data-time-theme="night"] .map-night-layer {
     50% { transform: scale(1.08) rotate(8deg); opacity: 1; }
 }
 
-@keyframes mapRouteFlow {
-    to { stroke-dashoffset: -88; }
-}
-
-@keyframes mapWaveDrift {
-    to { stroke-dashoffset: -104; }
-}
-
-@keyframes mapCloudDrift {
-    from { transform: translate3d(-14px, 0, 0); }
-    to { transform: translate3d(20px, 4px, 0); }
-}
-
 @media (min-aspect-ratio: 4 / 3) {
     .busan-map-world {
-        width: min(74vw, 88vh);
+        width: min(96vw, 152.9vh);
+        aspect-ratio: 124 / 73;
+        border-radius: 32px;
+    }
+
+    .map-selected-caption {
+        top: max(3rem, env(safe-area-inset-top));
+        left: max(1.5rem, 7vw);
+        transform: none;
+        text-align: left;
+    }
+
+    .busan-map-intro.is-focusing .map-selected-caption {
+        transform: translateY(10px);
     }
 
     .busan-map-intro::before {
@@ -869,13 +845,10 @@ html[data-performance="lite"] .busan-map-world {
 }
 
 html[data-performance="lite"] .map-landmark-motion,
-html[data-performance="lite"] .map-wave-lines,
-html[data-performance="lite"] .map-clouds,
 html[data-performance="lite"] .map-focus-ring {
     animation: none !important;
 }
 
-html[data-performance="lite"] .map-clouds,
 html[data-performance="lite"] .map-intro-grain {
     display: none;
 }

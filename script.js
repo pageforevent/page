@@ -436,15 +436,15 @@ function projectBusanCoordinate(longitude, latitude) {
 
 // 실제 핀은 경위도 위치에 고정하고, 랜드마크 그림만 연결선과 함께 조금씩 벌립니다.
 const BUSAN_MAP_LANDMARK_LAYOUT = {
-    gamcheon: { x: 350, y: 735 },
-    lotteBusan: { x: 485, y: 610 },
-    busanTower: { x: 465, y: 835 },
-    jagalchi: { x: 575, y: 825 },
-    huinnyeoul: { x: 400, y: 940 },
-    gwangan: { x: 615, y: 735 },
-    cinemaCenter: { x: 640, y: 560 },
-    nurimaru: { x: 730, y: 735 },
-    haeundae: { x: 770, y: 610 }
+    gamcheon: { x: 330, y: 700 },
+    lotteBusan: { x: 500, y: 580 },
+    busanTower: { x: 440, y: 810 },
+    jagalchi: { x: 575, y: 850 },
+    huinnyeoul: { x: 320, y: 900 },
+    gwangan: { x: 625, y: 720 },
+    cinemaCenter: { x: 670, y: 560 },
+    nurimaru: { x: 760, y: 760 },
+    haeundae: { x: 835, y: 600 }
 };
 
 const BUSAN_MAP_SCENES = Object.keys(BUSAN_SCENES).map((key) => {
@@ -823,21 +823,12 @@ function createBusanMapLandmarkArtwork(sceneKey) {
     return artwork[sceneKey] || artwork.gwangan;
 }
 
-function createBusanMapPolyline(coordinates) {
-    return coordinates.map(([longitude, latitude], index) => {
-        const point = projectBusanCoordinate(longitude, latitude);
-        return `${index === 0 ? 'M' : 'L'}${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
-    }).join('');
-}
-
 function createBusanMapIntroSvg(selectedScene) {
+    const landscapeMap = window.matchMedia('(min-aspect-ratio: 4 / 3)').matches;
+    const mapViewBox = landscapeMap ? '-120 240 1240 730' : '0 0 1000 1250';
     const districtGeometry = BUSAN_DISTRICT_PATHS.map(({ name, d }) =>
         `<path data-district="${name}" d="${d}"/>`
     ).join('');
-    const nakdongRiverPath = createBusanMapPolyline([
-        [128.963, 35.365], [128.973, 35.292], [128.984, 35.221],
-        [128.973, 35.151], [128.960, 35.083], [128.949, 35.018]
-    ]);
     const locationGuides = BUSAN_MAP_SCENES.map(({ key, x, y, anchorX, anchorY }) => `
         <g class="map-location-guide ${key === selectedScene ? 'is-selected' : ''}" data-guide-scene="${key}">
             <path d="M${anchorX.toFixed(1)} ${anchorY.toFixed(1)}L${x} ${y}"/>
@@ -847,9 +838,10 @@ function createBusanMapIntroSvg(selectedScene) {
     `).join('');
     const landmarks = BUSAN_MAP_SCENES.map(({ key, x, y }, index) => `
         <g class="map-landmark ${key === selectedScene ? 'is-selected' : ''}" data-map-scene="${key}" transform="translate(${x} ${y})" style="--map-order:${index}">
-            <circle class="map-focus-ring" r="62"/>
+            <rect class="map-focus-ring" x="-66" y="-58" width="132" height="116" rx="25"/>
+            <rect class="map-landmark-badge" x="-58" y="-50" width="116" height="100" rx="20"/>
             <g class="map-landmark-motion">
-                <g class="map-landmark-art" transform="scale(0.62)">
+                <g class="map-landmark-art" transform="scale(0.5)">
                     <path class="map-landmark-shadow" d="M-88 61q88 18 176 0v16q-88 22-176 0Z"/>
                     ${createBusanMapLandmarkArtwork(key)}
                 </g>
@@ -858,32 +850,18 @@ function createBusanMapIntroSvg(selectedScene) {
     `).join('');
 
     return `
-        <svg class="busan-map-svg" viewBox="0 0 1000 1250" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg class="busan-map-svg" viewBox="${mapViewBox}" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
-                <linearGradient id="mapSeaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop stop-color="var(--map-sea-top)"/><stop offset="1" stop-color="var(--map-sea-bottom)"/>
-                </linearGradient>
-                <linearGradient id="mapLandGradient" x1="0" y1="0" x2="1" y2="1">
+                <linearGradient id="mapLandGradient" gradientUnits="userSpaceOnUse" x1="120" y1="260" x2="880" y2="950">
                     <stop stop-color="var(--map-land-top)"/><stop offset="1" stop-color="var(--map-land-bottom)"/>
                 </linearGradient>
             </defs>
-            <rect class="map-ocean" width="1000" height="1250" rx="48" fill="url(#mapSeaGradient)"/>
-            <g class="map-time-atmosphere">
-                <g class="map-time-layer map-morning-layer"><circle cx="128" cy="164" r="52"/><path d="M39 230q75-35 154 0t156 0"/></g>
-                <g class="map-time-layer map-day-layer"><circle cx="864" cy="139" r="43"/><g><path d="M864 71V40M864 238v-31M796 139h-31M963 139h-31M816 91l-23-23M912 187l23 23M912 91l23-23M816 187l-23 23"/></g></g>
-                <g class="map-time-layer map-sunset-layer"><circle cx="842" cy="406" r="65"/><path d="M768 406h148l67 265H700Z"/></g>
-                <g class="map-time-layer map-night-layer"><path d="M116 122a49 49 0 1 0 47 75a43 43 0 1 1-47-75Z"/><g><circle cx="225" cy="92" r="4"/><circle cx="330" cy="147" r="3"/><circle cx="578" cy="89" r="4"/><circle cx="749" cy="178" r="3"/><circle cx="914" cy="88" r="4"/></g></g>
-            </g>
-            <g class="map-clouds" fill="var(--map-cloud)"><path d="M87 326q12-30 48-25q25 3 31 25q34-20 61 10H62q3-12 25-10Z"/><path d="M743 272q11-27 42-23q23 3 29 23q31-17 55 9H721q3-11 22-9Z"/></g>
             <g class="map-world-art">
-                <!-- District geometry: geoBoundaries KOR ADM2, projected without aspect distortion. -->
-                <g class="map-district-glow">${districtGeometry}</g>
+                <!-- The 16 district polygons share one fill and no internal stroke, reading as one Busan silhouette. -->
                 <g class="map-district-geometry" fill="url(#mapLandGradient)">${districtGeometry}</g>
-                <path class="map-river" d="${nakdongRiverPath}"/>
                 <g class="map-location-guides">${locationGuides}</g>
                 ${landmarks}
             </g>
-            <g class="map-wave-lines" fill="none"><path d="M48 1066q92-22 184 0t184 0t184 0t184 0t184 0"/><path d="M-35 1140q120-26 240 0t240 0t240 0t240 0t240 0"/><path d="M85 1199q77-18 154 0t154 0t154 0t154 0t154 0"/></g>
         </svg>`;
 }
 
@@ -919,6 +897,7 @@ function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
 
 function createCinematicIntro(data, target, sceneKey) {
     const overlay = document.createElement('div');
+    const sceneLocation = BUSAN_SCENE_LOCATIONS[sceneKey] || BUSAN_SCENE_LOCATIONS.gwangan;
     overlay.className = 'cinematic-intro busan-map-intro';
     overlay.dataset.selectedScene = sceneKey;
     overlay.setAttribute('aria-hidden', 'true');
@@ -926,6 +905,10 @@ function createCinematicIntro(data, target, sceneKey) {
         <div class="busan-map-stage">
             <div class="busan-map-world">
                 ${createBusanMapIntroSvg(sceneKey)}
+            </div>
+            <div class="map-selected-caption">
+                <strong>${sceneLocation.name}</strong>
+                <span>${sceneLocation.coordinates}</span>
             </div>
         </div>
         <div class="map-intro-grain"></div>
@@ -941,20 +924,24 @@ function waitForIntro(milliseconds) {
 
 async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
     const mapWorld = overlay?.querySelector('.busan-map-world');
+    const mapSvg = overlay?.querySelector('.busan-map-svg');
     const selectedLandmark = overlay?.querySelector('.map-landmark.is-selected .map-landmark-motion');
     const point = BUSAN_MAP_POINT_BY_SCENE[sceneKey] || BUSAN_MAP_POINT_BY_SCENE.gwangan;
     const litePerformance = performanceMode === 'lite';
     const balancedPerformance = performanceMode === 'balanced';
 
-    if (!overlay || !mapWorld || typeof mapWorld.animate !== 'function') return;
+    if (!overlay || !mapWorld || !mapSvg || typeof mapWorld.animate !== 'function') return;
 
-    await waitForIntro(litePerformance ? 360 : balancedPerformance ? 680 : 980);
+    await waitForIntro(litePerformance ? 760 : balancedPerformance ? 1000 : 1300);
     if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
 
     overlay.classList.add('is-focusing');
     const worldRect = mapWorld.getBoundingClientRect();
-    const focusX = worldRect.left + (point.x / 1000) * worldRect.width;
-    const focusY = worldRect.top + (point.y / 1250) * worldRect.height;
+    const viewBox = mapSvg.viewBox.baseVal;
+    const pointRatioX = (point.x - viewBox.x) / viewBox.width;
+    const pointRatioY = (point.y - viewBox.y) / viewBox.height;
+    const focusX = worldRect.left + pointRatioX * worldRect.width;
+    const focusY = worldRect.top + pointRatioY * worldRect.height;
     const isPortrait = window.innerHeight > window.innerWidth;
     const targetX = window.innerWidth / 2;
     const targetY = window.innerHeight * (isPortrait ? 0.43 : 0.46);
@@ -968,7 +955,7 @@ async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
     const translateY = targetY - focusY;
     const zoomDuration = litePerformance ? 980 : balancedPerformance ? 1650 : 2250;
 
-    mapWorld.style.transformOrigin = `${(point.x / 1000) * 100}% ${(point.y / 1250) * 100}%`;
+    mapWorld.style.transformOrigin = `${pointRatioX * 100}% ${pointRatioY * 100}%`;
     const mapAnimation = mapWorld.animate([
         { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
         { transform: `translate3d(${translateX * 0.18}px, ${translateY * 0.18}px, 0) scale(1.08)`, opacity: 1, offset: 0.22 },
