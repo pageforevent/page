@@ -1,6 +1,63 @@
 document.addEventListener('DOMContentLoaded', () => {
+    initTimeTheme();
     loadEventData();
 });
+
+const TIME_THEMES = {
+    morning: {
+        label: 'MORNING COAST',
+        themeColor: '#F6C98D'
+    },
+    day: {
+        label: 'COASTAL DAY',
+        themeColor: '#2474E8'
+    },
+    sunset: {
+        label: 'GOLDEN HOUR',
+        themeColor: '#D95462'
+    },
+    night: {
+        label: 'NEON NIGHT',
+        themeColor: '#07091A'
+    }
+};
+
+function resolveTimeTheme(date = new Date()) {
+    const forcedTheme = new URLSearchParams(window.location.search).get('theme');
+    if (forcedTheme && TIME_THEMES[forcedTheme]) return forcedTheme;
+
+    const hour = date.getHours();
+    if (hour >= 5 && hour < 11) return 'morning';
+    if (hour >= 11 && hour < 17) return 'day';
+    if (hour >= 17 && hour < 20) return 'sunset';
+    return 'night';
+}
+
+function applyTimeTheme() {
+    const now = new Date();
+    const themeName = resolveTimeTheme(now);
+    const theme = TIME_THEMES[themeName];
+    const formattedTime = new Intl.DateTimeFormat('ko-KR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    }).format(now);
+
+    document.documentElement.dataset.timeTheme = themeName;
+
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeMeta) themeMeta.setAttribute('content', theme.themeColor);
+
+    const periodLabel = document.getElementById('time-period-label');
+    const timeLabel = document.getElementById('time-label');
+    if (periodLabel) periodLabel.textContent = theme.label;
+    if (timeLabel) timeLabel.textContent = formattedTime;
+}
+
+function initTimeTheme() {
+    applyTimeTheme();
+    window.setInterval(applyTimeTheme, 60 * 1000);
+}
 
 // 사용자의 모바일 OS 판별
 function getMobileOS() {
@@ -42,7 +99,7 @@ async function loadEventData() {
 function createGwanganBridgeIllustrationSvg() {
     return `
     <div class="bridge-illustration-card">
-        <svg class="gwangan-bridge-svg" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+        <svg class="gwangan-bridge-svg" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
                 <!-- 하늘 배경 그라데이션 -->
                 <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
@@ -249,6 +306,14 @@ function createGwanganBridgeIllustrationSvg() {
                 <path d="M40,182 C100,178 160,186 220,182 C280,178 340,186 400,182" fill="none" stroke="#FCD34D" stroke-width="1.2" stroke-linecap="round" opacity="0.6" class="wave-shimmer-2"/>
             </g>
         </svg>
+        <div class="bridge-coordinate-bar" aria-hidden="true">
+            <span>GWANGAN BRIDGE</span>
+            <span>35°09'N · 129°07'E</span>
+        </div>
+        <div class="hero-sticker" aria-hidden="true">
+            <span>BUSAN</span>
+            <strong>ONLY</strong>
+        </div>
     </div>
     `;
 }
@@ -267,11 +332,29 @@ function renderPage(data) {
     const headerContainer = document.getElementById('header-container');
     if (headerContainer) {
         headerContainer.innerHTML = `
+            <div class="hero-toolbar">
+                <span class="hero-brand">
+                    <span class="brand-spark" aria-hidden="true">✦</span>
+                    ${data.eyebrow || 'BUSAN GIFT CLUB'}
+                </span>
+                <span class="time-chip" aria-label="현재 시간대 테마">
+                    <span class="time-dot" aria-hidden="true"></span>
+                    <span id="time-period-label">NEON NIGHT</span>
+                    <span class="time-divider" aria-hidden="true"></span>
+                    <time id="time-label">--:--</time>
+                </span>
+            </div>
             ${createGwanganBridgeIllustrationSvg()}
             <div class="header-content">
-                <h1 class="festival-title">${data.headerTitle}</h1>
+                <span class="title-overline">01 / EVENT GUIDE</span>
+                <div class="title-row">
+                    <h1 class="festival-title">${data.headerTitle}</h1>
+                    <span class="title-kitsch-mark" aria-hidden="true">✳</span>
+                </div>
+                <p class="festival-subtitle">${data.subtitle || '앱 설치부터 사은 행사 참여까지, 오늘의 혜택을 한 번에.'}</p>
             </div>
         `;
+        applyTimeTheme();
     }
 
     // 스텝 카드 영역 렌더링
@@ -284,6 +367,8 @@ function renderPage(data) {
             const stepElement = document.createElement('section');
             stepElement.className = 'step-card';
             stepElement.style.setProperty('--step-index', index);
+            stepElement.style.setProperty('--step-delay', `${0.08 + index * 0.07}s`);
+            stepElement.dataset.stepNumber = String(index + 1).padStart(2, '0');
 
             // 1번 어플 설치 단계일 경우 OS에 따라 링크 분기
             let finalLink = step.link;
@@ -305,7 +390,10 @@ function renderPage(data) {
                 <div class="card-glow-bg"></div>
                 <div class="card-header-row">
                     <span class="step-num-pill">${step.stepNum || `STEP 0${index + 1}`}</span>
-                    ${osBadgeText}
+                    <div class="card-meta-right">
+                        ${osBadgeText}
+                        <span class="card-tagline">${step.tagline || `SPECIAL 0${index + 1}`}</span>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="icon-avatar">
@@ -320,11 +408,13 @@ function renderPage(data) {
                     </div>
                 </div>
                 <div class="card-action">
-                    <a href="${finalLink}" class="btn-action" target="${step.target || '_blank'}" rel="noopener noreferrer">
-                        <span>${step.buttonText}</span>
-                        <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                        </svg>
+                    <a href="${finalLink}" class="btn-action" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${step.title}: ${step.buttonText}">
+                        <span class="btn-label">${step.buttonText}</span>
+                        <span class="btn-icon" aria-hidden="true">
+                            <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </span>
                     </a>
                 </div>
             `;

@@ -1,60 +1,161 @@
-/* ==========================================================================
-   스페셜 사은 페스티벌 - 프리미엄 오션 나이트 & 광안대교 테마 스타일
+/* ========================================================================== 
+   BUSAN SPECIAL GIFT CLUB
+   Luxury editorial base + playful coastal pop accents
    ========================================================================== */
 
 :root {
-    /* 메인 컬러 팔레트 */
-    --color-gold-bright: #FDE047;
-    --color-gold-main: #F59E0B;
-    --color-gold-dark: #D97706;
-    --color-gold-glow: rgba(245, 158, 11, 0.35);
+    color-scheme: dark;
+    --page-top: #07091A;
+    --page-bottom: #101D38;
+    --ambient-one: rgba(73, 228, 255, 0.18);
+    --ambient-two: rgba(255, 76, 174, 0.15);
+    --ambient-three: rgba(218, 255, 68, 0.10);
+    --pattern-dot: rgba(255, 255, 255, 0.12);
+    --pattern-line: rgba(255, 255, 255, 0.045);
+    --pattern-opacity: 0.44;
 
-    --color-ocean-cyan: #38BDF8;
-    --color-ocean-blue: #0284C7;
-    --color-ocean-deep: #0B172E;
-    --color-night-dark: #060B16;
+    --surface: rgba(7, 10, 25, 0.97);
+    --surface-soft: rgba(15, 21, 42, 0.97);
+    --surface-elevated: rgba(20, 28, 54, 0.98);
+    --surface-border: rgba(124, 244, 255, 0.18);
+    --line-soft: rgba(255, 255, 255, 0.10);
+    --line-strong: rgba(255, 255, 255, 0.20);
 
-    --color-neon-pink: #F472B6;
-    --color-neon-purple: #A78BFA;
-    --color-neon-green: #34D399;
+    --text-main: #F8FAFC;
+    --text-sub: #C6CDDB;
+    --text-muted: #8490A6;
+    --ink: #071018;
 
-    --color-white: #FFFFFF;
-    --color-text-main: #F8FAFC;
-    --color-text-sub: #CBD5E1;
-    --color-text-muted: #94A3B8;
-
-    /* 카드 글래스모피즘 */
-    --glass-bg: rgba(15, 27, 54, 0.75);
-    --glass-border: rgba(253, 224, 71, 0.22);
-    --glass-border-hover: rgba(56, 189, 248, 0.5);
-    --glass-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.45);
+    --accent: #E7FF4A;
+    --accent-two: #76F3FF;
+    --accent-three: #FF5BA7;
+    --hero-tint: rgba(75, 95, 255, 0.06);
+    --theme-glow: rgba(118, 243, 255, 0.16);
 }
 
-/* 리셋 & 기본 폰트 */
+html[data-time-theme="morning"] {
+    color-scheme: light dark;
+    --page-top: #F7D7AC;
+    --page-bottom: #83C9D0;
+    --ambient-one: rgba(255, 111, 135, 0.28);
+    --ambient-two: rgba(255, 233, 112, 0.26);
+    --ambient-three: rgba(53, 113, 232, 0.17);
+    --pattern-dot: rgba(39, 57, 92, 0.22);
+    --pattern-line: rgba(255, 255, 255, 0.15);
+    --pattern-opacity: 0.56;
+    --surface: rgba(12, 22, 42, 0.96);
+    --surface-soft: rgba(19, 32, 57, 0.98);
+    --surface-elevated: rgba(24, 39, 67, 0.98);
+    --surface-border: rgba(255, 218, 124, 0.26);
+    --accent: #FFD95C;
+    --accent-two: #70E5E1;
+    --accent-three: #FF7899;
+    --hero-tint: rgba(255, 183, 89, 0.10);
+    --theme-glow: rgba(255, 213, 100, 0.16);
+}
+
+html[data-time-theme="day"] {
+    --page-top: #2677EB;
+    --page-bottom: #F4D27C;
+    --ambient-one: rgba(109, 245, 212, 0.26);
+    --ambient-two: rgba(255, 230, 81, 0.28);
+    --ambient-three: rgba(255, 83, 145, 0.19);
+    --pattern-dot: rgba(255, 255, 255, 0.22);
+    --pattern-line: rgba(255, 255, 255, 0.13);
+    --pattern-opacity: 0.52;
+    --surface: rgba(7, 20, 43, 0.96);
+    --surface-soft: rgba(12, 31, 61, 0.98);
+    --surface-elevated: rgba(17, 40, 76, 0.98);
+    --surface-border: rgba(112, 245, 222, 0.27);
+    --accent: #FFE34F;
+    --accent-two: #72F3D4;
+    --accent-three: #FF6096;
+    --hero-tint: rgba(35, 128, 255, 0.08);
+    --theme-glow: rgba(114, 243, 212, 0.16);
+}
+
+html[data-time-theme="sunset"] {
+    --page-top: #35123E;
+    --page-bottom: #E95F4C;
+    --ambient-one: rgba(255, 195, 73, 0.24);
+    --ambient-two: rgba(255, 83, 176, 0.28);
+    --ambient-three: rgba(100, 240, 225, 0.16);
+    --pattern-dot: rgba(255, 231, 194, 0.18);
+    --pattern-line: rgba(255, 255, 255, 0.07);
+    --pattern-opacity: 0.48;
+    --surface: rgba(28, 11, 37, 0.96);
+    --surface-soft: rgba(42, 17, 50, 0.98);
+    --surface-elevated: rgba(57, 22, 62, 0.98);
+    --surface-border: rgba(255, 203, 91, 0.27);
+    --accent: #FFD05B;
+    --accent-two: #6DE9E2;
+    --accent-three: #FF72BE;
+    --hero-tint: rgba(255, 94, 101, 0.11);
+    --theme-glow: rgba(255, 114, 190, 0.17);
+}
+
+html[data-time-theme="night"] {
+    --page-top: #07091A;
+    --page-bottom: #101D38;
+    --ambient-one: rgba(73, 228, 255, 0.18);
+    --ambient-two: rgba(255, 76, 174, 0.15);
+    --ambient-three: rgba(218, 255, 68, 0.10);
+    --accent: #E7FF4A;
+    --accent-two: #76F3FF;
+    --accent-three: #FF5BA7;
+}
+
 *, *::before, *::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    min-width: 320px;
+    background: var(--page-bottom);
 }
 
 body {
-    background-color: var(--color-night-dark);
-    background-image: 
-        radial-gradient(circle at 50% 10%, rgba(15, 40, 78, 0.8) 0%, transparent 60%),
-        radial-gradient(circle at 10% 80%, rgba(14, 165, 233, 0.15) 0%, transparent 40%),
-        radial-gradient(circle at 90% 90%, rgba(245, 158, 11, 0.12) 0%, transparent 40%),
-        linear-gradient(180deg, #070D1E 0%, #03060C 100%);
-    color: var(--color-text-main);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
     position: relative;
     overflow-x: hidden;
-    padding: 1.5rem 0.75rem;
+    padding: 1.15rem 0.7rem 2rem;
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    background:
+        radial-gradient(circle at 13% 8%, var(--ambient-one) 0 13%, transparent 38%),
+        radial-gradient(circle at 88% 24%, var(--ambient-two) 0 10%, transparent 34%),
+        radial-gradient(circle at 42% 96%, var(--ambient-three) 0 12%, transparent 35%),
+        linear-gradient(155deg, var(--page-top) 0%, var(--page-bottom) 100%);
+    transition: background-color 0.35s ease;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--pattern-opacity);
+    background-image: radial-gradient(circle, var(--pattern-dot) 1px, transparent 1.2px);
+    background-size: 18px 18px;
+    mask-image: linear-gradient(to bottom, black, transparent 72%);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 72%);
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(115deg, transparent 0 46%, var(--pattern-line) 46% 46.25%, transparent 46.25% 100%),
+        linear-gradient(25deg, transparent 0 64%, var(--pattern-line) 64% 64.2%, transparent 64.2% 100%);
 }
 
 body.is-intro {
@@ -62,80 +163,184 @@ body.is-intro {
 }
 
 /* ========================================================================== 
-   메인 앱 컨테이너
+   Framed app surface
    ========================================================================== */
+
 .app-container {
     width: 100%;
-    max-width: 480px;
-    min-height: auto;
-    background: rgba(10, 19, 41, 0.96);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 28px;
-    padding: 1.5rem 1.25rem 2.25rem;
-    box-shadow: 
-        0 20px 42px -16px rgba(0, 0, 0, 0.65),
-        0 0 24px rgba(56, 189, 248, 0.08),
-        inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    max-width: 500px;
     position: relative;
     z-index: 1;
     overflow: hidden;
-}
-
-.app-container.is-intro {
-    background: transparent;
-    border-color: transparent;
-    box-shadow: none;
-}
-
-.app-container.is-intro::before {
-    opacity: 0;
+    padding: 1rem 1rem 1.35rem;
+    border: 1px solid transparent;
+    border-radius: 30px 30px 24px 24px;
+    background:
+        linear-gradient(var(--surface), var(--surface)) padding-box,
+        linear-gradient(135deg, var(--accent), var(--accent-two) 48%, var(--accent-three)) border-box;
+    box-shadow:
+        0 28px 70px -34px rgba(0, 0, 0, 0.92),
+        0 0 0 5px rgba(0, 0, 0, 0.10);
 }
 
 .app-container::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #F59E0B, #38BDF8, #EC4899, #F59E0B);
-    background-size: 300% 100%;
-    background-position: 50% 0;
+    inset: 0 0 auto;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-two), var(--accent-three));
 }
 
-/* ==========================================================================
-   헤더 & 광안대교 일러스트 카드
+.app-container::after {
+    content: '';
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    top: -70px;
+    right: -65px;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--theme-glow), transparent 70%);
+}
+
+.app-container.is-intro {
+    background: transparent;
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.app-container.is-intro::before,
+.app-container.is-intro::after {
+    opacity: 0;
+}
+
+/* ========================================================================== 
+   Hero / toolbar
    ========================================================================== */
+
 .header {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-bottom: 1.8rem;
-    width: 100%;
-    margin-bottom: 1.6rem;
+    margin-bottom: 1.25rem;
     transform-origin: center top;
-    transition: transform 0.56s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* 인트로 모드: 화면 중앙 히어로 뷰 */
 .app-container.is-intro .header {
-    transform: translate3d(0, min(24vh, 180px), 0) scale(1.035);
+    transform: translate3d(0, min(23vh, 168px), 0) scale(1.025);
 }
 
-/* 전환 완료 모드: 상단 헤더 뷰로 축소 이동 */
 .app-container.is-ready .header {
     transform: translate3d(0, 0, 0) scale(1);
 }
 
+.hero-toolbar {
+    min-height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.7rem;
+    margin: 0.1rem 0.1rem 0.72rem;
+    transition: opacity 0.28s ease;
+}
+
+.app-container.is-intro .hero-toolbar {
+    opacity: 0;
+}
+
+.hero-brand {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+    color: var(--text-sub);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.brand-spark {
+    color: var(--accent);
+    font-size: 0.8rem;
+}
+
+.time-chip {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.34rem;
+    padding: 0.36rem 0.52rem;
+    border: 1px solid var(--line-soft);
+    border-radius: 999px;
+    color: var(--text-sub);
+    background: rgba(255, 255, 255, 0.055);
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+}
+
+.time-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+}
+
+.time-divider {
+    width: 1px;
+    height: 10px;
+    background: var(--line-strong);
+}
+
+#time-label {
+    color: var(--text-main);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ========================================================================== 
+   Gwangan Bridge art frame
+   ========================================================================== */
+
 .bridge-illustration-card {
     width: 100%;
-    border-radius: 20px;
-    overflow: hidden;
     position: relative;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.38);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    margin-bottom: 1.15rem;
-    background: #070D1E;
+    overflow: hidden;
+    margin-bottom: 1.05rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 23px 23px 16px 16px;
+    background: #07101F;
+    box-shadow:
+        0 18px 34px -22px rgba(0, 0, 0, 0.95),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.bridge-illustration-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.18;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0 4px,
+        rgba(255, 255, 255, 0.08) 4px 5px
+    );
+}
+
+.bridge-illustration-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(135deg, var(--hero-tint), transparent 52%, color-mix(in srgb, var(--accent-three) 7%, transparent));
 }
 
 .gwangan-bridge-svg {
@@ -144,213 +349,203 @@ body.is-intro {
     display: block;
 }
 
-/* 광안대교 SVG 내부 애니메이션 */
-/* 1. 별빛 깜빡임 */
-.star {
-    animation: none;
+.bridge-coordinate-bar {
+    position: absolute;
+    top: 0.7rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.52rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
-.star-1 { animation-delay: 0s; }
-.star-2 { animation-delay: 1s; }
-.star-3 { animation-delay: 2s; }
 
-@keyframes starTwinkle {
-    0%, 100% { opacity: 0.25; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1.4); }
+.hero-sticker {
+    position: absolute;
+    right: 0.72rem;
+    bottom: 0.62rem;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 0.32rem;
+    padding: 0.3rem 0.48rem;
+    border: 1px solid rgba(0, 0, 0, 0.72);
+    border-radius: 5px;
+    color: var(--ink);
+    background: var(--accent);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.72);
+    transform: rotate(-2deg);
+    font-size: 0.49rem;
+    letter-spacing: 0.08em;
 }
 
+.hero-sticker strong {
+    font-weight: 950;
+}
+
+/* Six lightweight, transform/opacity-only decorative animations. */
 .stars-layer {
     animation: softPulse 4s ease-in-out infinite alternate;
-}
-
-/* 2. 달빛 펄스 */
-.moon-aura {
-    animation: none;
-}
-@keyframes moonPulse {
-    0% { opacity: 0.5; r: 20; }
-    100% { opacity: 0.9; r: 25; }
-}
-
-/* 3. 페스티벌 불꽃놀이 */
-.fireworks {
-    animation: fireworkBurst 3.5s cubic-bezier(0.1, 0.8, 0.2, 1) infinite;
-    transform-box: fill-box;
-    transform-origin: center;
-}
-.fireworks-sm {
-    animation: none;
-    opacity: 0.55;
-}
-
-@keyframes fireworkBurst {
-    0% { opacity: 0; transform: scale(0.1) rotate(0deg); }
-    25% { opacity: 1; transform: scale(1.1) rotate(45deg); }
-    50% { opacity: 0.9; transform: scale(1) rotate(90deg); }
-    75%, 100% { opacity: 0; transform: scale(1.3) rotate(135deg); }
-}
-
-/* 4. 귀여운 부산 갈매기 비행 모션 */
-.seagull-1 {
-    animation: seagullFly 6s ease-in-out infinite;
-    transform-origin: center;
-}
-.seagull-2 {
-    animation: none;
-    opacity: 0.65;
-    transform: translate(220px, 55px);
-}
-
-@keyframes seagullFly {
-    0% { transform: translate(110px, 48px) scale(0.9) rotate(-3deg); }
-    50% { transform: translate(130px, 38px) scale(1.05) rotate(4deg); }
-    100% { transform: translate(110px, 48px) scale(0.9) rotate(-3deg); }
-}
-
-/* 5. 오션 파도 웨이브 애니메이션 */
-.wave-back {
-    animation: none;
-}
-.wave-mid {
-    animation: none;
-}
-.wave-front {
-    animation: none;
-}
-.wave-shimmer, .wave-shimmer-2 {
-    animation: none;
-}
-
-@keyframes waveDrift {
-    0% { transform: translateX(-15px); }
-    100% { transform: translateX(15px); }
-}
-
-@keyframes waveShimmerMove {
-    0% { opacity: 0.3; transform: translateX(-10px); }
-    100% { opacity: 0.9; transform: translateX(10px); }
-}
-
-/* 6. 다리 케이블 LED 라이트쇼 */
-.led-dot {
-    animation: none;
-    filter: none;
-}
-.led-1 { animation-delay: 0s; }
-.led-2 { animation-delay: 0.3s; }
-.led-3 { animation-delay: 0.6s; }
-.led-4 { animation-delay: 0.9s; }
-.led-5 { animation-delay: 1.2s; }
-.led-6 { animation-delay: 1.5s; }
-
-@keyframes ledPulse {
-    0% { opacity: 0.3; r: 1.5; filter: drop-shadow(0 0 1px #fff); }
-    100% { opacity: 1; r: 2.8; filter: drop-shadow(0 0 6px #FCD34D); }
 }
 
 .led-lights {
     animation: softPulse 2.8s ease-in-out infinite alternate;
 }
 
+.fireworks {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: fireworkBurst 4.2s cubic-bezier(0.1, 0.8, 0.2, 1) infinite;
+}
+
+.fireworks-sm,
+.moon-aura,
+.bridge-reflection,
+.wave,
+.wave-shimmer,
+.wave-shimmer-2,
+.led-dot,
+.beacon-light,
+.car-red-2,
+.car-white-2 {
+    animation: none;
+    filter: none;
+}
+
+.fireworks-sm {
+    opacity: 0.5;
+}
+
+.seagull-1 {
+    animation: seagullFly 7s ease-in-out infinite;
+}
+
+.seagull-2 {
+    opacity: 0.65;
+    transform: translate(220px, 55px);
+}
+
+.car-red {
+    animation: carMoveRight 4.5s linear infinite;
+}
+
+.car-white {
+    animation: carMoveLeft 4.1s linear infinite;
+}
+
 @keyframes softPulse {
-    from { opacity: 0.62; }
+    from { opacity: 0.58; }
     to { opacity: 1; }
 }
 
-/* 7. 주행 차량 빛 궤적 */
-.car-red {
-    animation: carMoveRight 3.5s linear infinite;
+@keyframes fireworkBurst {
+    0%, 72%, 100% { opacity: 0; transform: scale(0.25) rotate(0deg); }
+    16% { opacity: 1; transform: scale(1.05) rotate(36deg); }
+    38% { opacity: 0.78; transform: scale(1.18) rotate(72deg); }
 }
-.car-red-2 {
-    animation: none;
-}
-.car-white {
-    animation: carMoveLeft 3s linear infinite;
-}
-.car-white-2 {
-    animation: none;
+
+@keyframes seagullFly {
+    0%, 100% { transform: translate(110px, 48px) rotate(-3deg); }
+    50% { transform: translate(130px, 39px) rotate(3deg); }
 }
 
 @keyframes carMoveRight {
-    0% { transform: translateX(-50px); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
+    0% { transform: translateX(-55px); opacity: 0; }
+    12%, 88% { opacity: 0.9; }
     100% { transform: translateX(450px); opacity: 0; }
 }
 
 @keyframes carMoveLeft {
-    0% { transform: translateX(50px); opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
+    0% { transform: translateX(55px); opacity: 0; }
+    12%, 88% { opacity: 0.9; }
     100% { transform: translateX(-450px); opacity: 0; }
 }
 
-/* 8. 주탑 상단 빨간 비콘등 */
-.beacon-light {
-    animation: none;
-}
-@keyframes beaconFlash {
-    0% { opacity: 0.2; r: 1.5; }
-    100% { opacity: 1; r: 3; filter: drop-shadow(0 0 4px #EF4444); }
-}
-
-/* 9. 다리 수면 반영 */
-.bridge-reflection {
-    animation: none;
-}
-@keyframes reflectionWiggle {
-    0% { opacity: 0.3; transform: scaleX(0.95); }
-    100% { opacity: 0.65; transform: scaleX(1.08); }
-}
-
-/* ==========================================================================
-   헤더 텍스트 & 타이포그래피
+/* ========================================================================== 
+   Editorial title block
    ========================================================================== */
+
 .header-content {
-    text-align: center;
-    width: 100%;
+    position: relative;
+    padding: 0 0.34rem;
+    text-align: left;
+}
+
+.title-overline {
+    display: block;
+    margin-bottom: 0.28rem;
+    color: var(--accent-two);
+    font-size: 0.57rem;
+    font-weight: 850;
+    letter-spacing: 0.16em;
+}
+
+.title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
 }
 
 .festival-title {
-    font-size: 1.75rem;
-    font-weight: 800;
-    line-height: 1.25;
-    letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #FFFFFF 0%, #FDE047 50%, #38BDF8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 2px 8px rgba(245, 158, 11, 0.25));
+    color: var(--text-main);
+    font-size: clamp(1.8rem, 8vw, 2.35rem);
+    font-weight: 900;
+    line-height: 1.14;
+    letter-spacing: -0.055em;
     word-break: keep-all;
-    margin-top: 0;
-    margin-bottom: 0;
 }
 
-/* 스켈레톤 로딩 */
+.title-kitsch-mark {
+    flex-shrink: 0;
+    color: var(--accent-three);
+    font-size: 1.38rem;
+    transform: rotate(10deg);
+}
+
+.festival-subtitle {
+    max-width: 34rem;
+    margin-top: 0.48rem;
+    color: var(--text-sub);
+    font-size: 0.79rem;
+    font-weight: 500;
+    line-height: 1.55;
+    word-break: keep-all;
+}
+
 .header-skeleton {
     width: 100%;
-    height: 180px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
+    height: 235px;
     position: relative;
     overflow: hidden;
+    border: 1px solid var(--line-soft);
+    border-radius: 23px;
+    background: var(--surface-soft);
 }
+
 .skeleton-shimmer {
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    animation: shimmer 1.5s infinite;
-}
-@keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+    animation: shimmer 1.2s ease-in-out infinite;
 }
 
-/* ==========================================================================
-   스텝 카드 리스트 & 글래스모피즘
+@keyframes shimmer {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+}
+
+/* ========================================================================== 
+   Action cards
    ========================================================================== */
+
 .step-list {
     display: flex;
     flex-direction: column;
-    gap: 0.95rem;
+    gap: 0.85rem;
     transition:
         opacity 0.36s ease,
         transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -358,238 +553,315 @@ body.is-intro {
 
 .app-container.is-intro .step-list {
     opacity: 0;
-    transform: translate3d(0, 24px, 0);
     visibility: hidden;
     pointer-events: none;
+    transform: translate3d(0, 22px, 0);
 }
 
 .app-container.is-ready .step-list {
     opacity: 1;
-    transform: translate3d(0, 0, 0);
     visibility: visible;
+    transform: translate3d(0, 0, 0);
 }
 
 .step-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 1.25rem 1.15rem;
+    --card-accent: var(--accent);
     position: relative;
     overflow: hidden;
-    box-shadow: var(--glass-shadow);
-    transition: 
-        transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-        border-color 0.35s ease,
-        box-shadow 0.35s ease,
-        opacity 0.6s ease;
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 28%, var(--line-soft));
+    border-radius: 22px 22px 22px 8px;
+    background:
+        linear-gradient(145deg, color-mix(in srgb, var(--card-accent) 4%, var(--surface-elevated)), var(--surface-soft));
+    box-shadow:
+        0 14px 28px -22px rgba(0, 0, 0, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    transition:
+        opacity 0.36s ease var(--step-delay, 0.08s),
+        transform 0.42s cubic-bezier(0.16, 1, 0.3, 1) var(--step-delay, 0.08s),
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.step-card:nth-child(2) {
+    --card-accent: var(--accent-three);
+}
+
+.step-card:nth-child(3) {
+    --card-accent: var(--accent-two);
+}
+
+.step-card::before {
+    content: attr(data-step-number);
+    position: absolute;
+    top: 0.2rem;
+    right: 0.5rem;
+    color: color-mix(in srgb, var(--card-accent) 10%, transparent);
+    font-size: 4.2rem;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: -0.1em;
+    pointer-events: none;
+}
+
+.step-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    width: 68px;
+    height: 3px;
+    border-radius: 0 0 3px 3px;
+    background: var(--card-accent);
 }
 
 .app-container.is-intro .step-card {
     opacity: 0;
-    transform: translate3d(0, 18px, 0);
+    transform: translate3d(0, 16px, 0);
 }
 
 .app-container.is-ready .step-card {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-    transition: 
-        opacity 0.36s ease calc(0.08s + var(--step-index, 0) * 0.07s),
-        transform 0.42s cubic-bezier(0.16, 1, 0.3, 1) calc(0.08s + var(--step-index, 0) * 0.07s),
-        border-color 0.35s ease,
-        box-shadow 0.35s ease;
 }
 
-.step-card:hover {
-    transform: translateY(-5px) scale(1.015);
-    border-color: var(--glass-border-hover);
-    box-shadow: 
-        0 18px 36px rgba(0, 0, 0, 0.5),
-        0 0 25px rgba(56, 189, 248, 0.25),
-        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+.card-glow-bg {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    top: -95px;
+    left: -80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--card-accent) 12%, transparent), transparent 70%);
+    pointer-events: none;
 }
 
-/* 카드 상단 헤더 행 */
 .card-header-row {
+    min-height: 28px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
+    align-items: flex-start;
+    gap: 0.65rem;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.72rem;
 }
 
 .step-num-pill {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
-    border: 1px solid rgba(245, 158, 11, 0.4);
-    color: var(--color-gold-bright);
-    font-size: 0.7rem;
-    font-weight: 800;
-    letter-spacing: 0.8px;
-    padding: 0.22rem 0.6rem;
-    border-radius: 999px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 25px;
+    padding: 0.28rem 0.57rem;
+    border: 1px solid rgba(0, 0, 0, 0.82);
+    border-radius: 6px;
+    color: var(--ink);
+    background: var(--card-accent);
+    box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.72);
+    transform: rotate(-1.5deg);
+    font-size: 0.6rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
 }
 
+.card-meta-right {
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.32rem;
+}
+
+.card-tagline,
 .os-tag {
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 0.2rem 0.55rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px;
+    padding: 0.25rem 0.48rem;
+    border: 1px solid var(--line-soft);
     border-radius: 999px;
-    border: 1px solid transparent;
-}
-.ios-tag {
-    background: rgba(255, 255, 255, 0.1);
-    color: #FFFFFF;
-    border-color: rgba(255, 255, 255, 0.25);
-}
-.android-tag {
-    background: rgba(52, 211, 153, 0.15);
-    color: #34D399;
-    border-color: rgba(52, 211, 153, 0.35);
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.045);
+    font-size: 0.52rem;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
 }
 
-/* 카드 바디 */
+.ios-tag,
+.android-tag {
+    color: var(--text-main);
+}
+
 .card-body {
     display: flex;
     align-items: center;
-    gap: 0.95rem;
-    margin-bottom: 0.95rem;
+    gap: 0.88rem;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 0.9rem;
 }
 
 .icon-avatar {
     position: relative;
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
     flex-shrink: 0;
 }
 
 .icon-pulse {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--color-gold-main), var(--color-ocean-cyan));
-    opacity: 0.25;
-    filter: none;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.step-card:hover .icon-pulse {
-    opacity: 0.5;
-    transform: scale(1.12);
+    inset: 4px -3px -3px 4px;
+    border-radius: 13px;
+    background: var(--card-accent);
+    opacity: 0.42;
 }
 
 .icon-inner {
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #162447 0%, #0F172A 100%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.step-card:hover .icon-inner {
-    transform: rotateY(180deg) scale(1.05);
+    border: 1px solid color-mix(in srgb, var(--card-accent) 48%, transparent);
+    border-radius: 13px;
+    color: var(--card-accent);
+    background: var(--surface-elevated);
+    transform: rotate(-2deg);
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .icon-inner svg {
     width: 24px;
     height: 24px;
-    stroke: var(--color-gold-bright);
-    transition: stroke 0.3s ease;
-}
-
-.step-card:hover .icon-inner svg {
-    stroke: var(--color-ocean-cyan);
+    stroke: currentColor;
 }
 
 .card-text-group {
-    flex: 1;
     min-width: 0;
+    flex: 1;
 }
 
 .step-heading {
-    font-size: 1.08rem;
-    font-weight: 700;
-    color: var(--color-white);
     margin-bottom: 0.22rem;
-    line-height: 1.35;
+    color: var(--text-main);
+    font-size: 1.04rem;
+    font-weight: 830;
+    line-height: 1.3;
+    letter-spacing: -0.025em;
     word-break: keep-all;
 }
 
 .step-desc {
-    font-size: 0.82rem;
-    font-weight: 400;
-    color: var(--color-text-sub);
-    line-height: 1.38;
+    color: var(--text-sub);
+    font-size: 0.76rem;
+    font-weight: 450;
+    line-height: 1.48;
     word-break: keep-all;
 }
 
-/* ==========================================================================
-   액션 버튼 (골드-오션 리치 그라데이션)
-   ========================================================================== */
 .card-action {
+    position: relative;
+    z-index: 1;
     width: 100%;
 }
 
 .btn-action {
     width: 100%;
+    min-height: 50px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.45rem;
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 60%, #B45309 100%);
-    color: #FFFFFF;
+    gap: 0.75rem;
+    padding: 0.46rem 0.48rem 0.46rem 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.76);
+    border-radius: 14px 14px 14px 5px;
+    color: var(--ink);
+    background: var(--card-accent);
+    box-shadow:
+        3px 3px 0 rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
     text-decoration: none;
-    padding: 0.85rem 1.1rem;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 0.96rem;
-    letter-spacing: 0.2px;
-    box-shadow: 
-        0 6px 18px rgba(245, 158, 11, 0.28),
-        inset 0 1px 1px rgba(255, 255, 255, 0.4);
-    position: relative;
-    overflow: hidden;
-    transition:
-        transform 0.24s cubic-bezier(0.2, 0.8, 0.2, 1),
-        box-shadow 0.24s ease;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
-/* 버튼 반짝이는 샤인 광택 */
-.btn-action::after {
-    content: none;
+.btn-label {
+    font-size: 0.9rem;
+    font-weight: 900;
+    letter-spacing: -0.01em;
 }
 
-.btn-action:hover {
-    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
-    box-shadow: 
-        0 10px 24px rgba(2, 132, 199, 0.4),
-        inset 0 1px 1px rgba(255, 255, 255, 0.4);
-    transform: translateY(-2px);
-}
-
-.btn-action:active {
-    transform: translateY(1px) scale(0.98);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    color: var(--card-accent);
+    background: var(--ink);
 }
 
 .btn-arrow {
-    width: 18px;
-    height: 18px;
-    transition: transform 0.3s ease;
+    width: 17px;
+    height: 17px;
+    transition: transform 0.22s ease;
 }
 
-.btn-action:hover .btn-arrow {
-    transform: translateX(4px);
+@media (hover: hover) and (pointer: fine) {
+    .step-card:hover {
+        border-color: color-mix(in srgb, var(--card-accent) 54%, transparent);
+        box-shadow:
+            0 20px 36px -24px rgba(0, 0, 0, 0.95),
+            0 0 0 1px color-mix(in srgb, var(--card-accent) 12%, transparent);
+        transform: translateY(-3px);
+    }
+
+    .step-card:hover .icon-inner {
+        transform: rotate(2deg) scale(1.03);
+    }
+
+    .btn-action:hover {
+        transform: translate(-1px, -1px);
+        box-shadow:
+            5px 5px 0 rgba(0, 0, 0, 0.72),
+            inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .btn-action:hover .btn-arrow {
+        transform: translateX(3px);
+    }
 }
 
-/* 인트로 전환 중에는 장식 애니메이션을 멈춰 이동 프레임에 자원을 집중합니다. */
+.btn-action:active {
+    transform: translate(2px, 2px);
+    box-shadow:
+        1px 1px 0 rgba(0, 0, 0, 0.72),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* ========================================================================== 
+   Loading / error / motion preferences
+   ========================================================================== */
+
+.error-msg {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: var(--text-sub);
+}
+
+.btn-retry {
+    margin-top: 1rem;
+    padding: 0.72rem 1.1rem;
+    border: 0;
+    border-radius: 10px;
+    color: var(--ink);
+    background: var(--accent);
+    font-weight: 850;
+    cursor: pointer;
+}
+
 .app-container.is-intro .gwangan-bridge-svg * {
     animation-play-state: paused;
 }
@@ -604,60 +876,58 @@ body.is-intro {
 }
 
 /* ========================================================================== 
-   등장 애니메이션 키프레임
+   Responsive tuning
    ========================================================================== */
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(25px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-@keyframes fadeInDown {
-    0% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* 에러 메시지 */
-.error-msg {
-    padding: 2rem 1rem;
-    text-align: center;
-}
-.btn-retry {
-    margin-top: 1rem;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    border: none;
-    background: var(--color-gold-main);
-    color: #fff;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-/* ==========================================================================
-   반응형 미디어 쿼리
-   ========================================================================== */
-@media (min-width: 520px) {
-    body {
-        padding: 2.5rem 1rem;
-    }
+@media (max-width: 385px) {
     .app-container {
-        padding: 2rem 1.75rem 2.75rem;
+        padding: 0.84rem 0.78rem 1.1rem;
+        border-radius: 24px 24px 20px 20px;
     }
+
+    .hero-brand {
+        max-width: 158px;
+        font-size: 0.51rem;
+    }
+
+    .time-chip {
+        gap: 0.26rem;
+        padding-inline: 0.42rem;
+        font-size: 0.49rem;
+    }
+
     .festival-title {
-        font-size: 2.1rem;
+        font-size: 1.74rem;
     }
+
     .step-card {
-        padding: 1.6rem 1.4rem;
+        padding: 0.9rem 0.82rem;
+    }
+
+    .card-body {
+        gap: 0.7rem;
+    }
+
+    .icon-avatar {
+        width: 46px;
+        height: 46px;
+    }
+
+    .step-heading {
+        font-size: 0.98rem;
+    }
+}
+
+@media (min-width: 600px) {
+    body {
+        padding: 2.3rem 1rem 3rem;
+    }
+
+    .app-container {
+        padding: 1.25rem 1.28rem 1.65rem;
+    }
+
+    .step-card {
+        padding: 1.15rem;
     }
 }
