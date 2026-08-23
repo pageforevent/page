@@ -347,15 +347,15 @@ const BUSAN_SCENES = {
 // 실제 지리를 바탕으로 서로 가까운 장소는 시각적으로 조금 벌린 지도 좌표입니다.
 // 하나의 4:5 마스터 맵을 두고 화면 비율에 따라 카메라만 달리 움직입니다.
 const BUSAN_MAP_SCENES = [
-    { key: 'gamcheon', x: 205, y: 770 },
-    { key: 'lotteBusan', x: 405, y: 430 },
-    { key: 'busanTower', x: 414, y: 655 },
-    { key: 'jagalchi', x: 338, y: 790 },
-    { key: 'huinnyeoul', x: 470, y: 965 },
-    { key: 'gwangan', x: 675, y: 742 },
-    { key: 'cinemaCenter', x: 744, y: 465 },
-    { key: 'nurimaru', x: 800, y: 790 },
-    { key: 'haeundae', x: 875, y: 605 }
+    { key: 'gamcheon', x: 165, y: 770 },
+    { key: 'lotteBusan', x: 390, y: 360 },
+    { key: 'busanTower', x: 365, y: 575 },
+    { key: 'jagalchi', x: 375, y: 785 },
+    { key: 'huinnyeoul', x: 480, y: 985 },
+    { key: 'gwangan', x: 635, y: 715 },
+    { key: 'cinemaCenter', x: 710, y: 395 },
+    { key: 'nurimaru', x: 835, y: 820 },
+    { key: 'haeundae', x: 900, y: 565 }
 ];
 
 const BUSAN_MAP_POINT_BY_SCENE = Object.fromEntries(
@@ -730,8 +730,8 @@ function createBusanMapIntroSvg(selectedScene) {
                     <path d="M350 855q57-38 119 6q42 32 33 109q-63 63-147 3q-43-49-5-118Z"/>
                     <path d="M205 932q34-25 70 4q20 28-4 58q-43 18-72-15q-13-29 6-47ZM656 982q29-23 58 1q20 29-8 52q-36 12-58-17q-11-22 8-36Z"/>
                 </g>
-                <g class="map-district-lines" fill="none"><path d="M159 306Q313 350 405 430T675 742M281 180Q356 278 405 430T414 655T338 790M531 151Q612 282 744 465T875 605M926 428Q829 495 744 465T675 742M205 770Q333 718 414 655M338 790Q409 840 470 965M675 742Q732 757 800 790"/></g>
-                <g class="map-route-dots"><circle cx="205" cy="770" r="4"/><circle cx="405" cy="430" r="4"/><circle cx="414" cy="655" r="4"/><circle cx="338" cy="790" r="4"/><circle cx="470" cy="965" r="4"/><circle cx="675" cy="742" r="4"/><circle cx="744" cy="465" r="4"/><circle cx="800" cy="790" r="4"/><circle cx="875" cy="605" r="4"/></g>
+                <g class="map-district-lines" fill="none"><path d="M159 306Q288 324 390 360T635 715M281 180Q347 257 390 360T365 575T375 785M531 151Q603 272 710 395T900 565M926 428Q821 439 710 395T635 715M165 770Q273 688 365 575M375 785Q422 858 480 985M635 715Q730 742 835 820"/></g>
+                <g class="map-route-dots"><circle cx="165" cy="770" r="4"/><circle cx="390" cy="360" r="4"/><circle cx="365" cy="575" r="4"/><circle cx="375" cy="785" r="4"/><circle cx="480" cy="985" r="4"/><circle cx="635" cy="715" r="4"/><circle cx="710" cy="395" r="4"/><circle cx="835" cy="820" r="4"/><circle cx="900" cy="565" r="4"/></g>
                 ${landmarks}
             </g>
             <g class="map-wave-lines" fill="none"><path d="M48 1066q92-22 184 0t184 0t184 0t184 0t184 0"/><path d="M-35 1140q120-26 240 0t240 0t240 0t240 0t240 0"/><path d="M85 1199q77-18 154 0t154 0t154 0t154 0t154 0"/></g>
@@ -786,13 +786,16 @@ function waitForIntro(milliseconds) {
     return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 }
 
-async function playBusanMapIntro(overlay, sceneKey, litePerformance) {
+async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
     const mapWorld = overlay?.querySelector('.busan-map-world');
+    const selectedLandmark = overlay?.querySelector('.map-landmark.is-selected .map-landmark-motion');
     const point = BUSAN_MAP_POINT_BY_SCENE[sceneKey] || BUSAN_MAP_POINT_BY_SCENE.gwangan;
+    const litePerformance = performanceMode === 'lite';
+    const balancedPerformance = performanceMode === 'balanced';
 
     if (!overlay || !mapWorld || typeof mapWorld.animate !== 'function') return;
 
-    await waitForIntro(litePerformance ? 360 : 980);
+    await waitForIntro(litePerformance ? 360 : balancedPerformance ? 680 : 980);
     if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
 
     overlay.classList.add('is-focusing');
@@ -802,10 +805,15 @@ async function playBusanMapIntro(overlay, sceneKey, litePerformance) {
     const isPortrait = window.innerHeight > window.innerWidth;
     const targetX = window.innerWidth / 2;
     const targetY = window.innerHeight * (isPortrait ? 0.43 : 0.46);
-    const zoomScale = isPortrait ? 3.45 : 2.45;
+    const zoomScale = isPortrait
+        ? litePerformance ? 2.25 : balancedPerformance ? 2.45 : 2.6
+        : litePerformance ? 2.05 : balancedPerformance ? 2.2 : 2.3;
+    const landmarkScale = isPortrait
+        ? litePerformance ? 1.18 : balancedPerformance ? 1.34 : 1.3
+        : litePerformance ? 1.08 : balancedPerformance ? 1.2 : 1.16;
     const translateX = targetX - focusX;
     const translateY = targetY - focusY;
-    const zoomDuration = litePerformance ? 980 : 2250;
+    const zoomDuration = litePerformance ? 980 : balancedPerformance ? 1650 : 2250;
 
     mapWorld.style.transformOrigin = `${(point.x / 1000) * 100}% ${(point.y / 1250) * 100}%`;
     const mapAnimation = mapWorld.animate([
@@ -818,7 +826,19 @@ async function playBusanMapIntro(overlay, sceneKey, litePerformance) {
         fill: 'forwards'
     });
 
-    await Promise.allSettled([mapAnimation.finished]);
+    const landmarkAnimation = selectedLandmark?.animate([
+        { transform: 'translate3d(0, 0, 0) scale(1)' },
+        { transform: `translate3d(0, -4px, 0) scale(${landmarkScale})` }
+    ], {
+        duration: zoomDuration,
+        easing: 'cubic-bezier(0.68, 0, 0.22, 1)',
+        fill: 'forwards'
+    });
+
+    await Promise.allSettled([
+        mapAnimation.finished,
+        landmarkAnimation?.finished || Promise.resolve()
+    ]);
     if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
     await waitForIntro(litePerformance ? 60 : 180);
 }
@@ -1019,7 +1039,9 @@ function renderPage(data) {
     }
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const litePerformance = document.documentElement.dataset.performance === 'lite';
+    const performanceMode = document.documentElement.dataset.performance || 'full';
+    const litePerformance = performanceMode === 'lite';
+    const balancedPerformance = performanceMode === 'balanced';
     const bridgeTarget = headerContainer?.querySelector('.bridge-illustration-card');
     const cinematicIntro = reduceMotion ? null : createCinematicIntro(data, bridgeTarget, sceneKey);
     initSceneVisibilityOptimization();
@@ -1063,14 +1085,14 @@ function renderPage(data) {
     window.addEventListener('pointerdown', handleUserSkip, { once: true, passive: true });
 
     // 전체 지도 감상 -> 선택 지역 줌인 -> 실제 페이지 순서로 바로 연결합니다.
-    playBusanMapIntro(cinematicIntro, sceneKey, litePerformance)
+    playBusanMapIntro(cinematicIntro, sceneKey, performanceMode)
         .then(() => {
             if (cinematicIntro.dataset.cancelled === 'true' || !cinematicIntro.isConnected) return;
             revealPage();
             return collapseCinematicIntro(
                 cinematicIntro,
                 bridgeTarget,
-                litePerformance ? 420 : 720
+                litePerformance ? 420 : balancedPerformance ? 560 : 720
             );
         })
         .finally(() => {

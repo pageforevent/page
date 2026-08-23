@@ -519,9 +519,15 @@ body.is-intro {
 }
 
 .busan-map-world {
+    position: relative;
     width: min(98vw, 74vh);
     aspect-ratio: 4 / 5;
     flex: 0 0 auto;
+    isolation: isolate;
+    contain: layout style;
+    border-radius: 4.8%;
+    box-shadow: 0 28px 48px rgba(0, 0, 0, 0.28);
+    backface-visibility: hidden;
     will-change: transform, opacity;
     animation: mapWorldReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
@@ -531,7 +537,7 @@ body.is-intro {
     width: 100%;
     height: 100%;
     overflow: visible;
-    filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.28));
+    filter: none;
 }
 
 .map-mainland {
@@ -753,7 +759,15 @@ html[data-time-theme="night"] .map-night-layer {
 }
 
 .busan-map-intro.is-focusing .map-landmark:not(.is-selected) {
-    opacity: 0.2;
+    opacity: 0.14;
+}
+
+.busan-map-intro.is-focusing .map-landmark-motion,
+.busan-map-intro.is-focusing .map-focus-ring,
+.busan-map-intro.is-focusing .map-district-lines,
+.busan-map-intro.is-focusing .map-wave-lines,
+.busan-map-intro.is-focusing .map-clouds {
+    animation: none !important;
 }
 
 .map-intro-grain {
@@ -765,6 +779,12 @@ html[data-time-theme="night"] .map-night-layer {
     background-image: radial-gradient(circle, rgba(255, 255, 255, 0.42) 0 0.7px, transparent 0.9px);
     background-size: 5px 5px;
     mix-blend-mode: soft-light;
+    transition: opacity 0.25s ease;
+}
+
+.busan-map-intro.is-focusing .map-intro-grain {
+    opacity: 0.055;
+    mix-blend-mode: normal;
 }
 
 @keyframes mapWorldReveal {
@@ -817,6 +837,16 @@ html[data-time-theme="night"] .map-night-layer {
 
 html[data-performance="lite"] .busan-map-svg {
     filter: none;
+}
+
+html[data-performance="balanced"] .map-intro-grain {
+    opacity: 0.09;
+    mix-blend-mode: normal;
+}
+
+html[data-performance="balanced"] .busan-map-world,
+html[data-performance="lite"] .busan-map-world {
+    box-shadow: 0 22px 38px rgba(0, 0, 0, 0.22);
 }
 
 html[data-performance="lite"] .map-landmark-motion,
