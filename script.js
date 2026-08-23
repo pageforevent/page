@@ -344,23 +344,141 @@ const BUSAN_SCENES = {
     cinemaCenter: true
 };
 
-// 실제 지리를 바탕으로 서로 가까운 장소는 시각적으로 조금 벌린 지도 좌표입니다.
-// 하나의 4:5 마스터 맵을 두고 화면 비율에 따라 카메라만 달리 움직입니다.
-const BUSAN_MAP_SCENES = [
-    { key: 'gamcheon', x: 165, y: 770 },
-    { key: 'lotteBusan', x: 390, y: 360 },
-    { key: 'busanTower', x: 365, y: 575 },
-    { key: 'jagalchi', x: 375, y: 785 },
-    { key: 'huinnyeoul', x: 480, y: 985 },
-    { key: 'gwangan', x: 635, y: 715 },
-    { key: 'cinemaCenter', x: 710, y: 395 },
-    { key: 'nurimaru', x: 835, y: 820 },
-    { key: 'haeundae', x: 900, y: 565 }
-];
+// 부산시·관광 포털에서 쓰는 영문 장소명과 각 랜드마크의 대표 좌표입니다.
+// 좌표 문자열을 고정해 모든 기기에서 같은 정밀도(소수점 넷째 자리)로 표시합니다.
+const BUSAN_SCENE_LOCATIONS = {
+    gwangan: {
+        name: 'GWANGANDAEGYO BRIDGE',
+        coordinates: '35.1457° N · 129.1284° E',
+        latitude: 35.1457,
+        longitude: 129.1284
+    },
+    gamcheon: {
+        name: 'GAMCHEON CULTURE VILLAGE',
+        coordinates: '35.0963° N · 129.0088° E',
+        latitude: 35.0963,
+        longitude: 129.0088
+    },
+    nurimaru: {
+        name: 'NURIMARU APEC HOUSE',
+        coordinates: '35.1524° N · 129.1514° E',
+        latitude: 35.1524,
+        longitude: 129.1514
+    },
+    huinnyeoul: {
+        name: 'HUINNYEOUL CULTURE VILLAGE',
+        coordinates: '35.0778° N · 129.0453° E',
+        latitude: 35.0778,
+        longitude: 129.0453
+    },
+    jagalchi: {
+        name: 'JAGALCHI MARKET',
+        coordinates: '35.0958° N · 129.0281° E',
+        latitude: 35.0958,
+        longitude: 129.0281
+    },
+    haeundae: {
+        name: 'HAEUNDAE BEACH',
+        coordinates: '35.1577° N · 129.1622° E',
+        latitude: 35.1577,
+        longitude: 129.1622
+    },
+    lotteBusan: {
+        name: 'LOTTE DEPARTMENT STORE BUSAN MAIN STORE',
+        coordinates: '35.1568° N · 129.0565° E',
+        latitude: 35.1568,
+        longitude: 129.0565
+    },
+    busanTower: {
+        name: 'BUSAN TOWER',
+        coordinates: '35.1010° N · 129.0324° E',
+        latitude: 35.1010,
+        longitude: 129.0324
+    },
+    cinemaCenter: {
+        name: 'BUSAN CINEMA CENTER',
+        coordinates: '35.1712° N · 129.1272° E',
+        latitude: 35.1712,
+        longitude: 129.1272
+    }
+};
+
+// 부산의 실제 경위도를 1000 × 1250 마스터 지도에 같은 비율로 투영합니다.
+// 16:9와 9:16은 지도를 늘리지 않고 이 마스터 지도를 서로 다르게 크롭합니다.
+const BUSAN_MAP_PROJECTION = {
+    minLongitude: 128.76,
+    maxLongitude: 129.32,
+    minLatitude: 34.95,
+    maxLatitude: 35.41,
+    longitudeScale: Math.cos(35.18 * Math.PI / 180),
+    maxWidth: 820,
+    maxHeight: 850
+};
+
+function projectBusanCoordinate(longitude, latitude) {
+    const projection = BUSAN_MAP_PROJECTION;
+    const geographicWidth = (projection.maxLongitude - projection.minLongitude) * projection.longitudeScale;
+    const geographicHeight = projection.maxLatitude - projection.minLatitude;
+    const scale = Math.min(
+        projection.maxWidth / geographicWidth,
+        projection.maxHeight / geographicHeight
+    );
+    const renderedWidth = geographicWidth * scale;
+    const renderedHeight = geographicHeight * scale;
+    const startX = (1000 - renderedWidth) / 2;
+    const startY = (1250 - renderedHeight) / 2;
+
+    return {
+        x: startX + (longitude - projection.minLongitude) * projection.longitudeScale * scale,
+        y: startY + (projection.maxLatitude - latitude) * scale
+    };
+}
+
+// 실제 핀은 경위도 위치에 고정하고, 랜드마크 그림만 연결선과 함께 조금씩 벌립니다.
+const BUSAN_MAP_LANDMARK_LAYOUT = {
+    gamcheon: { x: 350, y: 735 },
+    lotteBusan: { x: 485, y: 610 },
+    busanTower: { x: 465, y: 835 },
+    jagalchi: { x: 575, y: 825 },
+    huinnyeoul: { x: 400, y: 940 },
+    gwangan: { x: 615, y: 735 },
+    cinemaCenter: { x: 640, y: 560 },
+    nurimaru: { x: 730, y: 735 },
+    haeundae: { x: 770, y: 610 }
+};
+
+const BUSAN_MAP_SCENES = Object.keys(BUSAN_SCENES).map((key) => {
+    const location = BUSAN_SCENE_LOCATIONS[key];
+    const anchor = projectBusanCoordinate(location.longitude, location.latitude);
+    const display = BUSAN_MAP_LANDMARK_LAYOUT[key];
+    return { key, x: display.x, y: display.y, anchorX: anchor.x, anchorY: anchor.y };
+});
 
 const BUSAN_MAP_POINT_BY_SCENE = Object.fromEntries(
     BUSAN_MAP_SCENES.map((scene) => [scene.key, scene])
 );
+
+// Boundary geometry: geoBoundaries KOR ADM2 (2020), CC BY 3.0.
+// Source: https://www.geoboundaries.org/api/current/gbOpen/KOR/ADM2/
+// The coordinates are projected once and rounded to 0.1 SVG units for a small runtime footprint.
+const BUSAN_DISTRICT_PATHS = [
+    { name: 'Gijang-gun', d: 'M737.8 271.9L729.1 308.5L723.6 325.1L687 329.5L664.9 309.6L646 306.3L636.1 327.3L628.3 367.1L618.3 389.2L611.5 405.1L608.4 412.4L632.7 444.5L630.5 465.5L633.9 482.1L643.8 499.8L652.3 509.5L659.3 517.5L673.7 541.8L681.5 561.8L690.3 599.4L729.1 601.6L747.9 611.6L757.1 614.6L757.9 614.9L767.9 611.6L781.1 586.1L770.1 568.4L770.1 551.8L787.8 540.7L808.8 509.7L809.9 490.9L803.3 484.3L790 484.3L788.9 472.1L812.2 461.1L817.7 448.9L822.1 389.2L829.9 377L848.7 361.5L872 369.3L853.1 310.7L829.9 275.3L821 268.7L804.4 267.6L783.4 276.4L752.4 283.1L737.8 271.9Z' },
+    { name: 'Haeundae-gu', d: 'M652.3 509.5L632.7 534.4L621.3 550.6L611.4 566.9L608.6 578.3L608.4 579.2L605.7 591.7L611.4 614.4L614.3 630.3L614.9 633.6L630.5 648.4L637.5 656.6L639 658.4L649 673.3L660.3 680.3L676.6 677.5L702.8 679.6L711.3 674.7L714.9 655.5L721.3 642.8L731.9 633.6L756.7 632.8L757.1 614.6L747.9 611.6L729.1 601.6L690.3 599.4L681.5 561.8L673.7 541.8L659.3 517.5L652.3 509.5Z' },
+    { name: 'Geumjeong-gu', d: 'M611.5 405.1L504.2 453.9L503 481.2L504.4 505.3L510 514.5L520 518.8L521.4 544.3L526.7 546.9L532.7 549.9L541.2 549.9L563.2 543.6L571.7 562L580.2 566.9L590.8 569.1L608.4 579.2L608.6 578.3L611.4 566.9L621.3 550.6L632.7 534.4L652.3 509.5L643.8 499.8L633.9 482.1L630.5 465.5L632.7 444.5L608.4 412.4L611.5 405.1Z' },
+    { name: 'Buk-gu', d: 'M462.4 462.6L454 505L447 532.7L432.9 541.4L432.9 541.7L433.3 541.4L429.3 592.6L428.9 592.8L427.9 603.8L433.4 617.1L456.7 620.4L467.7 621.5L467.8 621.5L469.5 618.9L474.4 611.6L481 596.1L517.6 576.2L526.7 546.9L521.4 544.3L520 518.8L510 514.5L504.4 505.3L503 481.2L504.2 453.9L486.8 461.8L462.4 462.6Z' },
+    { name: 'Saha-gu', d: 'M447.7 804.7L456.8 807.4L455.1 784.7L449.2 776.2L452.3 767.6L453 752L445.9 738.6L445.8 738.5L440.1 739.4L430.2 742.4L415.1 742.5L414.7 742.5L408.2 741.7L396.2 734.7L387.5 733L365.6 720.8L363.3 723.5L351.5 735.6L346.7 741.9L346.7 742L355.2 744.2L354.9 748L347.1 762.1L342.7 783.7L345.4 794.3L354.1 787.2L356.3 790.2L353.9 797.6L361.2 787.2L367.2 756.1L377.8 756.4L379.2 767.9L368.8 797.8L381.3 855.6L388.7 867.6L394.1 871.7L389 883.7L393 890L393.3 882.3L399.9 880.1L401.5 874.2L409.6 875.5L396.9 864.6L403.1 859.4L404.2 861.6L411.3 861.1L415.6 863.8L415.9 853.7L402.8 851.5L402.8 845.3L407.5 845.8L420 840.1L427.9 849.6L432.2 865.7L436.9 867.3L443.9 859.4L435.3 839L433.6 796.8L438.7 803.1L443.2 804.2L440.4 798L445.9 793.1L448.4 796.3L447.7 804.7Z' },
+    { name: 'Yeongdo-gu', d: 'M513.1 813.4L524.5 821L536.8 823.7L536.8 832.2L544.4 841.7L554.4 839.5L560.2 845.5L563.4 856.7L577.3 857.2L577.3 850.2L581.7 840.1L574.3 837.9L568.1 832.2L565.1 822.6L560.4 822.9L558.8 820.2L575.1 813.6L579.5 809.6L581.1 803L563.2 813.4L555.5 798.1L556.9 795.9L548.7 783.1L528.6 766L503.5 774.4L494.6 782.6L488.6 777.9L491.6 794.8L513.1 813.4Z' },
+    { name: 'Dongnae-gu', d: 'M608.4 579.2L590.8 569.1L580.2 566.9L571.7 562L563.2 543.6L541.2 549.9L532.7 549.9L526.7 546.9L517.6 576.2L481 596.1L474.4 611.6L469.5 618.9L469.6 619.3L469.9 618.9L474.7 630.8L474.8 631L497 627.1L514.9 611.1L531.5 604.5L552.2 600.5L569.9 608.8L590.7 629.6L600 633.7L602.9 646.3L603.1 647.2L614.3 630.3L611.4 614.4L605.7 591.7L608.4 579.2Z' },
+    { name: 'Suyeong-gu', d: 'M614.3 630.3L603.1 647.2L602.9 646.3L600.6 655.7L588.7 643L578.7 643L575.4 647L576.7 653L577.5 662.1L580.7 669L581.4 678.3L577.4 683.6L604 704.4L614 696.2L614 685.9L610.2 685.9L612.1 676.1L619.8 670.4L624.9 673.1L637.5 670.4L638.8 667.9L632 658.1L637.5 656.6L630.5 648.4L614.9 633.6L614.3 630.3Z' },
+    { name: 'Yeonje-gu', d: 'M474.8 631L474.8 631.1L474.6 631.3L487.7 647L504.7 640.6L507.2 644.9L519.5 646.6L527.2 643.6L529.7 637.7L540.8 641.9L545.9 644.9L549.7 653L552.3 669.6L557.1 675L558.7 676.8L566.3 678.1L577.5 662.1L576.7 653L575.4 647L578.7 643L588.7 643L600.6 655.7L602.9 646.3L600 633.7L590.7 629.6L569.9 608.8L552.2 600.5L531.5 604.5L514.9 611.1L497 627.1L474.8 631Z' },
+    { name: 'Nam-gu', d: 'M577.5 662.1L566.3 678.1L558.7 676.8L557.1 675L551.7 681.5L550.6 683.2L545.2 687.2L541.1 688.1L541.1 684.3L537 684.3L536.5 691.9L539.5 697.6L538.7 700.9L538.4 709.6L537 716.7L539.2 722.4L537 727L548.2 729.2L543.8 735.7L548.5 736.5L548.2 740.1L541.7 747.4L543.8 749.6L540.8 754L551.4 761.9L573.5 763.2L573.5 753.4L578.1 754.8L580.8 780.7L587.6 784.8L595.3 782L592.5 776.9L602.9 762.4L615.1 769.2L623 769.5L627.4 752.1L628.7 732.7L622.5 724.6L618.9 713.1L615.7 711.8L611.6 718.6L612.1 709.8L604 704.4L577.4 683.6L581.4 678.3L580.7 669L577.5 662.1Z' },
+    { name: 'Jung-gu', d: 'M481.7 775.8L496.2 773.7L497.2 768.3L499.7 768L497.4 760.5L503.9 764.3L505.1 762.2L500.2 757.7L501.9 755.6L505.6 759.5L508.2 758.4L504.5 754.7L513.1 747.2L504 740.8L498.3 728.9L484.9 718.1L480.9 718.5L481.7 721.6L485.4 722L489.6 734.7L479.8 740.3L474.1 748.6L474.9 754.4L480.5 760.3L481.7 775.8Z' },
+    { name: 'Seo-gu', d: 'M447.7 804.7L449.5 820L455.1 829.3L459.3 830.8L457.5 834.3L453.9 835L454 843.9L458.4 853.1L454.2 856L464.2 852.4L465.1 845.3L474 836.8L471.6 823.9L466 814.3L471.4 808.9L475 811.6L477.3 809.8L479.6 791.9L481.6 791L479.1 787.4L481.2 787.2L478.8 777.8L481.7 775.8L480.5 760.3L474.9 754.4L474.1 748.6L479.8 740.3L489.6 734.7L485.4 722L481.7 721.6L480.9 718.5L479.6 712.3L480 711.2L481.2 708.5L485 698.4L484 685.3L478.8 681.3L474.2 684.3L455.5 681.6L455.5 682.9L458.2 695.5L446.3 738.5L445.9 738.6L453 752L452.3 767.6L449.2 776.2L455.1 784.7L456.8 807.4L447.7 804.7Z' },
+    { name: 'Busanjin-gu', d: 'M474.6 631.3L468.8 637.7L460.2 643.7L455.5 655L455.5 669.6L455.5 681.5L455.5 681.6L474.2 684.3L478.8 681.3L484 685.3L485 698.4L481.2 708.5L480 711.2L492.4 707.1L496.5 706.3L501.4 699L508.4 697L521.2 699.2L539.5 697.6L536.5 691.9L537 684.3L541.1 684.3L541.1 688.1L545.2 687.2L550.6 683.2L551.7 681.5L557.1 675L552.3 669.6L549.7 653L545.9 644.9L540.8 641.9L529.7 637.7L527.2 643.6L519.5 646.6L507.2 644.9L504.7 640.6L487.7 647L474.6 631.3Z' },
+    { name: 'Dong-gu', d: 'M538.7 700.9L539.1 699.1L521.2 699.2L508.4 697L501.4 699L496.5 706.3L492.4 707.1L480 711.2L479.6 712.3L480.9 718.5L484.9 718.1L498.3 728.9L504 740.8L513.1 747.2L516.4 743.8L512.3 740.4L514.6 736.9L520.5 741.3L522 739.6L512.9 731.5L514.8 726L522.3 723.2L522.2 727.6L518.2 731.4L523.8 736.1L535.7 720.1L538.4 709.6L538.7 700.9Z' },
+    { name: 'Gangseo-gu', d: 'M432.9 541.7L425 546.5L402.5 548.3L402.3 548.2L402 548.3L376.1 544.8L359.2 544.8L347.1 556.9L326.3 565.6L326 565.5L325.9 565.6L307.3 563.9L290 581.1L289.6 581.1L262.3 581.1L253.7 593.2L255.4 617.5L271 631.3L269.2 648.6L260.6 671.1L260.2 671.1L241.1 669.4L230.9 659.1L212.1 669.4L198.3 674.6L197.9 674.6L165.3 672.9L165 672.8L135.9 681.4L135.6 681.5L132.8 679.2L134.8 682.5L135.9 685L145.5 700.6L155.5 710.3L190.2 723.2L196.6 728L201.7 738.5L205.6 765.9L198.8 782.2L193.3 784.2L198.9 801.1L150.4 801.9L152.5 808.3L197.6 809.6L195.9 819L158.1 827.9L158.5 837.7L142.3 840.7L140.6 836.4L137.2 836.4L138.1 851.7L145.3 851.7L145.3 859L149.6 862.4L155.1 861.1L166.1 872.2L166.6 885.4L162.3 888.4L165.3 892.6L170 893.5L171.2 902.9L166.6 905L161 902.4L156.8 905.4L164.4 908L165.7 911.4L181.9 916.9L184.9 920.3L187 925.4L180.6 931L183.2 934L182.3 939.5L176.4 942.1L182.7 950.6L181.9 955.7L184.4 957.8L194.2 957.4L192.5 968.5L206.5 954L204.8 950.2L208.7 932.3L199.7 926.7L199.7 922L207.4 913.5L212.5 898.2L211.6 893.5L218.5 888.4L223.6 868.8L218.5 841.1L225.3 835.1L234.6 833L228.2 824.1L218.9 824.9L208.7 822.4L208.2 816L206.1 814.7L203.6 824.5L201 824.9L204.8 798.1L248.2 799.8L250.8 802.3L263.5 803.6L264.8 824.5L241 823.2L238.9 820.2L235 822.8L252 832.6L268.6 831.3L273.3 829.2L272 801.9L277.5 780L276.8 760.7L290.7 728.8L304.7 735.4L297.1 743.6L295 749.6L296.3 758.9L293.3 782.8L289.9 787.9L290.3 805.8L312 804.1L313.3 791.3L336.2 775.1L338.8 765.3L346.7 742L351.5 735.6L363.3 723.5L365.6 720.8L365.7 720.6L381.2 729.2L384.8 629.9L392 616.7L415.9 598.8L428.9 592.8L429.3 592.6L433.3 541.4L432.9 541.7Z' },
+    { name: 'Sasang-gu', d: 'M428.9 592.8L415.9 598.8L392 616.7L384.8 629.9L381.2 729.2L396.6 734.7L408.6 741.7L415.1 742.5L430.2 742.4L440.1 739.4L445.8 738.5L446.3 738.5L458.2 695.5L455.5 682.9L455.5 669.6L455.5 655L460.2 643.7L468.8 637.7L474.6 631.3L474.8 631.1L474.7 630.8L469.9 618.9L469.6 619.3L468.2 621.5L467.7 621.5L456.7 620.4L433.4 617.1L427.9 603.8L428.9 592.8Z' }
+];
 
 function chooseRandomBusanScene() {
     const keys = Object.keys(BUSAN_SCENES);
@@ -705,13 +823,36 @@ function createBusanMapLandmarkArtwork(sceneKey) {
     return artwork[sceneKey] || artwork.gwangan;
 }
 
+function createBusanMapPolyline(coordinates) {
+    return coordinates.map(([longitude, latitude], index) => {
+        const point = projectBusanCoordinate(longitude, latitude);
+        return `${index === 0 ? 'M' : 'L'}${point.x.toFixed(1)} ${point.y.toFixed(1)}`;
+    }).join('');
+}
+
 function createBusanMapIntroSvg(selectedScene) {
+    const districtGeometry = BUSAN_DISTRICT_PATHS.map(({ name, d }) =>
+        `<path data-district="${name}" d="${d}"/>`
+    ).join('');
+    const nakdongRiverPath = createBusanMapPolyline([
+        [128.963, 35.365], [128.973, 35.292], [128.984, 35.221],
+        [128.973, 35.151], [128.960, 35.083], [128.949, 35.018]
+    ]);
+    const locationGuides = BUSAN_MAP_SCENES.map(({ key, x, y, anchorX, anchorY }) => `
+        <g class="map-location-guide ${key === selectedScene ? 'is-selected' : ''}" data-guide-scene="${key}">
+            <path d="M${anchorX.toFixed(1)} ${anchorY.toFixed(1)}L${x} ${y}"/>
+            <circle cx="${anchorX.toFixed(1)}" cy="${anchorY.toFixed(1)}" r="5"/>
+            <circle class="map-location-pin-core" cx="${anchorX.toFixed(1)}" cy="${anchorY.toFixed(1)}" r="2"/>
+        </g>
+    `).join('');
     const landmarks = BUSAN_MAP_SCENES.map(({ key, x, y }, index) => `
         <g class="map-landmark ${key === selectedScene ? 'is-selected' : ''}" data-map-scene="${key}" transform="translate(${x} ${y})" style="--map-order:${index}">
-            <circle class="map-focus-ring" r="92"/>
+            <circle class="map-focus-ring" r="62"/>
             <g class="map-landmark-motion">
-                <path class="map-landmark-shadow" d="M-88 61q88 18 176 0v16q-88 22-176 0Z"/>
-                ${createBusanMapLandmarkArtwork(key)}
+                <g class="map-landmark-art" transform="scale(0.62)">
+                    <path class="map-landmark-shadow" d="M-88 61q88 18 176 0v16q-88 22-176 0Z"/>
+                    ${createBusanMapLandmarkArtwork(key)}
+                </g>
             </g>
         </g>
     `).join('');
@@ -735,15 +876,11 @@ function createBusanMapIntroSvg(selectedScene) {
             </g>
             <g class="map-clouds" fill="var(--map-cloud)"><path d="M87 326q12-30 48-25q25 3 31 25q34-20 61 10H62q3-12 25-10Z"/><path d="M743 272q11-27 42-23q23 3 29 23q31-17 55 9H721q3-11 22-9Z"/></g>
             <g class="map-world-art">
-                <path class="map-mainland" d="M92 213Q164 119 295 138Q405 60 531 142Q660 87 771 172Q897 153 956 264Q984 352 927 428Q993 496 926 570Q963 652 873 704Q850 790 763 810Q712 900 622 872Q565 950 491 900Q417 936 365 870Q284 893 245 821Q140 816 126 724Q44 674 91 587Q39 514 96 444Q49 340 116 290Z" fill="url(#mapLandGradient)"/>
-                <path class="map-river" d="M279 145Q224 264 255 372Q274 469 208 559Q158 632 190 718Q205 768 245 821"/>
-                <path class="map-coast-highlight" d="M130 725Q218 761 291 733Q366 702 434 757Q512 817 581 755Q653 691 721 725Q792 759 858 687Q912 628 923 555"/>
-                <g class="map-islands">
-                    <path d="M350 855q57-38 119 6q42 32 33 109q-63 63-147 3q-43-49-5-118Z"/>
-                    <path d="M205 932q34-25 70 4q20 28-4 58q-43 18-72-15q-13-29 6-47ZM656 982q29-23 58 1q20 29-8 52q-36 12-58-17q-11-22 8-36Z"/>
-                </g>
-                <g class="map-district-lines" fill="none"><path d="M159 306Q288 324 390 360T635 715M281 180Q347 257 390 360T365 575T375 785M531 151Q603 272 710 395T900 565M926 428Q821 439 710 395T635 715M165 770Q273 688 365 575M375 785Q422 858 480 985M635 715Q730 742 835 820"/></g>
-                <g class="map-route-dots"><circle cx="165" cy="770" r="4"/><circle cx="390" cy="360" r="4"/><circle cx="365" cy="575" r="4"/><circle cx="375" cy="785" r="4"/><circle cx="480" cy="985" r="4"/><circle cx="635" cy="715" r="4"/><circle cx="710" cy="395" r="4"/><circle cx="835" cy="820" r="4"/><circle cx="900" cy="565" r="4"/></g>
+                <!-- District geometry: geoBoundaries KOR ADM2, projected without aspect distortion. -->
+                <g class="map-district-glow">${districtGeometry}</g>
+                <g class="map-district-geometry" fill="url(#mapLandGradient)">${districtGeometry}</g>
+                <path class="map-river" d="${nakdongRiverPath}"/>
+                <g class="map-location-guides">${locationGuides}</g>
                 ${landmarks}
             </g>
             <g class="map-wave-lines" fill="none"><path d="M48 1066q92-22 184 0t184 0t184 0t184 0t184 0"/><path d="M-35 1140q120-26 240 0t240 0t240 0t240 0t240 0"/><path d="M85 1199q77-18 154 0t154 0t154 0t154 0t154 0"/></g>
@@ -752,6 +889,7 @@ function createBusanMapIntroSvg(selectedScene) {
 
 function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
     const safeSceneKey = BUSAN_SCENES[sceneKey] ? sceneKey : 'gwangan';
+    const sceneLocation = BUSAN_SCENE_LOCATIONS[safeSceneKey];
     const artworkByScene = {
         gwangan: createGwanganSceneSvg,
         gamcheon: createGamcheonSceneSvg,
@@ -772,7 +910,10 @@ function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
             <rect width="400" height="200" fill="url(#${gradientId})"/>
             ${createAtmosphereSvg()}${artworkByScene[safeSceneKey]()}
         </svg>
-        <div class="hero-sticker" aria-hidden="true"><strong>BUSAN</strong></div>
+        <div class="hero-sticker scene-location-stamp">
+            <strong>${sceneLocation.name}</strong>
+            <span>${sceneLocation.coordinates}</span>
+        </div>
     </div>`;
 }
 

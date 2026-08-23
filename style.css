@@ -540,46 +540,62 @@ body.is-intro {
     filter: none;
 }
 
-.map-mainland {
-    stroke: color-mix(in srgb, var(--time-accent-two) 58%, #FFFFFF);
-    stroke-width: 5;
+.map-district-glow {
+    fill: none;
+    stroke: color-mix(in srgb, var(--time-accent) 58%, #FFFFFF);
+    stroke-width: 12;
+    stroke-linejoin: round;
+    opacity: 0.17;
+}
+
+.map-district-geometry {
+    stroke: color-mix(in srgb, var(--time-accent-two) 54%, #DDFDFF);
+    stroke-width: 2.4;
     stroke-linejoin: round;
 }
 
-.map-coast-highlight {
-    fill: none;
-    stroke: color-mix(in srgb, var(--time-accent) 72%, #FFFFFF);
-    stroke-width: 7;
-    stroke-linecap: round;
-    opacity: 0.72;
+.map-district-geometry path {
+    transition: opacity 0.4s ease;
 }
 
 .map-river {
     fill: none;
     stroke: color-mix(in srgb, var(--map-sea-top) 82%, var(--time-accent-two));
-    stroke-width: 19;
+    stroke-width: 9;
     stroke-linecap: round;
-    opacity: 0.82;
+    stroke-linejoin: round;
+    opacity: 0.48;
 }
 
-.map-islands {
-    fill: var(--map-land-bottom);
-    stroke: color-mix(in srgb, var(--time-accent-two) 50%, #FFFFFF);
-    stroke-width: 4;
-}
-
-.map-district-lines {
-    stroke: color-mix(in srgb, var(--time-accent-two) 55%, transparent);
-    stroke-width: 3;
+.map-location-guide {
+    fill: none;
+    stroke: color-mix(in srgb, var(--time-accent-two) 72%, #FFFFFF);
+    stroke-width: 2.2;
     stroke-linecap: round;
-    stroke-dasharray: 10 12;
-    animation: mapRouteFlow 13s linear infinite;
+    stroke-dasharray: 4 7;
+    opacity: 0.52;
+    transition: opacity 0.45s ease;
 }
 
-.map-route-dots {
+.map-location-guide circle {
     fill: var(--time-accent);
-    stroke: var(--map-land-bottom);
-    stroke-width: 3;
+    stroke: color-mix(in srgb, var(--map-land-bottom) 80%, #001323);
+    stroke-width: 2.5;
+}
+
+.map-location-guide .map-location-pin-core {
+    fill: #FFFFFF;
+    stroke: none;
+}
+
+.map-location-guide.is-selected {
+    stroke: var(--time-accent);
+    stroke-width: 3.2;
+    opacity: 1;
+}
+
+.map-location-guide.is-selected circle:first-of-type {
+    filter: drop-shadow(0 0 8px color-mix(in srgb, var(--time-accent) 76%, transparent));
 }
 
 .map-wave-lines {
@@ -762,9 +778,12 @@ html[data-time-theme="night"] .map-night-layer {
     opacity: 0.14;
 }
 
+.busan-map-intro.is-focusing .map-location-guide:not(.is-selected) {
+    opacity: 0.08;
+}
+
 .busan-map-intro.is-focusing .map-landmark-motion,
 .busan-map-intro.is-focusing .map-focus-ring,
-.busan-map-intro.is-focusing .map-district-lines,
 .busan-map-intro.is-focusing .map-wave-lines,
 .busan-map-intro.is-focusing .map-clouds {
     animation: none !important;
@@ -817,7 +836,7 @@ html[data-time-theme="night"] .map-night-layer {
 
 @media (min-aspect-ratio: 4 / 3) {
     .busan-map-world {
-        width: min(68vw, 72vh);
+        width: min(74vw, 88vh);
     }
 
     .busan-map-intro::before {
@@ -850,7 +869,6 @@ html[data-performance="lite"] .busan-map-world {
 }
 
 html[data-performance="lite"] .map-landmark-motion,
-html[data-performance="lite"] .map-district-lines,
 html[data-performance="lite"] .map-wave-lines,
 html[data-performance="lite"] .map-clouds,
 html[data-performance="lite"] .map-focus-ring {
@@ -1542,6 +1560,38 @@ html[data-time-theme="night"] .market-fish-mark {
 
 .hero-sticker strong {
     font-weight: 950;
+}
+
+.scene-location-stamp {
+    display: grid;
+    align-items: initial;
+    gap: 0.14rem;
+    inline-size: max-content;
+    max-inline-size: calc(100% - 1.5rem);
+    min-inline-size: 9.75rem;
+    padding: 0.38rem 0.56rem 0.4rem;
+    text-align: left;
+    transform: rotate(-1.25deg);
+}
+
+.scene-location-stamp strong,
+.scene-location-stamp span {
+    display: block;
+    white-space: nowrap;
+}
+
+.scene-location-stamp strong {
+    font-size: clamp(0.43rem, 1.65vw, 0.55rem);
+    line-height: 1.05;
+    letter-spacing: 0.065em;
+}
+
+.scene-location-stamp span {
+    font-size: clamp(0.4rem, 1.48vw, 0.49rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.055em;
+    opacity: 0.78;
 }
 
 /* Six lightweight, transform/opacity-only decorative animations. */
