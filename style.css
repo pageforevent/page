@@ -215,6 +215,152 @@ body.is-intro {
 }
 
 /* ========================================================================== 
+   Full-screen cinematic intro
+   ========================================================================== */
+
+.cinematic-intro {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+        radial-gradient(circle at 18% 12%, var(--ambient-one), transparent 42%),
+        radial-gradient(circle at 88% 22%, var(--ambient-two), transparent 42%),
+        linear-gradient(155deg, var(--page-top), var(--page-bottom));
+    clip-path: inset(0 round 0);
+    will-change: clip-path, opacity;
+}
+
+.cinematic-visual {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.cinematic-visual .bridge-illustration-card {
+    position: absolute;
+    margin: 0;
+    transform-origin: center;
+    will-change: transform;
+}
+
+.cinematic-visual .gwangan-bridge-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.cinematic-visual .bridge-coordinate-bar {
+    top: 0.7rem;
+    left: 0.75rem;
+    right: 0.75rem;
+    font-size: 0.52rem;
+}
+
+.cinematic-visual .hero-sticker {
+    right: 0.72rem;
+    bottom: 0.62rem;
+    padding: 0.3rem 0.48rem;
+    font-size: 0.49rem;
+}
+
+.cinematic-intro::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.58;
+    background:
+        linear-gradient(155deg, var(--ambient-one), transparent 38%, var(--ambient-two)),
+        linear-gradient(to bottom, transparent 45%, color-mix(in srgb, var(--page-bottom) 78%, transparent));
+}
+
+.cinematic-intro::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at center, transparent 20%, rgba(0, 0, 0, 0.28) 100%),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.06), transparent 38%, rgba(0, 0, 0, 0.72));
+}
+
+.cinematic-copy {
+    position: absolute;
+    left: clamp(1.45rem, 7vw, 5rem);
+    right: clamp(1.45rem, 7vw, 5rem);
+    bottom: clamp(5.7rem, 13vh, 8.5rem);
+    z-index: 5;
+    color: #FFFFFF;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.72);
+    transition: opacity 0.58s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.cinematic-kicker {
+    display: block;
+    margin-bottom: 0.55rem;
+    color: var(--accent);
+    font-size: clamp(0.62rem, 2.4vw, 0.85rem);
+    font-weight: 900;
+    letter-spacing: 0.16em;
+}
+
+.cinematic-copy h2 {
+    max-width: 780px;
+    font-size: clamp(2.45rem, 12vw, 6rem);
+    font-weight: 950;
+    line-height: 1.02;
+    letter-spacing: -0.065em;
+    word-break: keep-all;
+}
+
+.cinematic-copy p {
+    max-width: 600px;
+    margin-top: 0.8rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: clamp(0.8rem, 3vw, 1.05rem);
+    font-weight: 600;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+.cinematic-corner {
+    position: absolute;
+    z-index: 5;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.58rem;
+    font-weight: 850;
+    letter-spacing: 0.15em;
+    transition: opacity 0.25s ease;
+}
+
+.cinematic-corner-top {
+    top: max(3.2rem, calc(env(safe-area-inset-top) + 2rem));
+    left: clamp(1.45rem, 7vw, 5rem);
+}
+
+.cinematic-corner-bottom {
+    right: clamp(1.45rem, 7vw, 5rem);
+    bottom: max(1.65rem, env(safe-area-inset-bottom));
+}
+
+.cinematic-intro.is-collapsing .cinematic-copy {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+}
+
+.cinematic-intro.is-collapsing .cinematic-corner {
+    opacity: 0;
+}
+
+.cinematic-intro .gwangan-bridge-svg * {
+    animation: none !important;
+    filter: none !important;
+}
+
+/* ========================================================================== 
    Hero / toolbar
    ========================================================================== */
 
@@ -224,11 +370,11 @@ body.is-intro {
     flex-direction: column;
     margin-bottom: 1.25rem;
     transform-origin: center top;
-    transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.82s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .app-container.is-intro .header {
-    transform: translate3d(0, min(23vh, 168px), 0) scale(1.025);
+    transform: translate3d(0, 0, 0) scale(1);
 }
 
 .app-container.is-ready .header {
@@ -242,7 +388,7 @@ body.is-intro {
     align-items: center;
     gap: 0.7rem;
     margin: 0.1rem 0.1rem 0.72rem;
-    transition: opacity 0.28s ease;
+    transition: opacity 0.45s ease 0.18s;
 }
 
 .app-container.is-intro .hero-toolbar {
@@ -347,6 +493,265 @@ body.is-intro {
     width: 100%;
     height: auto;
     display: block;
+}
+
+/* Five Busan landmarks × four time palettes. The landmark is random per load. */
+.busan-scene-svg {
+    --scene-sky-top: #050816;
+    --scene-sky-bottom: #16325E;
+    --scene-sea-top: #103A67;
+    --scene-sea-bottom: #06172D;
+    --scene-sun: #FFE784;
+    --scene-cloud: #D7EEFF;
+    --scene-star: #F7FBFF;
+    --scene-moon: #FFF4C5;
+    --scene-ink: #07101F;
+    --scene-ink-soft: #E7F5FF;
+    --scene-line: #65E8FF;
+    --scene-structure: #E9F0F5;
+    --scene-house: #EAF2F5;
+    --scene-hill: #132B45;
+    --scene-glass: #214F73;
+    --scene-water-line: #6DEAF3;
+    --scene-window: #FFE467;
+    --scene-light: #FFF49A;
+    --scene-pop-1: #FF648D;
+    --scene-pop-2: #74EEEA;
+    --scene-pop-3: #A58BFF;
+}
+
+html[data-time-theme="morning"] .busan-scene-svg {
+    --scene-sky-top: #FFD5B4;
+    --scene-sky-bottom: #86D4D1;
+    --scene-sea-top: #55B8C5;
+    --scene-sea-bottom: #236B82;
+    --scene-sun: #FFE675;
+    --scene-cloud: #FFF4E8;
+    --scene-star: #FFF8E8;
+    --scene-moon: #FFF2C3;
+    --scene-ink: #163348;
+    --scene-ink-soft: #8A6573;
+    --scene-line: #FFE6A7;
+    --scene-structure: #F7E7D4;
+    --scene-house: #FFF5E8;
+    --scene-hill: #4B786D;
+    --scene-glass: #79BAC0;
+    --scene-water-line: #D9FFF3;
+    --scene-window: #406579;
+    --scene-light: #FFF0A4;
+    --scene-pop-1: #FF8294;
+    --scene-pop-2: #61D8C6;
+    --scene-pop-3: #F4B963;
+}
+
+html[data-time-theme="day"] .busan-scene-svg {
+    --scene-sky-top: #39A8F2;
+    --scene-sky-bottom: #A6E8F3;
+    --scene-sea-top: #168BCF;
+    --scene-sea-bottom: #075A99;
+    --scene-sun: #FFE34E;
+    --scene-cloud: #F9FDFF;
+    --scene-star: #FFFFFF;
+    --scene-moon: #FFF4B0;
+    --scene-ink: #0A3154;
+    --scene-ink-soft: #F3FCFF;
+    --scene-line: #F7FDFF;
+    --scene-structure: #F1EEE5;
+    --scene-house: #FFFDF4;
+    --scene-hill: #4F967A;
+    --scene-glass: #60B8D1;
+    --scene-water-line: #A9FAF1;
+    --scene-window: #174F73;
+    --scene-light: #FFF274;
+    --scene-pop-1: #FF5E79;
+    --scene-pop-2: #38E0C1;
+    --scene-pop-3: #8B76F1;
+}
+
+html[data-time-theme="sunset"] .busan-scene-svg {
+    --scene-sky-top: #3C1A5B;
+    --scene-sky-bottom: #F06C5C;
+    --scene-sea-top: #934668;
+    --scene-sea-bottom: #241A45;
+    --scene-sun: #FFD15C;
+    --scene-cloud: #FFD5B7;
+    --scene-star: #FFE2C7;
+    --scene-moon: #FFF0C0;
+    --scene-ink: #24132E;
+    --scene-ink-soft: #FFE4CB;
+    --scene-line: #FFCC83;
+    --scene-structure: #E7B8A9;
+    --scene-house: #FFD8C8;
+    --scene-hill: #49314A;
+    --scene-glass: #B66D7E;
+    --scene-water-line: #FFA982;
+    --scene-window: #FFD56A;
+    --scene-light: #FFE987;
+    --scene-pop-1: #FF5E82;
+    --scene-pop-2: #70E4D4;
+    --scene-pop-3: #A886E8;
+}
+
+.time-atmosphere {
+    display: none;
+}
+
+html[data-time-theme="morning"] .atmosphere-morning,
+html[data-time-theme="day"] .atmosphere-day,
+html[data-time-theme="sunset"] .atmosphere-sunset,
+html[data-time-theme="night"] .atmosphere-night {
+    display: block;
+}
+
+/* Each period deliberately uses a different visual rhythm. */
+html[data-time-theme="morning"] .morning-sun {
+    animation: morningWake 5.8s ease-in-out infinite alternate;
+}
+
+html[data-time-theme="morning"] .morning-mist {
+    animation: morningMist 11s ease-in-out infinite alternate;
+}
+
+html[data-time-theme="day"] .day-rays {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: daySpin 18s linear infinite;
+}
+
+html[data-time-theme="day"] .day-cloud-one {
+    animation: dayCloud 13s ease-in-out infinite alternate;
+}
+
+html[data-time-theme="day"] .day-cloud-two {
+    animation: dayCloud 17s ease-in-out infinite alternate-reverse;
+}
+
+html[data-time-theme="sunset"] .sunset-reflection {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: sunsetShimmer 4.8s ease-in-out infinite alternate;
+}
+
+html[data-time-theme="sunset"] .sunset-birds {
+    animation: sunsetFlight 9s ease-in-out infinite alternate;
+}
+
+html[data-time-theme="night"] .night-stars,
+html[data-time-theme="night"] .scene-night-lights {
+    animation: nightTwinkle 3.2s ease-in-out infinite alternate;
+}
+
+html[data-time-theme="night"] .night-firework {
+    animation: nightBurst 4.8s ease-out infinite;
+}
+
+.scene-water-lines {
+    animation: waterDrift 8s ease-in-out infinite alternate;
+}
+
+.gamcheon-bunting {
+    transform-box: fill-box;
+    transform-origin: center top;
+    animation: buntingSway 3.6s ease-in-out infinite alternate;
+}
+
+.gamcheon-stairs,
+.nurimaru-light-sweep {
+    animation: landmarkSignal 4.6s ease-in-out infinite alternate;
+}
+
+.huinnyeoul-laundry {
+    transform-box: fill-box;
+    transform-origin: center top;
+    animation: laundrySway 3.8s ease-in-out infinite alternate;
+}
+
+.jagalchi-crane-hook {
+    animation: craneHook 5.2s ease-in-out infinite alternate;
+}
+
+.huinnyeoul-boat,
+.jagalchi-boat {
+    animation: boatBob 4.2s ease-in-out infinite alternate;
+}
+
+html[data-time-theme="night"] .bridge-traffic {
+    animation: bridgeTraffic 5s linear infinite;
+}
+
+@keyframes morningWake {
+    from { opacity: 0.68; }
+    to { opacity: 1; }
+}
+
+@keyframes morningMist {
+    from { transform: translateX(-10px); opacity: 0.42; }
+    to { transform: translateX(12px); opacity: 0.78; }
+}
+
+@keyframes daySpin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes dayCloud {
+    from { transform: translateX(-12px); }
+    to { transform: translateX(18px); }
+}
+
+@keyframes sunsetShimmer {
+    from { transform: scaleX(0.72); opacity: 0.12; }
+    to { transform: scaleX(1.08); opacity: 0.31; }
+}
+
+@keyframes sunsetFlight {
+    from { transform: translate(-12px, 5px); opacity: 0.55; }
+    to { transform: translate(28px, -7px); opacity: 0.95; }
+}
+
+@keyframes nightTwinkle {
+    from { opacity: 0.48; }
+    to { opacity: 1; }
+}
+
+@keyframes nightBurst {
+    0%, 68%, 100% { opacity: 0; }
+    12%, 38% { opacity: 1; }
+}
+
+@keyframes waterDrift {
+    from { transform: translateX(-7px); }
+    to { transform: translateX(7px); }
+}
+
+@keyframes buntingSway {
+    from { transform: rotate(-2deg); }
+    to { transform: rotate(2deg); }
+}
+
+@keyframes landmarkSignal {
+    from { opacity: 0.45; }
+    to { opacity: 1; }
+}
+
+@keyframes laundrySway {
+    from { transform: rotate(-1.5deg); }
+    to { transform: rotate(1.5deg); }
+}
+
+@keyframes craneHook {
+    from { transform: translateY(-4px); }
+    to { transform: translateY(5px); }
+}
+
+@keyframes boatBob {
+    from { transform: translateY(-1px) rotate(-0.5deg); }
+    to { transform: translateY(3px) rotate(0.7deg); }
+}
+
+@keyframes bridgeTraffic {
+    from { transform: translateX(-80px); opacity: 0; }
+    12%, 88% { opacity: 1; }
+    to { transform: translateX(80px); opacity: 0; }
 }
 
 .bridge-coordinate-bar {
@@ -547,8 +952,8 @@ body.is-intro {
     flex-direction: column;
     gap: 0.85rem;
     transition:
-        opacity 0.36s ease,
-        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        opacity 0.5s ease,
+        transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .app-container.is-intro .step-list {
@@ -577,8 +982,8 @@ body.is-intro {
         0 14px 28px -22px rgba(0, 0, 0, 0.9),
         inset 0 1px 0 rgba(255, 255, 255, 0.035);
     transition:
-        opacity 0.36s ease var(--step-delay, 0.08s),
-        transform 0.42s cubic-bezier(0.16, 1, 0.3, 1) var(--step-delay, 0.08s),
+        opacity 0.5s ease var(--step-delay, 0.15s),
+        transform 0.58s cubic-bezier(0.16, 1, 0.3, 1) var(--step-delay, 0.15s),
         border-color 0.25s ease,
         box-shadow 0.25s ease;
 }
@@ -862,7 +1267,7 @@ body.is-intro {
     cursor: pointer;
 }
 
-.app-container.is-intro .gwangan-bridge-svg * {
+body.is-intro .app-container .gwangan-bridge-svg * {
     animation-play-state: paused;
 }
 
