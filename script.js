@@ -344,12 +344,30 @@ const BUSAN_SCENES = {
     cinemaCenter: true
 };
 
+// 실제 지리를 바탕으로 서로 가까운 장소는 시각적으로 조금 벌린 지도 좌표입니다.
+// 하나의 4:5 마스터 맵을 두고 화면 비율에 따라 카메라만 달리 움직입니다.
+const BUSAN_MAP_SCENES = [
+    { key: 'gamcheon', x: 205, y: 770 },
+    { key: 'lotteBusan', x: 405, y: 430 },
+    { key: 'busanTower', x: 414, y: 655 },
+    { key: 'jagalchi', x: 338, y: 790 },
+    { key: 'huinnyeoul', x: 470, y: 965 },
+    { key: 'gwangan', x: 675, y: 742 },
+    { key: 'cinemaCenter', x: 744, y: 465 },
+    { key: 'nurimaru', x: 800, y: 790 },
+    { key: 'haeundae', x: 875, y: 605 }
+];
+
+const BUSAN_MAP_POINT_BY_SCENE = Object.fromEntries(
+    BUSAN_MAP_SCENES.map((scene) => [scene.key, scene])
+);
+
 function chooseRandomBusanScene() {
     const keys = Object.keys(BUSAN_SCENES);
     const previewScene = new URLSearchParams(window.location.search).get('scene');
     if (previewScene && BUSAN_SCENES[previewScene]) return previewScene;
 
-    // 한 장소가 연속으로 뽑히지 않고, 다섯 장소를 모두 본 뒤 다시 섞습니다.
+    // 한 장소가 연속으로 뽑히지 않고, 아홉 장소를 모두 본 뒤 다시 섞습니다.
     try {
         const bagKey = 'busan-scene-bag-v3';
         const lastKey = 'busan-scene-last-v3';
@@ -593,6 +611,133 @@ function createCinemaCenterSceneSvg() {
         </g>`;
 }
 
+function createBusanMapLandmarkArtwork(sceneKey) {
+    const artwork = {
+        gwangan: `
+            <path class="map-water" d="M-82 38q40-12 82 0t82 0v28H-82Z"/>
+            <g class="map-bridge" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M-76 37Q-42 24-23-18Q0 28 23-18Q45 24 77 37" stroke="var(--map-light)" stroke-width="4"/>
+                <path d="M-27 40V-20M-19 40V-20M19 40V-20M27 40V-20" stroke="var(--map-structure)" stroke-width="5"/>
+                <path d="M-82 39H82" stroke="var(--map-ink)" stroke-width="9"/>
+                <path d="M-82 35H82" stroke="var(--map-pop)" stroke-width="3"/>
+            </g>`,
+        gamcheon: `
+            <path class="map-hill" d="M-86 46Q-48 5-13 20Q18-22 52 8Q72-3 88 12V65H-86Z"/>
+            <g class="map-houses" stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-73 17h37v31h-37ZM-29-7h40v34h-40ZM18 7h42v36H18ZM-54 40h44v29h-44ZM-2 31h48v38H-2ZM52 29h35v40H52Z"/>
+                <path d="M-76 13h43M-32-11h46M15 3h48M-57 36h50M-5 27h54M49 25h41" fill="none" stroke="var(--map-light)" stroke-width="5"/>
+            </g>`,
+        nurimaru: `
+            <path class="map-water" d="M-88 35q43-10 88 0t88 0v31H-88Z"/>
+            <path class="map-hill" d="M-91 43Q-48 2-14 26Q24 2 91 35v20H-91Z"/>
+            <g stroke="var(--map-ink)" stroke-linejoin="round">
+                <path d="M-62 8Q0-45 69 0Q32-13 1-8Q-30-2-62 18Z" fill="var(--map-paper)" stroke-width="4"/>
+                <path d="M-46 13Q0-10 50 5V43H-46Z" fill="var(--map-glass)" stroke-width="4"/>
+                <path d="M-47 15Q0-8 51 7" fill="none" stroke="var(--map-pop)" stroke-width="6"/>
+                <path d="M-59 44H61l12 14H-70Z" fill="var(--map-ink)" stroke-width="2"/>
+            </g>`,
+        huinnyeoul: `
+            <path class="map-water" d="M-4 8h94v61H-4Z"/>
+            <path class="map-hill" d="M-92-47Q-35-42 2-5Q26 18 39 69H-92Z"/>
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-86-34h43v32h-43ZM-40-23H2v34h-42ZM-82 2h46v36h-46ZM-32 16H9v36h-41ZM-84 40h55v29h-55Z" fill="var(--map-paper)"/>
+                <path d="M-89-38h49M-43-27H5M-85-2h52M-35 12H12M-87 36h61" stroke="var(--map-pop)" stroke-width="5"/>
+                <path d="M4 5Q32 17 62 55L49 67Q24 31-2 21Z" fill="var(--map-paper)"/>
+                <path d="M6 12Q32 25 54 58" fill="none" stroke="var(--map-light)" stroke-width="5" stroke-dasharray="9 6"/>
+            </g>`,
+        jagalchi: `
+            <path class="map-water" d="M-88 38q42-9 84 0t92 0v31H-88Z"/>
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-54-25H49v80H-54Z" fill="var(--map-structure)"/>
+                <path d="M-62-18Q-26-48 7-26Q38-5 62-41Q59-20 48-5Q15 9-10-9Q-33-25-54-1Z" fill="var(--map-paper)"/>
+                <path d="M-56-18Q-24-37 7-20Q35-5 54-30" fill="none" stroke="var(--map-pop)" stroke-width="8"/>
+                <path d="M-37 8H33V35H-37Z" fill="var(--map-glass)"/>
+                <path d="M-23 21q8-7 17 0q-9 7-17 0Zm-6 0l7-6v12ZM10 21q8-7 17 0q-9 7-17 0Zm-6 0l7-6v12Z" fill="var(--map-ink)" stroke="none"/>
+            </g>`,
+        haeundae: `
+            <path class="map-water" d="M-90 46q43-9 86 0t94 0v24H-90Z"/>
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-78 44v-48h28v48ZM-43 44v-70h32v70ZM-3 44v-55h29v55Z" fill="var(--map-glass)"/>
+                <path d="M33 44v-82l12-15l12 15v82ZM61 44v-107l13-15l13 15V44Z" fill="var(--map-structure)"/>
+                <path d="M40-30h9v74h-9ZM68-53h11v97H68Z" fill="var(--map-pop)" stroke="none" opacity=".7"/>
+                <path d="M-88 45H90" stroke="var(--map-paper)" stroke-width="7"/>
+            </g>`,
+        lotteBusan: `
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-76 58V-43H47V58Z" fill="var(--map-paper)"/>
+                <path d="M42 58V-68H81V58Z" fill="var(--map-glass)"/>
+                <g stroke="var(--map-light)" stroke-width="5"><path d="M-62-39v93M-47-39v93M-32-39v93M-17-39v93M-2-39v93M13-39v93M28-39v93M43-39v93"/></g>
+                <path d="M-22-13h51v41h-51Z" fill="var(--map-pop)"/>
+                <circle cx="-50" cy="-18" r="10" fill="var(--map-pop)"/>
+            </g>`,
+        busanTower: `
+            <path class="map-hill" d="M-90 43q46-32 92-8q43-25 88 8v28H-90Z"/>
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-13 51l7-70H8l7 70Z" fill="var(--map-structure)"/>
+                <path d="M-24-22l9-18h32l10 18l-12 12h-28Z" fill="var(--map-paper)"/>
+                <path d="M-17-34h38" stroke="var(--map-pop)" stroke-width="6"/>
+                <path d="M-5-43v-23H9v23ZM2-66v-15" fill="var(--map-glass)" stroke-width="4"/>
+                <circle cx="2" cy="-84" r="5" fill="var(--map-light)" stroke="none"/>
+                <path d="M-79 27h50v34h-50ZM29 30h47v31H29Z" fill="var(--map-paper)"/>
+            </g>`,
+        cinemaCenter: `
+            <g stroke="var(--map-ink)" stroke-width="3" stroke-linejoin="round">
+                <path d="M-90-47H59L90-33L64-15H-78L-97-32Z" fill="var(--map-paper)"/>
+                <path d="M-78-26H70" stroke="var(--map-pop)" stroke-width="8"/>
+                <path d="M-15-13h36l16 70h-69Z" fill="var(--map-glass)"/>
+                <path d="M-77-5h58v62h-58ZM30-3h48v60H30Z" fill="var(--map-structure)"/>
+                <g fill="var(--map-light)" stroke="none"><circle cx="-65" cy="-36" r="3"/><circle cx="-35" cy="-29" r="3"/><circle cx="-4" cy="-37" r="3"/><circle cx="27" cy="-29" r="3"/><circle cx="57" cy="-36" r="3"/></g>
+            </g>`
+    };
+
+    return artwork[sceneKey] || artwork.gwangan;
+}
+
+function createBusanMapIntroSvg(selectedScene) {
+    const landmarks = BUSAN_MAP_SCENES.map(({ key, x, y }, index) => `
+        <g class="map-landmark ${key === selectedScene ? 'is-selected' : ''}" data-map-scene="${key}" transform="translate(${x} ${y})" style="--map-order:${index}">
+            <circle class="map-focus-ring" r="92"/>
+            <g class="map-landmark-motion">
+                <path class="map-landmark-shadow" d="M-88 61q88 18 176 0v16q-88 22-176 0Z"/>
+                ${createBusanMapLandmarkArtwork(key)}
+            </g>
+        </g>
+    `).join('');
+
+    return `
+        <svg class="busan-map-svg" viewBox="0 0 1000 1250" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+                <linearGradient id="mapSeaGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop stop-color="var(--map-sea-top)"/><stop offset="1" stop-color="var(--map-sea-bottom)"/>
+                </linearGradient>
+                <linearGradient id="mapLandGradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop stop-color="var(--map-land-top)"/><stop offset="1" stop-color="var(--map-land-bottom)"/>
+                </linearGradient>
+            </defs>
+            <rect class="map-ocean" width="1000" height="1250" rx="48" fill="url(#mapSeaGradient)"/>
+            <g class="map-time-atmosphere">
+                <g class="map-time-layer map-morning-layer"><circle cx="128" cy="164" r="52"/><path d="M39 230q75-35 154 0t156 0"/></g>
+                <g class="map-time-layer map-day-layer"><circle cx="864" cy="139" r="43"/><g><path d="M864 71V40M864 238v-31M796 139h-31M963 139h-31M816 91l-23-23M912 187l23 23M912 91l23-23M816 187l-23 23"/></g></g>
+                <g class="map-time-layer map-sunset-layer"><circle cx="842" cy="406" r="65"/><path d="M768 406h148l67 265H700Z"/></g>
+                <g class="map-time-layer map-night-layer"><path d="M116 122a49 49 0 1 0 47 75a43 43 0 1 1-47-75Z"/><g><circle cx="225" cy="92" r="4"/><circle cx="330" cy="147" r="3"/><circle cx="578" cy="89" r="4"/><circle cx="749" cy="178" r="3"/><circle cx="914" cy="88" r="4"/></g></g>
+            </g>
+            <g class="map-clouds" fill="var(--map-cloud)"><path d="M87 326q12-30 48-25q25 3 31 25q34-20 61 10H62q3-12 25-10Z"/><path d="M743 272q11-27 42-23q23 3 29 23q31-17 55 9H721q3-11 22-9Z"/></g>
+            <g class="map-world-art">
+                <path class="map-mainland" d="M92 213Q164 119 295 138Q405 60 531 142Q660 87 771 172Q897 153 956 264Q984 352 927 428Q993 496 926 570Q963 652 873 704Q850 790 763 810Q712 900 622 872Q565 950 491 900Q417 936 365 870Q284 893 245 821Q140 816 126 724Q44 674 91 587Q39 514 96 444Q49 340 116 290Z" fill="url(#mapLandGradient)"/>
+                <path class="map-river" d="M279 145Q224 264 255 372Q274 469 208 559Q158 632 190 718Q205 768 245 821"/>
+                <path class="map-coast-highlight" d="M130 725Q218 761 291 733Q366 702 434 757Q512 817 581 755Q653 691 721 725Q792 759 858 687Q912 628 923 555"/>
+                <g class="map-islands">
+                    <path d="M350 855q57-38 119 6q42 32 33 109q-63 63-147 3q-43-49-5-118Z"/>
+                    <path d="M205 932q34-25 70 4q20 28-4 58q-43 18-72-15q-13-29 6-47ZM656 982q29-23 58 1q20 29-8 52q-36 12-58-17q-11-22 8-36Z"/>
+                </g>
+                <g class="map-district-lines" fill="none"><path d="M159 306Q313 350 405 430T675 742M281 180Q356 278 405 430T414 655T338 790M531 151Q612 282 744 465T875 605M926 428Q829 495 744 465T675 742M205 770Q333 718 414 655M338 790Q409 840 470 965M675 742Q732 757 800 790"/></g>
+                <g class="map-route-dots"><circle cx="205" cy="770" r="4"/><circle cx="405" cy="430" r="4"/><circle cx="414" cy="655" r="4"/><circle cx="338" cy="790" r="4"/><circle cx="470" cy="965" r="4"/><circle cx="675" cy="742" r="4"/><circle cx="744" cy="465" r="4"/><circle cx="800" cy="790" r="4"/><circle cx="875" cy="605" r="4"/></g>
+                ${landmarks}
+            </g>
+            <g class="map-wave-lines" fill="none"><path d="M48 1066q92-22 184 0t184 0t184 0t184 0t184 0"/><path d="M-35 1140q120-26 240 0t240 0t240 0t240 0t240 0"/><path d="M85 1199q77-18 154 0t154 0t154 0t154 0t154 0"/></g>
+        </svg>`;
+}
+
 function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
     const safeSceneKey = BUSAN_SCENES[sceneKey] ? sceneKey : 'gwangan';
     const artworkByScene = {
@@ -620,30 +765,34 @@ function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
 }
 
 function createCinematicIntro(data, target, sceneKey) {
-    const currentDate = getCurrentDateDisplay();
     const overlay = document.createElement('div');
-    overlay.className = 'cinematic-intro';
+    overlay.className = 'cinematic-intro busan-map-intro';
+    overlay.dataset.selectedScene = sceneKey;
     overlay.setAttribute('aria-hidden', 'true');
     overlay.innerHTML = `
-        <div class="cinematic-visual">
+        <div class="busan-map-stage">
+            <div class="busan-map-world">
+                ${createBusanMapIntroSvg(sceneKey)}
+            </div>
+        </div>
+        <div class="map-focus-visual">
             ${createBusanSceneIllustrationSvg(sceneKey, 'Intro')}
         </div>
-        <div class="cinematic-copy">
-            <time class="cinematic-kicker" datetime="${currentDate.iso}">${currentDate.label}</time>
-            <h2>${data.headerTitle}</h2>
-            <p>${data.subtitle || '앱 설치부터 사은 행사 참여까지, 오늘의 혜택을 한 번에.'}</p>
-        </div>
-        <span class="cinematic-corner cinematic-corner-top">SPECIAL GIFT</span>
+        <div class="map-intro-grain"></div>
     `;
     document.body.appendChild(overlay);
 
     const targetRect = target?.getBoundingClientRect();
-    const introCard = overlay.querySelector('.bridge-illustration-card');
+    const introCard = overlay.querySelector('.map-focus-visual .bridge-illustration-card');
     if (targetRect && introCard) {
-        const introScale = window.innerWidth < 600 ? 2.05 : 1.65;
+        const isPortrait = window.innerHeight > window.innerWidth;
+        const desiredWidth = isPortrait
+            ? Math.max(window.innerWidth * 1.34, targetRect.width * 2.05)
+            : Math.min(window.innerWidth * 0.82, 1040);
+        const introScale = Math.max(1.2, desiredWidth / targetRect.width);
         const targetCenterX = targetRect.left + targetRect.width / 2;
         const targetCenterY = targetRect.top + targetRect.height / 2;
-        const introCenterY = window.innerHeight * (window.innerWidth < 600 ? 0.34 : 0.40);
+        const introCenterY = window.innerHeight * (isPortrait ? 0.43 : 0.46);
         const translateX = window.innerWidth / 2 - targetCenterX;
         const translateY = introCenterY - targetCenterY;
 
@@ -652,11 +801,65 @@ function createCinematicIntro(data, target, sceneKey) {
             top: `${targetRect.top}px`,
             width: `${targetRect.width}px`,
             height: `${targetRect.height}px`,
+            opacity: '0',
             transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${introScale})`
         });
     }
 
     return overlay;
+}
+
+function waitForIntro(milliseconds) {
+    return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+}
+
+async function playBusanMapIntro(overlay, sceneKey, litePerformance) {
+    const mapWorld = overlay?.querySelector('.busan-map-world');
+    const introCard = overlay?.querySelector('.map-focus-visual .bridge-illustration-card');
+    const point = BUSAN_MAP_POINT_BY_SCENE[sceneKey] || BUSAN_MAP_POINT_BY_SCENE.gwangan;
+
+    if (!overlay || !mapWorld || !introCard || typeof mapWorld.animate !== 'function') return;
+
+    await waitForIntro(litePerformance ? 360 : 980);
+    if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
+
+    overlay.classList.add('is-focusing');
+    const worldRect = mapWorld.getBoundingClientRect();
+    const focusX = worldRect.left + (point.x / 1000) * worldRect.width;
+    const focusY = worldRect.top + (point.y / 1250) * worldRect.height;
+    const isPortrait = window.innerHeight > window.innerWidth;
+    const targetX = window.innerWidth / 2;
+    const targetY = window.innerHeight * (isPortrait ? 0.43 : 0.46);
+    const zoomScale = isPortrait ? 3.45 : 2.45;
+    const translateX = targetX - focusX;
+    const translateY = targetY - focusY;
+    const zoomDuration = litePerformance ? 960 : 2050;
+
+    mapWorld.style.transformOrigin = `${(point.x / 1000) * 100}% ${(point.y / 1250) * 100}%`;
+    const mapAnimation = mapWorld.animate([
+        { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
+        { transform: `translate3d(${translateX * 0.18}px, ${translateY * 0.18}px, 0) scale(1.08)`, opacity: 1, offset: 0.22 },
+        { transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${zoomScale})`, opacity: 0.12 }
+    ], {
+        duration: zoomDuration,
+        easing: 'cubic-bezier(0.68, 0, 0.22, 1)',
+        fill: 'forwards'
+    });
+
+    const cardReveal = introCard.animate([
+        { opacity: 0, offset: 0 },
+        { opacity: 0, offset: 0.58 },
+        { opacity: 1, offset: 0.88 },
+        { opacity: 1 }
+    ], {
+        duration: zoomDuration,
+        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        fill: 'forwards'
+    });
+
+    await Promise.allSettled([mapAnimation.finished, cardReveal.finished]);
+    if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
+    await waitForIntro(litePerformance ? 80 : 230);
 }
 
 function collapseCinematicIntro(overlay, target, duration) {
@@ -665,40 +868,23 @@ function collapseCinematicIntro(overlay, target, duration) {
         return Promise.resolve();
     }
 
-    const rect = target.getBoundingClientRect();
-    const top = Math.max(0, rect.top);
-    const right = Math.max(0, window.innerWidth - rect.right);
-    const bottom = Math.max(0, window.innerHeight - rect.bottom);
-    const left = Math.max(0, rect.left);
-    const targetRadius = window.getComputedStyle(target).borderTopLeftRadius || '22px';
-    const targetClip = `inset(${top}px ${right}px ${bottom}px ${left}px round ${targetRadius})`;
-
     overlay.classList.add('is-collapsing');
+    const introCard = overlay.querySelector('.map-focus-visual .bridge-illustration-card');
+    if (introCard) introCard.style.opacity = '1';
 
-    const collapseAnimation = overlay.animate([
-        {
-            clipPath: 'inset(0px 0px 0px 0px round 0px)',
-            opacity: 1
-        },
-        {
-            clipPath: targetClip,
-            opacity: 1,
-            offset: 0.88
-        },
-        {
-            clipPath: targetClip,
-            opacity: 0
-        }
+    const backdropAnimation = overlay.animate([
+        { opacity: 1 },
+        { opacity: 1, offset: 0.76 },
+        { opacity: 0 }
     ], {
         duration,
         easing: 'cubic-bezier(0.76, 0, 0.24, 1)',
         fill: 'forwards'
     });
 
-    const introCard = overlay.querySelector('.bridge-illustration-card');
-    introCard?.animate([
+    const cardAnimation = introCard?.animate([
         { transform: introCard.style.transform },
-        { transform: 'translate3d(0, 0, 0) scale(1)', offset: 0.88 },
+        { transform: 'translate3d(0, 0, 0) scale(1)', offset: 0.9 },
         { transform: 'translate3d(0, 0, 0) scale(1)' }
     ], {
         duration,
@@ -706,8 +892,10 @@ function collapseCinematicIntro(overlay, target, duration) {
         fill: 'forwards'
     });
 
-    return collapseAnimation.finished
-        .catch(() => undefined)
+    return Promise.allSettled([
+        backdropAnimation.finished,
+        cardAnimation?.finished || Promise.resolve()
+    ])
         .finally(() => overlay.remove());
 }
 
@@ -893,42 +1081,58 @@ function renderPage(data) {
     const cinematicIntro = reduceMotion ? null : createCinematicIntro(data, bridgeTarget, sceneKey);
     initSceneVisibilityOptimization();
 
-    // 전체 화면 광안대교 인트로 -> 최종 헤더 크롭 전환
-    let transitioned = false;
-    function triggerPageTransition(isUserSkip = false) {
-        if (transitioned || !appContainer) return;
-        transitioned = true;
+    function revealPage() {
+        if (!appContainer) return;
         appContainer.classList.remove('is-intro');
         appContainer.classList.add('is-ready');
-
-        if (reduceMotion || !cinematicIntro || !bridgeTarget) {
-            cinematicIntro?.remove();
-            document.body.classList.remove('is-intro');
-            return;
-        }
-
-        const collapseDuration = isUserSkip
-            ? (litePerformance ? 380 : 520)
-            : (litePerformance ? 760 : 1080);
-
-        collapseCinematicIntro(cinematicIntro, bridgeTarget, collapseDuration)
-            .finally(() => document.body.classList.remove('is-intro'));
     }
 
-    // 전체 화면 비주얼을 충분히 보여준 뒤 최종 헤더로 접습니다.
-    const transitionTimer = setTimeout(
-        triggerPageTransition,
-        reduceMotion ? 0 : (litePerformance ? 520 : 950)
-    );
+    if (reduceMotion || !cinematicIntro || !bridgeTarget || !appContainer) {
+        revealPage();
+        cinematicIntro?.remove();
+        document.body.classList.remove('is-intro');
+        return;
+    }
 
-    // 사용자가 화면을 탭/클릭하면 즉시 인트로를 건너뛰고 전환
+    let introFinished = false;
+    let skipInProgress = false;
+
+    function finishIntro() {
+        if (introFinished) return;
+        introFinished = true;
+        window.removeEventListener('pointerdown', handleUserSkip);
+        document.body.classList.remove('is-intro');
+    }
+
+    // 지도를 보는 중 화면을 누르면 선택 장면을 짧게 거쳐 바로 본문으로 이동합니다.
     function handleUserSkip() {
-        clearTimeout(transitionTimer);
-        triggerPageTransition(true);
-        window.removeEventListener('click', handleUserSkip);
-        window.removeEventListener('touchstart', handleUserSkip);
+        if (introFinished || skipInProgress || !cinematicIntro.isConnected) return;
+        skipInProgress = true;
+        cinematicIntro.dataset.cancelled = 'true';
+        cinematicIntro.getAnimations({ subtree: true }).forEach((animation) => animation.cancel());
+        const mapWorld = cinematicIntro.querySelector('.busan-map-world');
+        const introCard = cinematicIntro.querySelector('.map-focus-visual .bridge-illustration-card');
+        if (mapWorld) mapWorld.style.opacity = '0';
+        if (introCard) introCard.style.opacity = '1';
+        revealPage();
+        collapseCinematicIntro(cinematicIntro, bridgeTarget, litePerformance ? 360 : 500)
+            .finally(finishIntro);
     }
 
-    window.addEventListener('click', handleUserSkip, { once: true });
-    window.addEventListener('touchstart', handleUserSkip, { once: true, passive: true });
+    window.addEventListener('pointerdown', handleUserSkip, { once: true, passive: true });
+
+    // 전체 지도 감상 -> 선택 지역 줌인 -> 완성 장면 -> 최종 헤더 순서로 연결합니다.
+    playBusanMapIntro(cinematicIntro, sceneKey, litePerformance)
+        .then(() => {
+            if (cinematicIntro.dataset.cancelled === 'true' || !cinematicIntro.isConnected) return;
+            revealPage();
+            return collapseCinematicIntro(
+                cinematicIntro,
+                bridgeTarget,
+                litePerformance ? 720 : 1080
+            );
+        })
+        .finally(() => {
+            if (!skipInProgress) finishIntro();
+        });
 }

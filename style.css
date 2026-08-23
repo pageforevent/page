@@ -473,6 +473,406 @@ body.is-intro {
 }
 
 /* ========================================================================== 
+   Responsive Busan map intro
+   ========================================================================== */
+
+.busan-map-intro {
+    --map-sea-top: color-mix(in srgb, var(--time-page-top) 58%, #149DC0);
+    --map-sea-bottom: color-mix(in srgb, var(--time-page-bottom) 72%, #062B55);
+    --map-land-top: color-mix(in srgb, var(--time-accent-two) 38%, #235F5A);
+    --map-land-bottom: color-mix(in srgb, var(--time-page-bottom) 56%, #13372F);
+    --map-cloud: color-mix(in srgb, #FFFFFF 78%, var(--time-accent-two));
+    clip-path: none;
+    background:
+        radial-gradient(circle at 50% 46%, color-mix(in srgb, var(--time-accent-two) 19%, transparent), transparent 38%),
+        radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--time-accent) 17%, transparent), transparent 33%),
+        linear-gradient(155deg, var(--time-page-top), var(--time-page-bottom));
+    will-change: opacity;
+}
+
+.busan-map-intro::before {
+    z-index: 2;
+    opacity: 0.42;
+    background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 46px 46px;
+    mask-image: radial-gradient(circle at center, black, transparent 82%);
+    -webkit-mask-image: radial-gradient(circle at center, black, transparent 82%);
+}
+
+.busan-map-intro::after {
+    z-index: 3;
+    background:
+        radial-gradient(circle at center, transparent 43%, rgba(0, 0, 0, 0.34) 100%),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.08), transparent 30%, transparent 68%, rgba(0, 0, 0, 0.34));
+}
+
+.busan-map-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.busan-map-world {
+    width: min(98vw, 74vh);
+    aspect-ratio: 4 / 5;
+    flex: 0 0 auto;
+    will-change: transform, opacity;
+    animation: mapWorldReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.busan-map-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 28px 48px rgba(0, 0, 0, 0.28));
+}
+
+.map-mainland {
+    stroke: color-mix(in srgb, var(--time-accent-two) 58%, #FFFFFF);
+    stroke-width: 5;
+    stroke-linejoin: round;
+}
+
+.map-coast-highlight {
+    fill: none;
+    stroke: color-mix(in srgb, var(--time-accent) 72%, #FFFFFF);
+    stroke-width: 7;
+    stroke-linecap: round;
+    opacity: 0.72;
+}
+
+.map-river {
+    fill: none;
+    stroke: color-mix(in srgb, var(--map-sea-top) 82%, var(--time-accent-two));
+    stroke-width: 19;
+    stroke-linecap: round;
+    opacity: 0.82;
+}
+
+.map-islands {
+    fill: var(--map-land-bottom);
+    stroke: color-mix(in srgb, var(--time-accent-two) 50%, #FFFFFF);
+    stroke-width: 4;
+}
+
+.map-district-lines {
+    stroke: color-mix(in srgb, var(--time-accent-two) 55%, transparent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 10 12;
+    animation: mapRouteFlow 13s linear infinite;
+}
+
+.map-route-dots {
+    fill: var(--time-accent);
+    stroke: var(--map-land-bottom);
+    stroke-width: 3;
+}
+
+.map-wave-lines {
+    stroke: color-mix(in srgb, var(--time-accent-two) 62%, #FFFFFF);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 34 18;
+    opacity: 0.44;
+    animation: mapWaveDrift 10s linear infinite;
+}
+
+.map-clouds {
+    opacity: 0.72;
+    animation: mapCloudDrift 11s ease-in-out infinite alternate;
+}
+
+.map-time-layer {
+    opacity: 0;
+}
+
+html[data-time-theme="morning"] .map-morning-layer,
+html[data-time-theme="day"] .map-day-layer,
+html[data-time-theme="sunset"] .map-sunset-layer,
+html[data-time-theme="night"] .map-night-layer {
+    opacity: 1;
+}
+
+.map-morning-layer circle {
+    fill: var(--time-accent);
+    opacity: 0.76;
+}
+
+.map-morning-layer path {
+    fill: none;
+    stroke: var(--map-cloud);
+    stroke-width: 22;
+    stroke-linecap: round;
+    opacity: 0.34;
+}
+
+.map-day-layer circle {
+    fill: var(--time-accent);
+}
+
+.map-day-layer path {
+    fill: none;
+    stroke: var(--time-accent);
+    stroke-width: 8;
+    stroke-linecap: round;
+}
+
+.map-sunset-layer circle {
+    fill: var(--time-accent);
+    opacity: 0.82;
+}
+
+.map-sunset-layer path {
+    fill: var(--time-accent);
+    opacity: 0.12;
+}
+
+.map-night-layer path {
+    fill: color-mix(in srgb, var(--time-accent) 80%, #FFFFFF);
+}
+
+.map-night-layer circle {
+    fill: var(--time-accent-two);
+}
+
+.map-landmark {
+    --map-paper: #F4F0E8;
+    --map-ink: #07172A;
+    --map-structure: #173A57;
+    --map-glass: #72D8E6;
+    --map-pop: #FF5C86;
+    --map-light: #F3E85D;
+    color: var(--map-pop);
+    transition: opacity 0.52s ease;
+}
+
+.map-landmark[data-map-scene="gamcheon"] {
+    --map-pop: #FF5579;
+    --map-light: #FFE44F;
+    --map-glass: #35D6BB;
+}
+
+.map-landmark[data-map-scene="nurimaru"] {
+    --map-pop: #45CDB6;
+    --map-light: #F5D66F;
+    --map-glass: #72C9CE;
+}
+
+.map-landmark[data-map-scene="huinnyeoul"] {
+    --map-pop: #55E0D2;
+    --map-light: #FF6680;
+    --map-glass: #49C9E1;
+}
+
+.map-landmark[data-map-scene="jagalchi"] {
+    --map-pop: #FF4E75;
+    --map-light: #DFFF49;
+    --map-glass: #67CDE3;
+}
+
+.map-landmark[data-map-scene="haeundae"] {
+    --map-pop: #68E3F0;
+    --map-light: #FFE15C;
+    --map-glass: #78B8E8;
+}
+
+.map-landmark[data-map-scene="lotteBusan"] {
+    --map-pop: #EE5368;
+    --map-light: #EFCB62;
+    --map-glass: #A78063;
+    --map-paper: #F0C96A;
+}
+
+.map-landmark[data-map-scene="busanTower"] {
+    --map-pop: #F46666;
+    --map-light: #F7DF70;
+    --map-glass: #6BD6B4;
+}
+
+.map-landmark[data-map-scene="cinemaCenter"] {
+    --map-pop: #BA69EC;
+    --map-light: #E7FF50;
+    --map-glass: #6FE5ED;
+}
+
+.map-landmark-motion {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: mapLandmarkFloat 4.6s ease-in-out infinite;
+    animation-delay: calc(var(--map-order) * -0.31s);
+}
+
+.map-landmark-shadow {
+    fill: rgba(1, 10, 22, 0.22);
+    stroke: none;
+}
+
+.map-water {
+    fill: color-mix(in srgb, var(--map-glass) 67%, #086CB1);
+    stroke: none;
+}
+
+.map-hill {
+    fill: color-mix(in srgb, var(--map-glass) 58%, #2D795E);
+    stroke: none;
+}
+
+.map-houses path:nth-child(3n + 1) {
+    fill: var(--map-paper);
+}
+
+.map-houses path:nth-child(3n + 2) {
+    fill: var(--map-pop);
+}
+
+.map-houses path:nth-child(3n) {
+    fill: var(--map-glass);
+}
+
+.map-focus-ring {
+    fill: color-mix(in srgb, var(--map-light) 13%, transparent);
+    stroke: var(--map-light);
+    stroke-width: 5;
+    stroke-dasharray: 9 10;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+.map-landmark.is-selected .map-focus-ring {
+    opacity: 0.94;
+    animation: mapFocusPulse 1.8s ease-in-out infinite;
+}
+
+.busan-map-intro.is-focusing .map-landmark:not(.is-selected) {
+    opacity: 0.2;
+}
+
+.map-focus-visual {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.map-focus-visual .bridge-illustration-card {
+    position: absolute;
+    margin: 0;
+    transform-origin: center;
+    will-change: transform, opacity;
+}
+
+.map-focus-visual .gwangan-bridge-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.map-focus-visual .hero-sticker {
+    right: 0.85rem;
+    bottom: 2.75rem;
+}
+
+.map-intro-grain {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    opacity: 0.15;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.42) 0 0.7px, transparent 0.9px);
+    background-size: 5px 5px;
+    mix-blend-mode: soft-light;
+}
+
+.busan-map-intro.is-collapsing .busan-map-stage {
+    opacity: 0;
+}
+
+@keyframes mapWorldReveal {
+    from { opacity: 0; transform: scale(0.94); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes mapLandmarkFloat {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -7px, 0); }
+}
+
+@keyframes mapFocusPulse {
+    0%, 100% { transform: scale(0.9) rotate(0deg); opacity: 0.56; }
+    50% { transform: scale(1.08) rotate(8deg); opacity: 1; }
+}
+
+@keyframes mapRouteFlow {
+    to { stroke-dashoffset: -88; }
+}
+
+@keyframes mapWaveDrift {
+    to { stroke-dashoffset: -104; }
+}
+
+@keyframes mapCloudDrift {
+    from { transform: translate3d(-14px, 0, 0); }
+    to { transform: translate3d(20px, 4px, 0); }
+}
+
+@media (min-aspect-ratio: 4 / 3) {
+    .busan-map-world {
+        width: min(68vw, 72vh);
+    }
+
+    .busan-map-intro::before {
+        background-size: 58px 58px;
+    }
+}
+
+@media (max-width: 385px) {
+    .map-focus-visual .hero-sticker {
+        bottom: 2.45rem;
+    }
+}
+
+@media (min-width: 600px) {
+    .map-focus-visual .hero-sticker {
+        bottom: 3.35rem;
+    }
+}
+
+@media (max-aspect-ratio: 3 / 4) {
+    .busan-map-world {
+        width: min(100vw, 76vh);
+    }
+
+    .busan-map-intro::after {
+        background: radial-gradient(circle at 50% 45%, transparent 36%, rgba(0, 0, 0, 0.38) 100%);
+    }
+}
+
+html[data-performance="lite"] .busan-map-svg {
+    filter: none;
+}
+
+html[data-performance="lite"] .map-landmark-motion,
+html[data-performance="lite"] .map-district-lines,
+html[data-performance="lite"] .map-wave-lines,
+html[data-performance="lite"] .map-clouds,
+html[data-performance="lite"] .map-focus-ring {
+    animation: none !important;
+}
+
+html[data-performance="lite"] .map-clouds,
+html[data-performance="lite"] .map-intro-grain {
+    display: none;
+}
+
+/* ========================================================================== 
    Hero / toolbar
    ========================================================================== */
 
