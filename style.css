@@ -799,6 +799,12 @@ body.is-intro {
     animation: none !important;
 }
 
+.busan-map-intro.is-focusing .map-district-geometry,
+.busan-map-intro.is-focusing .map-landmark-badge,
+.busan-map-intro.is-focusing .map-location-guide circle {
+    filter: none !important;
+}
+
 .map-selected-caption {
     position: absolute;
     top: max(1.2rem, env(safe-area-inset-top));
@@ -2522,6 +2528,27 @@ body {
     box-shadow: none;
 }
 
+.app-container.is-intro .header-skeleton {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+body.is-intro .app-container {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.is-intro .app-container * {
+    animation-play-state: paused !important;
+}
+
+.app-container.is-ready {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.25s ease-out;
+}
+
 .app-container::before,
 .app-container::after {
     display: none;
@@ -2772,6 +2799,14 @@ body {
     box-shadow:
         4px 4px 0 rgba(0, 0, 0, 0.72),
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.12s ease;
+}
+
+.btn-action:active {
+    transform: scale(0.965) translate3d(0, 2px, 0);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.82) !important;
 }
 
 .btn-icon {
@@ -2809,6 +2844,14 @@ body {
 
 .gift-offer-link {
     border-radius: 2px 10px 2px 2px;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.12s ease;
+}
+
+.gift-offer-link:active {
+    transform: scale(0.965) translate3d(0, 2px, 0);
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.82) !important;
 }
 
 @media (hover: hover) and (pointer: fine) {

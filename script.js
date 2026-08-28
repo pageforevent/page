@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    initTimeTheme();
-    loadEventData();
+    initApp();
 });
 
 const TIME_THEMES = {
@@ -1119,16 +1118,17 @@ function createBusanSceneIllustrationSvg(sceneKey, idSuffix = '') {
     </div>`;
 }
 
-function createCinematicIntro(data, target, sceneKey) {
+function createCinematicIntro(sceneKey) {
     const overlay = document.createElement('div');
-    const sceneLocation = BUSAN_SCENE_LOCATIONS[sceneKey] || BUSAN_SCENE_LOCATIONS.gwangan;
+    const safeSceneKey = BUSAN_SCENES[sceneKey] ? sceneKey : 'gwangan';
+    const sceneLocation = BUSAN_SCENE_LOCATIONS[safeSceneKey] || BUSAN_SCENE_LOCATIONS.gwangan;
     overlay.className = 'cinematic-intro busan-map-intro';
-    overlay.dataset.selectedScene = sceneKey;
+    overlay.dataset.selectedScene = safeSceneKey;
     overlay.setAttribute('aria-hidden', 'true');
     overlay.innerHTML = `
         <div class="busan-map-stage">
             <div class="busan-map-world">
-                ${createBusanMapIntroSvg(sceneKey)}
+                ${createBusanMapIntroSvg(safeSceneKey)}
             </div>
             <div class="map-selected-caption">
                 <strong>${sceneLocation.name}</strong>
@@ -1156,7 +1156,8 @@ async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
 
     if (!overlay || !mapWorld || !mapSvg || typeof mapWorld.animate !== 'function') return;
 
-    await waitForIntro(litePerformance ? 760 : balancedPerformance ? 1000 : 1300);
+    // 즉각적인 시각 인지 후 바로 줌 시작 (기존 1.3초 대기 제거)
+    await waitForIntro(litePerformance ? 100 : balancedPerformance ? 150 : 200);
     if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
 
     overlay.classList.add('is-focusing');
@@ -1177,16 +1178,18 @@ async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
         : litePerformance ? 1.08 : balancedPerformance ? 1.2 : 1.16;
     const translateX = targetX - focusX;
     const translateY = targetY - focusY;
-    const zoomDuration = litePerformance ? 980 : balancedPerformance ? 1650 : 2250;
+
+    // 700ms 스내피하고 탄력적인 줌 애니메이션
+    const zoomDuration = litePerformance ? 480 : balancedPerformance ? 580 : 700;
 
     mapWorld.style.transformOrigin = `${pointRatioX * 100}% ${pointRatioY * 100}%`;
     const mapAnimation = mapWorld.animate([
         { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
-        { transform: `translate3d(${translateX * 0.18}px, ${translateY * 0.18}px, 0) scale(1.08)`, opacity: 1, offset: 0.22 },
+        { transform: `translate3d(${translateX * 0.22}px, ${translateY * 0.22}px, 0) scale(1.12)`, opacity: 1, offset: 0.24 },
         { transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${zoomScale})`, opacity: 1 }
     ], {
         duration: zoomDuration,
-        easing: 'cubic-bezier(0.68, 0, 0.22, 1)',
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
         fill: 'forwards'
     });
 
@@ -1195,7 +1198,7 @@ async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
         { transform: `translate3d(0, -4px, 0) scale(${landmarkScale})` }
     ], {
         duration: zoomDuration,
-        easing: 'cubic-bezier(0.68, 0, 0.22, 1)',
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
         fill: 'forwards'
     });
 
@@ -1204,11 +1207,11 @@ async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
         landmarkAnimation?.finished || Promise.resolve()
     ]);
     if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
-    await waitForIntro(litePerformance ? 60 : 180);
+    await waitForIntro(litePerformance ? 20 : 50);
 }
 
 function collapseCinematicIntro(overlay, target, duration) {
-    if (!overlay || !target || typeof overlay.animate !== 'function') {
+    if (!overlay || typeof overlay.animate !== 'function') {
         overlay?.remove();
         return Promise.resolve();
     }
@@ -1218,7 +1221,7 @@ function collapseCinematicIntro(overlay, target, duration) {
         { opacity: 0 }
     ], {
         duration,
-        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
         fill: 'forwards'
     });
 
@@ -1250,18 +1253,38 @@ function initSceneVisibilityOptimization() {
     sceneCards.forEach((card) => observer.observe(card));
 }
 
-// 전체 페이지 렌더링 및 시네마틱 인트로 전환 제어
-function renderPage(data) {
-    document.title = data.pageTitle;
-    const sceneKey = chooseRandomBusanScene();
-    const currentDate = getCurrentDateDisplay();
-    document.documentElement.dataset.sceneTheme = sceneKey;
-
-    const appContainer = document.querySelector('.app-container');
-    if (appContainer) {
-        appContainer.classList.add('is-intro');
-        document.body.classList.add('is-intro');
+// 이벤트 데이터 로드 (인트로와 병렬 실행)
+async function loadEventDataPromise(sceneKey) {
+    try {
+        const response = await (window.__eventDataPromise || fetch('data.json', {
+            cache: 'no-cache',
+            credentials: 'same-origin'
+        }));
+        if (response?.__eventDataError) throw response.__eventDataError;
+        if (!response.ok) {
+            throw new Error('데이터를 불러오는데 실패했습니다.');
+        }
+        const data = await response.json();
+        renderPageContent(data, sceneKey);
+        return data;
+    } catch (error) {
+        console.error(error);
+        const headerContainer = document.getElementById('header-container');
+        if (headerContainer) {
+            headerContainer.innerHTML = `
+                <div class="error-msg">
+                    <p>데이터를 불러오는 중 문제가 발생했습니다.</p>
+                    <button onclick="location.reload()" class="btn-retry">다시 시도</button>
+                </div>
+            `;
+        }
     }
+}
+
+// 본문 헤더 및 스텝 카드 렌더링
+function renderPageContent(data, sceneKey) {
+    document.title = data.pageTitle;
+    const currentDate = getCurrentDateDisplay();
 
     // 헤더 영역 렌더링
     const headerContainer = document.getElementById('header-container');
@@ -1308,7 +1331,7 @@ function renderPage(data) {
             const stepElement = document.createElement('section');
             stepElement.className = 'step-card';
             stepElement.style.setProperty('--step-index', index);
-            stepElement.style.setProperty('--step-delay', `${0.15 + index * 0.09}s`);
+            stepElement.style.setProperty('--step-delay', `${0.06 + index * 0.06}s`);
             stepElement.dataset.stepNumber = String(index + 1).padStart(2, '0');
 
             // 1번 어플 설치 단계일 경우 OS에 따라 링크 분기
@@ -1402,13 +1425,31 @@ function renderPage(data) {
         stepContainer.replaceChildren(stepFragment);
     }
 
+    initSceneVisibilityOptimization();
+}
+
+// 앱 시작 및 인트로-데이터 병렬 실행 제어
+function initApp() {
+    const sceneKey = chooseRandomBusanScene();
+    document.documentElement.dataset.sceneTheme = sceneKey;
+    initTimeTheme();
+
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const performanceMode = document.documentElement.dataset.performance || 'full';
     const litePerformance = performanceMode === 'lite';
     const balancedPerformance = performanceMode === 'balanced';
-    const bridgeTarget = headerContainer?.querySelector('.bridge-illustration-card');
-    const cinematicIntro = reduceMotion ? null : createCinematicIntro(data, bridgeTarget, sceneKey);
-    initSceneVisibilityOptimization();
+
+    const appContainer = document.querySelector('.app-container');
+    if (appContainer) {
+        appContainer.classList.add('is-intro');
+        document.body.classList.add('is-intro');
+    }
+
+    // 1. 인트로 오버레이 즉시 생성 (0ms 진입)
+    const cinematicIntro = reduceMotion ? null : createCinematicIntro(sceneKey);
+
+    // 2. 데이터 가져오기 병렬 시작
+    const dataPromise = loadEventDataPromise(sceneKey);
 
     function revealPage() {
         if (!appContainer) return;
@@ -1416,10 +1457,12 @@ function renderPage(data) {
         appContainer.classList.add('is-ready');
     }
 
-    if (reduceMotion || !cinematicIntro || !bridgeTarget || !appContainer) {
-        revealPage();
-        cinematicIntro?.remove();
-        document.body.classList.remove('is-intro');
+    if (reduceMotion || !cinematicIntro || !appContainer) {
+        dataPromise.then(() => {
+            revealPage();
+            cinematicIntro?.remove();
+            document.body.classList.remove('is-intro');
+        });
         return;
     }
 
@@ -1433,7 +1476,7 @@ function renderPage(data) {
         document.body.classList.remove('is-intro');
     }
 
-    // 지도를 보는 중 화면을 누르면 현재 확대 상태에서 바로 본문으로 이동합니다.
+    // 화면 터치 시 즉각 본문 전환 (100ms 반응)
     function handleUserSkip() {
         if (introFinished || skipInProgress || !cinematicIntro.isConnected) return;
         skipInProgress = true;
@@ -1441,25 +1484,31 @@ function renderPage(data) {
         cinematicIntro.getAnimations({ subtree: true }).forEach((animation) => animation.cancel());
         const mapWorld = cinematicIntro.querySelector('.busan-map-world');
         if (mapWorld) mapWorld.style.opacity = '1';
-        revealPage();
-        collapseCinematicIntro(cinematicIntro, bridgeTarget, litePerformance ? 280 : 420)
-            .finally(finishIntro);
+
+        dataPromise.then(() => {
+            revealPage();
+            const bridgeTarget = document.querySelector('.hero-cover .bridge-illustration-card');
+            collapseCinematicIntro(cinematicIntro, bridgeTarget, litePerformance ? 80 : 110)
+                .finally(finishIntro);
+        });
     }
 
     window.addEventListener('pointerdown', handleUserSkip, { once: true, passive: true });
 
-    // 전체 지도 감상 -> 선택 지역 줌인 -> 실제 페이지 순서로 바로 연결합니다.
-    playBusanMapIntro(cinematicIntro, sceneKey, performanceMode)
-        .then(() => {
-            if (cinematicIntro.dataset.cancelled === 'true' || !cinematicIntro.isConnected) return;
-            revealPage();
-            return collapseCinematicIntro(
-                cinematicIntro,
-                bridgeTarget,
-                litePerformance ? 420 : balancedPerformance ? 560 : 720
-            );
-        })
-        .finally(() => {
-            if (!skipInProgress) finishIntro();
-        });
+    // 지도 줌인과 데이터 준비를 동시에 진행
+    Promise.all([
+        playBusanMapIntro(cinematicIntro, sceneKey, performanceMode),
+        dataPromise
+    ]).then(() => {
+        if (cinematicIntro.dataset.cancelled === 'true' || !cinematicIntro.isConnected) return;
+        revealPage();
+        const bridgeTarget = document.querySelector('.hero-cover .bridge-illustration-card');
+        return collapseCinematicIntro(
+            cinematicIntro,
+            bridgeTarget,
+            litePerformance ? 180 : balancedPerformance ? 220 : 260
+        );
+    }).finally(() => {
+        if (!skipInProgress) finishIntro();
+    });
 }
