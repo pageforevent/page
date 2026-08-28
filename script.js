@@ -1156,8 +1156,8 @@ async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
 
     if (!overlay || !mapWorld || !mapSvg || typeof mapWorld.animate !== 'function') return;
 
-    // 즉각적인 시각 인지 후 바로 줌 시작 (기존 1.3초 대기 제거)
-    await waitForIntro(litePerformance ? 100 : balancedPerformance ? 150 : 200);
+    // 전체 지도를 충분히 감상할 수 있도록 여유 있는 시각 제공 (~1.2초)
+    await waitForIntro(litePerformance ? 750 : balancedPerformance ? 1000 : 1200);
     if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
 
     overlay.classList.add('is-focusing');
@@ -1179,17 +1179,17 @@ async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
     const translateX = targetX - focusX;
     const translateY = targetY - focusY;
 
-    // 700ms 스내피하고 탄력적인 줌 애니메이션
-    const zoomDuration = litePerformance ? 480 : balancedPerformance ? 580 : 700;
+    // 부드럽고 매끄럽게 슥- 미끄러지는 시네마틱 글라이드 줌 (~1.1초)
+    const zoomDuration = litePerformance ? 750 : balancedPerformance ? 950 : 1100;
 
     mapWorld.style.transformOrigin = `${pointRatioX * 100}% ${pointRatioY * 100}%`;
     const mapAnimation = mapWorld.animate([
         { transform: 'translate3d(0, 0, 0) scale(1)', opacity: 1 },
-        { transform: `translate3d(${translateX * 0.22}px, ${translateY * 0.22}px, 0) scale(1.12)`, opacity: 1, offset: 0.24 },
+        { transform: `translate3d(${translateX * 0.18}px, ${translateY * 0.18}px, 0) scale(1.09)`, opacity: 1, offset: 0.28 },
         { transform: `translate3d(${translateX}px, ${translateY}px, 0) scale(${zoomScale})`, opacity: 1 }
     ], {
         duration: zoomDuration,
-        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
         fill: 'forwards'
     });
 
@@ -1198,7 +1198,7 @@ async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
         { transform: `translate3d(0, -4px, 0) scale(${landmarkScale})` }
     ], {
         duration: zoomDuration,
-        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
         fill: 'forwards'
     });
 
@@ -1207,7 +1207,7 @@ async function playBusanMapIntro(overlay, sceneKey, performanceMode) {
         landmarkAnimation?.finished || Promise.resolve()
     ]);
     if (overlay.dataset.cancelled === 'true' || !overlay.isConnected) return;
-    await waitForIntro(litePerformance ? 20 : 50);
+    await waitForIntro(litePerformance ? 40 : 90);
 }
 
 function collapseCinematicIntro(overlay, target, duration) {
@@ -1221,7 +1221,7 @@ function collapseCinematicIntro(overlay, target, duration) {
         { opacity: 0 }
     ], {
         duration,
-        easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        easing: 'cubic-bezier(0.25, 1, 0.35, 1)',
         fill: 'forwards'
     });
 
@@ -1506,7 +1506,7 @@ function initApp() {
         return collapseCinematicIntro(
             cinematicIntro,
             bridgeTarget,
-            litePerformance ? 180 : balancedPerformance ? 220 : 260
+            litePerformance ? 220 : balancedPerformance ? 280 : 320
         );
     }).finally(() => {
         if (!skipInProgress) finishIntro();
