@@ -1290,8 +1290,17 @@ function renderPageContent(data, sceneKey) {
     const headerContainer = document.getElementById('header-container');
     if (headerContainer) {
         headerContainer.innerHTML = `
-            <div class="hero-cover">
-                ${createBusanSceneIllustrationSvg(sceneKey)}
+            <div class="hero-cover" id="hero-cover-swipe" tabindex="0" role="region" aria-label="부산 랜드마크 갤러리 (좌우로 스와이프하여 탐색)">
+                <div class="hero-scene-viewport">
+                    <div class="hero-scene-stage" id="hero-scene-stage">
+                        ${createBusanSceneIllustrationSvg(sceneKey, 'Header')}
+                    </div>
+                </div>
+                <div class="hero-swipe-hint" aria-label="랜드마크 넘기기">
+                    <button class="swipe-arrow-btn swipe-arrow-left" type="button" aria-label="이전 랜드마크">‹</button>
+                    <span class="swipe-counter"><strong id="hero-scene-counter-current">01</strong> / <span id="hero-scene-counter-total">14</span></span>
+                    <button class="swipe-arrow-btn swipe-arrow-right" type="button" aria-label="다음 랜드마크">›</button>
+                </div>
                 <div class="hero-toolbar">
                     <span class="hero-brand">
                         <span class="brand-spark" aria-hidden="true">✦</span>
@@ -1315,6 +1324,7 @@ function renderPageContent(data, sceneKey) {
             </div>
         `;
         applyTimeTheme();
+        initHeroSwipeCarousel(sceneKey);
     }
 
     // 스텝 카드 영역 렌더링
@@ -1426,6 +1436,167 @@ function renderPageContent(data, sceneKey) {
     }
 
     initSceneVisibilityOptimization();
+}
+
+// 상단 랜드마크 일러스트 좌우 스와이프 제어
+function initHeroSwipeCarousel(initialSceneKey) {
+    const heroCover = document.getElementById('hero-cover-swipe');
+    const stage = document.getElementById('hero-scene-stage');
+    const counterCurrent = document.getElementById('hero-scene-counter-current');
+    const counterTotal = document.getElementById('hero-scene-counter-total');
+    if (!heroCover || !stage) return;
+
+    const scenes = Object.keys(BUSAN_SCENES);
+    if (counterTotal) counterTotal.textContent = String(scenes.length).padStart(2, '0');
+
+    let currentIndex = scenes.indexOf(initialSceneKey);
+    if (currentIndex === -1) currentIndex = 0;
+
+    function updateCounter() {
+        if (counterCurrent) {
+            counterCurrent.textContent = String(currentIndex + 1).padStart(2, '0');
+        }
+    }
+    updateCounter();
+
+    let isAnimating = false;
+    let isPointerDown = false;
+    let startX = 0;
+    let startY = 0;
+    let diffX = 0;
+    let diffY = 0;
+    let isHorizontalSwipe = false;
+
+    function switchScene(direction) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const nextIndex = (currentIndex + direction + scenes.length) % scenes.length;
+        const nextSceneKey = scenes[nextIndex];
+        currentIndex = nextIndex;
+        updateCounter();
+
+        // 실시간 테마 컬러 및 메타 데이터 동기화
+        document.documentElement.dataset.sceneTheme = nextSceneKey;
+
+        const currentCard = stage.querySelector('.busan-scene-card:not(.is-sliding-in)');
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = createBusanSceneIllustrationSvg(nextSceneKey, 'Slide_' + Date.now());
+        const nextCard = tempDiv.firstElementChild;
+        if (!nextCard || !currentCard) {
+            isAnimating = false;
+            return;
+        }
+
+        nextCard.classList.add('is-sliding-in');
+        stage.appendChild(nextCard);
+
+        const duration = 320;
+        const easing = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+        const outAnim = currentCard.animate([
+            { transform: 'translate3d(0, 0, 0)', opacity: 1 },
+            { transform: `translate3d(${-direction * 100}%, 0, 0)`, opacity: 0.2 }
+        ], { duration, easing, fill: 'forwards' });
+
+        const inAnim = nextCard.animate([
+            { transform: `translate3d(${direction * 100}%, 0, 0)`, opacity: 0.4 },
+            { transform: 'translate3d(0, 0, 0)', opacity: 1 }
+        ], { duration, easing, fill: 'forwards' });
+
+        Promise.allSettled([outAnim.finished, inAnim.finished]).then(() => {
+            currentCard.remove();
+            nextCard.classList.remove('is-sliding-in');
+            nextCard.style.transform = '';
+            isAnimating = false;
+            initSceneVisibilityOptimization();
+        });
+    }
+
+    heroCover.addEventListener('pointerdown', (e) => {
+        if (isAnimating || e.button !== 0) return;
+        isPointerDown = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        diffX = 0;
+        diffY = 0;
+        isHorizontalSwipe = false;
+        try {
+            heroCover.setPointerCapture(e.pointerId);
+        } catch (err) {}
+    }, { passive: true });
+
+    heroCover.addEventListener('pointermove', (e) => {
+        if (!isPointerDown) return;
+        diffX = e.clientX - startX;
+        diffY = e.clientY - startY;
+
+        if (!isHorizontalSwipe) {
+            if (Math.abs(diffX) > 8 && Math.abs(diffX) > Math.abs(diffY)) {
+                isHorizontalSwipe = true;
+            }
+        }
+
+        if (isHorizontalSwipe) {
+            const currentCard = stage.querySelector('.busan-scene-card:not(.is-sliding-in)');
+            if (currentCard) {
+                currentCard.style.transform = `translate3d(${diffX * 0.35}px, 0, 0)`;
+            }
+        }
+    }, { passive: true });
+
+    const handlePointerEnd = (e) => {
+        if (!isPointerDown) return;
+        isPointerDown = false;
+        try {
+            if (heroCover.hasPointerCapture(e.pointerId)) {
+                heroCover.releasePointerCapture(e.pointerId);
+            }
+        } catch (err) {}
+
+        const currentCard = stage.querySelector('.busan-scene-card:not(.is-sliding-in)');
+        if (currentCard && !isAnimating) {
+            currentCard.style.transition = 'transform 0.22s cubic-bezier(0.22, 1, 0.36, 1)';
+            currentCard.style.transform = 'translate3d(0, 0, 0)';
+            setTimeout(() => {
+                if (currentCard) currentCard.style.transition = '';
+            }, 220);
+        }
+
+        if (isHorizontalSwipe && Math.abs(diffX) >= 38) {
+            if (diffX < 0) {
+                switchScene(1); // Swipe Left -> Next
+            } else {
+                switchScene(-1); // Swipe Right -> Prev
+            }
+        }
+    };
+
+    heroCover.addEventListener('pointerup', handlePointerEnd, { passive: true });
+    heroCover.addEventListener('pointercancel', handlePointerEnd, { passive: true });
+
+    // 키보드 좌우 방향키 탐색 지원
+    heroCover.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            switchScene(1);
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            switchScene(-1);
+        }
+    });
+
+    // 힌트 화살표 클릭 지원
+    const btnPrev = heroCover.querySelector('.swipe-arrow-left');
+    const btnNext = heroCover.querySelector('.swipe-arrow-right');
+    btnPrev?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        switchScene(-1);
+    });
+    btnNext?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        switchScene(1);
+    });
 }
 
 // 앱 시작 및 인트로-데이터 병렬 실행 제어

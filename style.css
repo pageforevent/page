@@ -2564,6 +2564,32 @@ body.is-intro .app-container * {
     overflow: hidden;
     border-radius: 22px;
     background: #07101F;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.hero-cover:active {
+    cursor: grabbing;
+}
+
+.hero-cover:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.hero-scene-viewport {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+}
+
+.hero-scene-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 
 .hero-cover::after {
@@ -2582,6 +2608,14 @@ body.is-intro .app-container * {
     border: 0;
     border-radius: inherit;
     box-shadow: 0 26px 55px -34px rgba(0, 0, 0, 0.92);
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+}
+
+.hero-cover .bridge-illustration-card.is-sliding-in {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
 }
 
 .hero-cover .gwangan-bridge-svg {
@@ -2592,6 +2626,54 @@ body.is-intro .app-container * {
 .hero-cover .hero-sticker {
     right: 0.85rem;
     bottom: 2.75rem;
+}
+
+.hero-swipe-hint {
+    position: absolute;
+    left: 0.85rem;
+    bottom: 2.75rem;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+    padding: 0.28rem 0.52rem;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 4px;
+    color: rgba(255, 255, 255, 0.92);
+    background: rgba(5, 12, 28, 0.76);
+    font-size: 0.56rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    pointer-events: auto;
+}
+
+.swipe-arrow-btn {
+    border: none;
+    background: none;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+    padding: 0 0.18rem;
+    font-size: 0.88rem;
+    font-weight: 900;
+    line-height: 1;
+    transition: opacity 0.15s ease, transform 0.15s ease, color 0.15s ease;
+}
+
+.swipe-arrow-btn:hover {
+    color: #FFFFFF;
+    transform: scale(1.25);
+}
+
+.swipe-arrow-btn:active {
+    transform: scale(0.9);
+}
+
+.swipe-counter strong {
+    color: var(--accent);
+    font-weight: 950;
 }
 
 .hero-toolbar {
@@ -2881,6 +2963,13 @@ body.is-intro .app-container * {
         bottom: 2.45rem;
     }
 
+    .hero-swipe-hint {
+        left: 0.65rem;
+        bottom: 2.45rem;
+        padding: 0.22rem 0.42rem;
+        font-size: 0.51rem;
+    }
+
     .hero-toolbar {
         inset-inline: 0.65rem;
     }
@@ -2933,6 +3022,13 @@ body.is-intro .app-container * {
 
     .hero-cover .hero-sticker {
         bottom: 3.35rem;
+    }
+
+    .hero-swipe-hint {
+        left: 1.15rem;
+        bottom: 3.35rem;
+        padding: 0.32rem 0.6rem;
+        font-size: 0.62rem;
     }
 
     .hero-toolbar {
