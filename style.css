@@ -1203,555 +1203,670 @@ html[data-time-theme="night"] .atmosphere-night {
     display: block;
 }
 
-/* Each period deliberately uses a different visual rhythm. */
+/* ========================================================================== 
+   14 BUSAN LANDMARK DYNAMIC ANIMATION ENGINE
+   Vibrant, GPU-accelerated micro-interactions for every landmark & atmosphere
+   ========================================================================== */
+
+/* --- Atmosphere & Time Theme Dynamic Animations --- */
 html[data-time-theme="morning"] .morning-sun {
-    animation: morningWake 5.8s ease-in-out infinite alternate;
+    animation: morningSunPulse 3.5s ease-in-out infinite alternate;
 }
-
 html[data-time-theme="morning"] .morning-mist {
-    animation: morningMist 11s ease-in-out infinite alternate;
+    animation: morningMistDrift 6.5s ease-in-out infinite alternate;
+}
+html[data-time-theme="morning"] .morning-birds {
+    animation: birdFlight 5.2s ease-in-out infinite alternate;
 }
 
+html[data-time-theme="day"] .day-sun {
+    transform-box: fill-box;
+    transform-origin: center;
+}
 html[data-time-theme="day"] .day-rays {
     transform-box: fill-box;
     transform-origin: center;
-    animation: daySpin 18s linear infinite;
+    animation: daySunRaysSpin 12s linear infinite;
 }
-
 html[data-time-theme="day"] .day-cloud-one {
-    animation: dayCloud 13s ease-in-out infinite alternate;
+    animation: cloudDriftOne 6.8s ease-in-out infinite alternate;
 }
-
 html[data-time-theme="day"] .day-cloud-two {
-    animation: dayCloud 17s ease-in-out infinite alternate-reverse;
+    animation: cloudDriftTwo 8.2s ease-in-out infinite alternate-reverse;
 }
 
+html[data-time-theme="sunset"] .sunset-sun {
+    animation: sunsetSunPulse 3.2s ease-in-out infinite alternate;
+}
 html[data-time-theme="sunset"] .sunset-reflection {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: sunsetShimmer 4.8s ease-in-out infinite alternate;
+    animation: sunsetWaterShimmer 2.8s ease-in-out infinite alternate;
 }
-
 html[data-time-theme="sunset"] .sunset-birds {
-    animation: sunsetFlight 9s ease-in-out infinite alternate;
+    animation: birdFlight 4.8s ease-in-out infinite alternate;
 }
 
 html[data-time-theme="night"] .night-stars,
 html[data-time-theme="night"] .scene-night-lights {
-    animation: nightTwinkle 3.2s ease-in-out infinite alternate;
+    animation: nightStarsTwinkle 2.2s ease-in-out infinite alternate;
 }
-
+html[data-time-theme="night"] .night-moon {
+    animation: moonAuraGlow 3.6s ease-in-out infinite alternate;
+}
 html[data-time-theme="night"] .night-firework {
-    animation: nightBurst 4.8s ease-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: fireworkBurstLively 3.4s cubic-bezier(0.1, 0.8, 0.2, 1) infinite;
 }
 
+/* --- Universal Water Motion --- */
 .scene-water-lines {
-    animation: waterDrift 8s ease-in-out infinite alternate;
+    animation: oceanWaterLines 3.6s ease-in-out infinite alternate;
 }
 
+/* --- 1. Gwangan Bridge (광안대교) --- */
 .bridge-led-flow {
-    opacity: 0.62;
-    animation: bridgeLedFlow 11s linear infinite;
+    opacity: 0.95;
+    animation: bridgeLedFlowFast 2.8s linear infinite;
 }
-
 .gwangan-reflection {
     transform-box: fill-box;
-    transform-origin: center bottom;
-    animation: gwanganReflection 5.8s ease-in-out infinite alternate;
+    transform-origin: center top;
+    animation: gwanganWaterReflection 2.6s ease-in-out infinite alternate;
+}
+.bridge-traffic {
+    animation: bridgeTrafficMove 3.6s cubic-bezier(0.35, 0, 0.25, 1) infinite;
+}
+.gwangan-landmark .scene-night-lights circle {
+    animation: beaconBlinkPulse 1.6s ease-in-out infinite alternate;
+}
+.gwangan-landmark .scene-night-lights circle:nth-child(2n) {
+    animation-delay: 0.5s;
 }
 
+/* --- 2. Gamcheon Culture Village (감천문화마을) --- */
 .gamcheon-bunting {
     transform-box: fill-box;
-    transform-origin: center top;
-    animation: buntingSway 3.6s ease-in-out infinite alternate;
+    transform-origin: 112px 56px;
+    animation: buntingFlutter 1.8s ease-in-out infinite alternate;
 }
-
-.gamcheon-cloud-shadow {
-    animation: gamcheonShadowPass 19s linear infinite;
-}
-
 .gamcheon-lookout {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: lookoutPause 6.4s ease-in-out infinite;
+    animation: princeLookoutGaze 3.2s ease-in-out infinite;
+}
+.gamcheon-window-glow path {
+    animation: cozyWindowFlicker 2.6s ease-in-out infinite alternate;
+}
+.gamcheon-window-glow path:nth-child(2n) {
+    animation-delay: 0.7s;
+}
+.gamcheon-window-glow path:nth-child(3n) {
+    animation-delay: 1.3s;
+}
+.gamcheon-cloud-shadow {
+    animation: gamcheonHillShadow 7.5s linear infinite;
 }
 
+/* --- 3. Nurimaru APEC House (누리마루) --- */
 .dongbaek-pines {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: pineSway 7.2s ease-in-out infinite alternate;
+    animation: dongbaekPineWind 3.2s ease-in-out infinite alternate;
 }
-
 .nurimaru-glass-shimmer {
-    animation: glassSweep 8.5s ease-in-out infinite;
+    animation: metallicDomeSweep 3.6s ease-in-out infinite;
 }
-
 .nurimaru-light-sweep {
-    animation: landmarkSignal 4.6s ease-in-out infinite alternate;
+    animation: nurimaruRoofPulse 2.4s ease-in-out infinite alternate;
+}
+.nurimaru-distant-lights circle {
+    animation: nightStarsTwinkle 1.8s ease-in-out infinite alternate;
+}
+.nurimaru-distant-lights circle:nth-child(2) {
+    animation-delay: 0.6s;
+}
+.nurimaru-reflection {
+    animation: oceanWaterLines 3.2s ease-in-out infinite alternate;
 }
 
-.huinnyeoul-seagulls {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: huinnyeoulGlide 6.8s ease-in-out infinite alternate;
-}
-
+/* --- 4. Huinnyeoul Culture Village (흰여울문화마을) --- */
 .coastal-route-line {
-    animation: coastalRoute 8.8s linear infinite;
+    animation: walkingTrailDash 3.2s linear infinite;
 }
-
 .huinnyeoul-walker {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: promenadeWalk 9s ease-in-out infinite alternate;
+    animation: travelerHikeStep 2.4s ease-in-out infinite alternate;
+}
+.huinnyeoul-boat {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: oceanBoatBobbing 2.4s ease-in-out infinite alternate;
+}
+.huinnyeoul-seagulls {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: seasideSeagullGlide 3.8s ease-in-out infinite alternate;
 }
 
-.jagalchi-crane-hook {
-    animation: craneHook 5.2s ease-in-out infinite alternate;
-}
-
+/* --- 5. Jagalchi Market (자갈치시장) --- */
 .market-awning-stripes {
     transform-box: fill-box;
     transform-origin: center top;
-    animation: awningFlutter 4.8s ease-in-out infinite alternate;
+    animation: marketAwningWind 1.9s ease-in-out infinite alternate;
 }
-
+.jagalchi-crane-hook {
+    animation: harborCraneLift 2.8s ease-in-out infinite alternate;
+}
+.jagalchi-boat {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: oceanBoatBobbing 2.2s ease-in-out infinite alternate;
+}
+.market-fish-mark {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: neonFishSignGlow 1.8s ease-in-out infinite alternate;
+}
 .jagalchi-harbor-gulls {
     transform-box: fill-box;
     transform-origin: center;
-    animation: harborGulls 8.2s ease-in-out infinite alternate;
+    animation: seasideSeagullGlide 3.4s ease-in-out infinite alternate;
 }
 
+/* --- 6. Haeundae Beach (해운대 & 마린시티) --- */
 .beach-parasols {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: parasolSway 6.4s ease-in-out infinite alternate;
+    animation: beachParasolSway 2.6s ease-in-out infinite alternate;
 }
-
 .haeundae-yacht {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: boatBob 4.8s ease-in-out infinite alternate;
+    animation: luxuryYachtCruise 3.4s ease-in-out infinite alternate;
+}
+.haeundae-window-lights path {
+    animation: cozyWindowFlicker 2.2s ease-in-out infinite alternate;
+}
+.haeundae-window-lights path:nth-child(2n) {
+    animation-delay: 0.5s;
+}
+.haeundae-window-lights path:nth-child(3n) {
+    animation-delay: 1.1s;
+}
+.haeundae-reflection {
+    animation: oceanWaterLines 3s ease-in-out infinite alternate;
 }
 
+/* --- 7. Lotte Department Store Busan (롯데백화점 부산본점) --- */
 .lotte-screen-scan {
-    animation: billboardScan 7.2s ease-in-out infinite;
+    animation: digitalBillboardScan 2.6s ease-in-out infinite;
 }
-
 .lotte-facade-glint {
-    animation: facadeGlint 9.5s ease-in-out infinite;
+    animation: modernFacadeLightBeam 3.4s ease-in-out infinite;
 }
-
 .seomyeon-traffic {
-    animation: cityTraffic 5.8s ease-in-out infinite alternate;
+    animation: seomyeonStreetTraffic 3.2s ease-in-out infinite alternate;
+}
+.lotte-hotel-windows path {
+    animation: cozyWindowFlicker 2.4s ease-in-out infinite alternate;
+}
+.lotte-hotel-windows path:nth-child(2n) {
+    animation-delay: 0.8s;
+}
+.lotte-facade-slats {
+    animation: neonGlowPulse 2.8s ease-in-out infinite alternate;
 }
 
+/* --- 8. Busan Tower (부산타워 & 용두산공원) --- */
 .busan-tower-beacon {
-    animation: towerBeacon 3.8s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: towerBeaconSpire 1.5s ease-in-out infinite;
 }
-
+.tower-light-ring {
+    animation: towerRingHalo 2s ease-in-out infinite alternate;
+}
 .park-trees {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: parkBreeze 7.6s ease-in-out infinite alternate;
+    animation: parkTreesRustle 3s ease-in-out infinite alternate;
+}
+.tower-city-lights circle {
+    animation: nightStarsTwinkle 1.9s ease-in-out infinite alternate;
+}
+.tower-city-lights circle:nth-child(2n) {
+    animation-delay: 0.7s;
 }
 
+/* --- 9. Busan Cinema Center (영화의전당) --- */
 .cinema-roof-leds {
-    animation: cinemaLedWave 4.6s ease-in-out infinite alternate;
+    animation: bigRoofLedRainbow 2.2s ease-in-out infinite alternate;
 }
-
 .cinema-projector {
     transform-box: fill-box;
-    transform-origin: center top;
-    animation: projectorBreath 6.8s ease-in-out infinite alternate;
+    transform-origin: 209px 83px;
+    animation: biffProjectorSpotlight 3.4s ease-in-out infinite alternate;
+}
+.cinema-people {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: festivalPeopleMingle 2s ease-in-out infinite alternate;
+}
+.cinema-double-cone {
+    animation: glassDomeGlow 2.8s ease-in-out infinite alternate;
 }
 
+/* --- 10. Gadeokdo Lighthouse (가덕도 등대) --- */
 .gadeokdo-beam {
     transform-box: fill-box;
-    transform-origin: left center;
-    animation: lighthouseSweep 6.2s ease-in-out infinite alternate;
+    transform-origin: 249px 48px;
+    opacity: 0.78 !important;
+    animation: lighthouseSearchlightSweep 3.2s ease-in-out infinite alternate;
 }
-
+.gadeokdo-beacon {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: lighthouseBeaconFlash 1.4s ease-in-out infinite;
+}
 .gadeokdo-gulls {
-    animation: islandGulls 7.6s ease-in-out infinite alternate;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: seasideSeagullGlide 3.6s ease-in-out infinite alternate;
 }
 
+/* --- 11. Eulsukdo Migratory Bird Park (을숙도) --- */
 .eulsukdo-reeds {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: reedSway 5.8s ease-in-out infinite alternate;
+    animation: silverGrassRustle 2.4s ease-in-out infinite alternate;
 }
-
 .eulsukdo-flock {
-    animation: birdFlock 10.5s ease-in-out infinite alternate;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: migratoryFlockFly 4.8s ease-in-out infinite alternate;
 }
-
 .eulsukdo-ripples {
     transform-box: fill-box;
     transform-origin: center;
-    animation: wetlandRipple 7.8s ease-in-out infinite alternate;
+    animation: wetlandWaterRipple 3s ease-in-out infinite alternate;
 }
 
+/* --- 12. Beomeosa Temple (금정산 범어사) --- */
+.beomeosa-leaves path {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: autumnLeafDrift 3.4s cubic-bezier(0.35, 0, 0.65, 1) infinite;
+}
+.beomeosa-leaves path:nth-child(2) {
+    animation-delay: 1.1s;
+}
+.beomeosa-leaves path:nth-child(3) {
+    animation-delay: 2.2s;
+}
+.beomeosa-lanterns circle {
+    animation: templeLanternGlow 2.2s ease-in-out infinite alternate;
+}
 .beomeosa-trees {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: templeBreeze 7.4s ease-in-out infinite alternate;
+    animation: templeMountainWind 3.2s ease-in-out infinite alternate;
 }
 
-.beomeosa-leaves {
-    animation: templeLeaves 8.8s ease-in-out infinite;
+/* --- 13. Sajik Baseball Stadium (사직야구장) --- */
+.sajik-crowd circle {
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: giantsCrowdWave 1.4s ease-in-out infinite alternate;
 }
+.sajik-crowd circle:nth-child(2) { animation-delay: 0.2s; }
+.sajik-crowd circle:nth-child(3) { animation-delay: 0.4s; }
+.sajik-crowd circle:nth-child(4) { animation-delay: 0.6s; }
+.sajik-crowd circle:nth-child(5) { animation-delay: 0.8s; }
+.sajik-crowd circle:nth-child(6) { animation-delay: 1s; }
 
 .sajik-scoreboard-glow {
-    animation: scoreboardPulse 3.4s steps(2, end) infinite;
+    animation: electricScoreboardFlash 1.2s steps(2, end) infinite;
 }
-
-.sajik-crowd {
-    transform-box: fill-box;
-    transform-origin: center bottom;
-    animation: crowdWave 2.8s ease-in-out infinite alternate;
+.sajik-light-towers g circle {
+    animation: stadiumHalogenGlow 1.8s ease-in-out infinite alternate;
 }
-
 .sajik-cheer-streamer {
-    animation: cheerRun 6.4s linear infinite;
+    animation: cheerRibbonStream 2.6s linear infinite;
 }
 
-.ahopsan-bamboo {
+/* --- 14. Ahopsan Forest (기장 아홉산숲) --- */
+.ahopsan-bamboo-left {
     transform-box: fill-box;
     transform-origin: center bottom;
+    animation: bambooGrooveSwayLeft 3.2s ease-in-out infinite alternate;
 }
-
-.ahopsan-bamboo-left {
-    animation: bambooSwayLeft 7.2s ease-in-out infinite alternate;
-}
-
 .ahopsan-bamboo-right {
-    animation: bambooSwayRight 8.1s ease-in-out infinite alternate;
+    transform-box: fill-box;
+    transform-origin: center bottom;
+    animation: bambooGrooveSwayRight 3.6s ease-in-out infinite alternate;
 }
-
 .ahopsan-light-shafts {
-    animation: forestLight 8.8s ease-in-out infinite alternate;
+    animation: forestGodRays 3.8s ease-in-out infinite alternate;
 }
+.ahopsan-fireflies circle {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: deepForestFirefly 1.8s ease-in-out infinite alternate;
+}
+.ahopsan-fireflies circle:nth-child(2) { animation-delay: 0.35s; }
+.ahopsan-fireflies circle:nth-child(3) { animation-delay: 0.7s; }
+.ahopsan-fireflies circle:nth-child(4) { animation-delay: 1.05s; }
+.ahopsan-fireflies circle:nth-child(5) { animation-delay: 1.4s; }
 
 .ahopsan-walker {
     transform-box: fill-box;
     transform-origin: center bottom;
-    animation: forestWalker 6.8s ease-in-out infinite alternate;
+    animation: travelerHikeStep 2.6s ease-in-out infinite alternate;
 }
 
-.huinnyeoul-boat,
-.jagalchi-boat {
-    animation: boatBob 4.2s ease-in-out infinite alternate;
+/* ========================================================================== 
+   KEYFRAME ANIMATION DEFINITIONS
+   ========================================================================== */
+
+@keyframes morningSunPulse {
+    from { transform: scale(0.92); opacity: 0.8; }
+    to { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 6px rgba(255, 200, 100, 0.8)); }
 }
 
-html[data-time-theme="night"] .bridge-traffic {
-    animation: bridgeTraffic 5s linear infinite;
+@keyframes morningMistDrift {
+    from { transform: translateX(-18px); opacity: 0.45; }
+    to { transform: translateX(22px); opacity: 0.85; }
 }
 
-html[data-time-theme="morning"] .gadeokdo-beam,
-html[data-time-theme="day"] .gadeokdo-beam {
-    opacity: 0.07;
-}
-
-html[data-time-theme="sunset"] .gadeokdo-beam {
-    opacity: 0.28;
-}
-
-html[data-time-theme="night"] .gadeokdo-beam {
-    opacity: 0.68;
-    animation-duration: 4.8s;
-}
-
-html:not([data-time-theme="night"]) .ahopsan-fireflies {
-    opacity: 0.08;
-}
-
-html[data-time-theme="morning"] .bridge-led-flow {
-    opacity: 0.38;
-    animation-duration: 15s;
-}
-
-html[data-time-theme="day"] .bridge-led-flow {
-    opacity: 0.55;
-}
-
-html[data-time-theme="sunset"] .bridge-led-flow {
-    opacity: 0.82;
-    animation-duration: 8s;
-}
-
-html[data-time-theme="night"] .bridge-led-flow {
-    opacity: 1;
-    animation-duration: 5.8s;
-}
-
-html[data-time-theme="night"] .gamcheon-cloud-shadow {
-    animation: none;
-    opacity: 0;
-}
-
-html[data-time-theme="night"] .gamcheon-window-glow {
-    animation-duration: 4.4s;
-}
-
-html[data-time-theme="night"] .nurimaru-glass-shimmer {
-    animation: none;
-    opacity: 0.04;
-}
-
-html[data-time-theme="night"] .market-fish-mark {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: marketSign 4.2s ease-in-out infinite;
-}
-
-@keyframes morningWake {
-    from { opacity: 0.68; }
-    to { opacity: 1; }
-}
-
-@keyframes bridgeLedFlow {
-    to { stroke-dashoffset: -72; }
-}
-
-@keyframes gwanganReflection {
-    from { transform: scaleY(0.72); opacity: 0.07; }
-    to { transform: scaleY(1.04); opacity: 0.18; }
-}
-
-@keyframes huinnyeoulGlide {
-    from { transform: translate(-4px, 1px); }
-    to { transform: translate(8px, -3px); }
-}
-
-@keyframes gamcheonShadowPass {
-    0% { transform: translateX(0); opacity: 0; }
-    14%, 76% { opacity: 0.1; }
-    100% { transform: translateX(510px); opacity: 0; }
-}
-
-@keyframes lookoutPause {
-    0%, 68%, 100% { transform: translateY(0) rotate(0); }
-    76% { transform: translateY(-2px) rotate(-2deg); }
-    86% { transform: translateY(0) rotate(2deg); }
-}
-
-@keyframes pineSway {
-    from { transform: rotate(-0.45deg); }
-    to { transform: rotate(0.55deg); }
-}
-
-@keyframes glassSweep {
-    0%, 14% { transform: translateX(-24px); opacity: 0; }
-    38%, 58% { opacity: 0.2; }
-    82%, 100% { transform: translateX(48px); opacity: 0; }
-}
-
-@keyframes coastalRoute {
-    to { stroke-dashoffset: -34; }
-}
-
-@keyframes promenadeWalk {
-    0%, 10% { transform: translate(0, 0) rotate(-1deg); }
-    45% { transform: translate(5px, 3px) rotate(1deg); }
-    100% { transform: translate(11px, 8px) rotate(-1deg); }
-}
-
-@keyframes awningFlutter {
-    from { transform: skewX(-1.5deg) scaleY(0.96); }
-    to { transform: skewX(1.5deg) scaleY(1.04); }
-}
-
-@keyframes harborGulls {
-    from { transform: translate(-5px, 2px); opacity: 0.58; }
-    to { transform: translate(11px, -4px); opacity: 0.96; }
-}
-
-@keyframes marketSign {
-    0%, 62%, 100% { transform: scale(1); opacity: 0.78; }
-    72%, 86% { transform: scale(1.035); opacity: 1; }
-}
-
-@keyframes parasolSway {
-    from { transform: rotate(-0.8deg); }
-    to { transform: rotate(0.9deg); }
-}
-
-@keyframes billboardScan {
-    0%, 12% { transform: translateX(0); opacity: 0.5; }
-    48%, 68% { transform: translateX(40px); opacity: 0.82; }
-    100% { transform: translateX(0); opacity: 0.5; }
-}
-
-@keyframes facadeGlint {
-    0%, 18% { transform: translateX(-32px); opacity: 0; }
-    42%, 57% { opacity: 0.18; }
-    82%, 100% { transform: translateX(58px); opacity: 0; }
-}
-
-@keyframes cityTraffic {
-    from { transform: translateX(-7px); }
-    to { transform: translateX(8px); }
-}
-
-@keyframes towerBeacon {
-    0%, 58%, 100% { opacity: 0.48; transform: scale(0.9); }
-    68%, 84% { opacity: 1; transform: scale(1.28); }
-}
-
-@keyframes parkBreeze {
-    from { transform: skewX(-0.6deg); }
-    to { transform: skewX(0.7deg); }
-}
-
-@keyframes cinemaLedWave {
-    from { opacity: 0.42; transform: translateX(-2px); }
-    to { opacity: 1; transform: translateX(2px); }
-}
-
-@keyframes projectorBreath {
-    from { transform: scaleX(0.88); opacity: 0.04; }
-    to { transform: scaleX(1.04); opacity: 0.16; }
-}
-
-@keyframes lighthouseSweep {
-    from { transform: scaleX(0.76) skewY(-2deg); opacity: 0.12; }
-    to { transform: scaleX(1.08) skewY(2deg); opacity: 0.72; }
-}
-
-@keyframes islandGulls {
-    from { transform: translate(-7px, 3px); opacity: 0.55; }
-    to { transform: translate(14px, -5px); opacity: 1; }
-}
-
-@keyframes reedSway {
-    from { transform: skewX(-1.2deg); }
-    to { transform: skewX(1.4deg); }
-}
-
-@keyframes birdFlock {
-    from { transform: translate(-10px, 5px); opacity: 0.54; }
-    to { transform: translate(21px, -8px); opacity: 0.98; }
-}
-
-@keyframes wetlandRipple {
-    from { transform: scaleX(0.91) translateX(-4px); opacity: 0.44; }
-    to { transform: scaleX(1.04) translateX(5px); opacity: 0.82; }
-}
-
-@keyframes templeBreeze {
-    from { transform: skewX(-0.55deg); }
-    to { transform: skewX(0.65deg); }
-}
-
-@keyframes templeLeaves {
-    0% { transform: translate(0, -8px) rotate(0); opacity: 0; }
-    18%, 72% { opacity: 0.88; }
-    100% { transform: translate(18px, 25px) rotate(75deg); opacity: 0; }
-}
-
-@keyframes scoreboardPulse {
-    0%, 58%, 100% { opacity: 0.58; }
-    65%, 86% { opacity: 1; }
-}
-
-@keyframes crowdWave {
-    from { transform: translateY(1px) scaleY(0.94); opacity: 0.62; }
-    to { transform: translateY(-3px) scaleY(1.06); opacity: 1; }
-}
-
-@keyframes cheerRun {
-    to { stroke-dashoffset: -68; }
-}
-
-@keyframes bambooSwayLeft {
-    from { transform: rotate(-0.45deg); }
-    to { transform: rotate(0.7deg); }
-}
-
-@keyframes bambooSwayRight {
-    from { transform: rotate(0.55deg); }
-    to { transform: rotate(-0.65deg); }
-}
-
-@keyframes forestLight {
-    from { transform: translateX(-7px) skewX(-2deg); opacity: 0.06; }
-    to { transform: translateX(9px) skewX(2deg); opacity: 0.2; }
-}
-
-@keyframes forestWalker {
-    from { transform: translateY(1px) rotate(-0.5deg); }
-    to { transform: translateY(-4px) rotate(0.6deg); }
-}
-
-@keyframes morningMist {
-    from { transform: translateX(-10px); opacity: 0.42; }
-    to { transform: translateX(12px); opacity: 0.78; }
-}
-
-@keyframes daySpin {
+@keyframes daySunRaysSpin {
     to { transform: rotate(360deg); }
 }
 
-@keyframes dayCloud {
-    from { transform: translateX(-12px); }
-    to { transform: translateX(18px); }
+@keyframes cloudDriftOne {
+    from { transform: translateX(-24px); }
+    to { transform: translateX(32px); }
 }
 
-@keyframes sunsetShimmer {
-    from { transform: scaleX(0.72); opacity: 0.12; }
-    to { transform: scaleX(1.08); opacity: 0.31; }
+@keyframes cloudDriftTwo {
+    from { transform: translateX(-28px); }
+    to { transform: translateX(24px); }
 }
 
-@keyframes sunsetFlight {
-    from { transform: translate(-12px, 5px); opacity: 0.55; }
-    to { transform: translate(28px, -7px); opacity: 0.95; }
+@keyframes sunsetSunPulse {
+    from { transform: scale(0.94); opacity: 0.85; }
+    to { transform: scale(1.06); opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 120, 50, 0.9)); }
 }
 
-@keyframes nightTwinkle {
-    from { opacity: 0.48; }
+@keyframes sunsetWaterShimmer {
+    from { transform: scaleX(0.72) scaleY(0.9); opacity: 0.2; }
+    to { transform: scaleX(1.15) scaleY(1.1); opacity: 0.48; }
+}
+
+@keyframes nightStarsTwinkle {
+    0%, 100% { opacity: 0.35; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.25); }
+}
+
+@keyframes moonAuraGlow {
+    from { transform: scale(0.95); opacity: 0.75; }
+    to { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 7px rgba(255, 255, 255, 0.7)); }
+}
+
+@keyframes fireworkBurstLively {
+    0%, 75%, 100% { opacity: 0; transform: scale(0.2) rotate(0deg); }
+    15% { opacity: 1; transform: scale(1.1) rotate(45deg); filter: drop-shadow(0 0 6px var(--scene-pop-2)); }
+    35% { opacity: 0.85; transform: scale(1.3) rotate(90deg); }
+}
+
+@keyframes birdFlight {
+    from { transform: translate(-22px, 8px) rotate(-3deg); }
+    to { transform: translate(32px, -10px) rotate(3deg); }
+}
+
+@keyframes oceanWaterLines {
+    from { transform: translateX(-16px); }
+    to { transform: translateX(16px); }
+}
+
+@keyframes bridgeLedFlowFast {
+    to { stroke-dashoffset: -68; }
+}
+
+@keyframes gwanganWaterReflection {
+    from { transform: scaleY(0.68) scaleX(0.92); opacity: 0.08; }
+    to { transform: scaleY(1.18) scaleX(1.08); opacity: 0.28; }
+}
+
+@keyframes bridgeTrafficMove {
+    0% { transform: translateX(-40px); opacity: 0; }
+    15%, 85% { opacity: 1; }
+    100% { transform: translateX(45px); opacity: 0; }
+}
+
+@keyframes beaconBlinkPulse {
+    0%, 100% { opacity: 0.35; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.6); filter: drop-shadow(0 0 4px var(--scene-light)); }
+}
+
+@keyframes buntingFlutter {
+    from { transform: rotate(-5deg); }
+    to { transform: rotate(5deg); }
+}
+
+@keyframes princeLookoutGaze {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    30% { transform: translateY(-4px) rotate(-3deg); }
+    70% { transform: translateY(-2px) rotate(3deg); }
+}
+
+@keyframes cozyWindowFlicker {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; filter: drop-shadow(0 0 3px var(--scene-window)); }
+}
+
+@keyframes gamcheonHillShadow {
+    0% { transform: translateX(0); opacity: 0; }
+    15%, 75% { opacity: 0.14; }
+    100% { transform: translateX(480px); opacity: 0; }
+}
+
+@keyframes dongbaekPineWind {
+    from { transform: rotate(-3.5deg); }
+    to { transform: rotate(4deg); }
+}
+
+@keyframes metallicDomeSweep {
+    0%, 15% { transform: translateX(-40px); opacity: 0; }
+    45%, 65% { opacity: 0.45; }
+    90%, 100% { transform: translateX(55px); opacity: 0; }
+}
+
+@keyframes nurimaruRoofPulse {
+    from { opacity: 0.45; transform: scaleX(0.95); }
+    to { opacity: 1; transform: scaleX(1.05); filter: drop-shadow(0 0 4px var(--scene-light)); }
+}
+
+@keyframes walkingTrailDash {
+    to { stroke-dashoffset: -40; }
+}
+
+@keyframes travelerHikeStep {
+    0%, 100% { transform: translate(0, 0) rotate(-2deg); }
+    50% { transform: translate(8px, -5px) rotate(2deg); }
+}
+
+@keyframes oceanBoatBobbing {
+    from { transform: translateY(-3px) rotate(-3.5deg); }
+    to { transform: translateY(4px) rotate(4deg); }
+}
+
+@keyframes seasideSeagullGlide {
+    from { transform: translate(-14px, 5px) rotate(-3deg); }
+    to { transform: translate(22px, -8px) rotate(4deg); }
+}
+
+@keyframes marketAwningWind {
+    from { transform: skewX(-4deg) scaleY(0.93); }
+    to { transform: skewX(4.5deg) scaleY(1.07); }
+}
+
+@keyframes harborCraneLift {
+    from { transform: translateY(-9px); }
+    to { transform: translateY(9px); }
+}
+
+@keyframes neonFishSignGlow {
+    from { transform: scale(0.96); opacity: 0.7; }
+    to { transform: scale(1.08); opacity: 1; filter: drop-shadow(0 0 5px var(--scene-pop-1)); }
+}
+
+@keyframes beachParasolSway {
+    from { transform: rotate(-5deg); }
+    to { transform: rotate(5.5deg); }
+}
+
+@keyframes luxuryYachtCruise {
+    from { transform: translate(-10px, -2px) rotate(-2.5deg); }
+    to { transform: translate(14px, 4px) rotate(3deg); }
+}
+
+@keyframes digitalBillboardScan {
+    0%, 100% { transform: translateX(0); opacity: 0.55; }
+    50% { transform: translateX(56px); opacity: 0.95; }
+}
+
+@keyframes modernFacadeLightBeam {
+    0%, 12% { transform: translateX(-45px); opacity: 0; }
+    45%, 65% { opacity: 0.45; }
+    90%, 100% { transform: translateX(70px); opacity: 0; }
+}
+
+@keyframes seomyeonStreetTraffic {
+    from { transform: translateX(-22px); }
+    to { transform: translateX(26px); }
+}
+
+@keyframes neonGlowPulse {
+    from { opacity: 0.6; }
     to { opacity: 1; }
 }
 
-@keyframes nightBurst {
-    0%, 68%, 100% { opacity: 0; }
-    12%, 38% { opacity: 1; }
+@keyframes towerBeaconSpire {
+    0%, 100% { opacity: 0.35; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.8); filter: drop-shadow(0 0 6px var(--scene-light)); }
 }
 
-@keyframes waterDrift {
-    from { transform: translateX(-7px); }
-    to { transform: translateX(7px); }
-}
-
-@keyframes buntingSway {
-    from { transform: rotate(-2deg); }
-    to { transform: rotate(2deg); }
-}
-
-@keyframes landmarkSignal {
+@keyframes towerRingHalo {
     from { opacity: 0.45; }
+    to { opacity: 1; filter: drop-shadow(0 0 4px var(--scene-light)); }
+}
+
+@keyframes parkTreesRustle {
+    from { transform: skewX(-3deg) rotate(-1deg); }
+    to { transform: skewX(3.5deg) rotate(1.5deg); }
+}
+
+@keyframes bigRoofLedRainbow {
+    0%, 100% { opacity: 0.4; transform: translateX(-8px); }
+    50% { opacity: 1; transform: translateX(8px); filter: drop-shadow(0 0 4px var(--scene-light)); }
+}
+
+@keyframes biffProjectorSpotlight {
+    from { transform: scaleX(0.75) rotate(-6deg); opacity: 0.08; }
+    to { transform: scaleX(1.25) rotate(6deg); opacity: 0.32; }
+}
+
+@keyframes festivalPeopleMingle {
+    from { transform: translateY(0); }
+    to { transform: translateY(-4px); }
+}
+
+@keyframes glassDomeGlow {
+    from { opacity: 0.7; }
     to { opacity: 1; }
 }
 
-@keyframes laundrySway {
-    from { transform: rotate(-1.5deg); }
-    to { transform: rotate(1.5deg); }
+@keyframes lighthouseSearchlightSweep {
+    from { transform: scaleX(0.65) skewY(-8deg); opacity: 0.2; }
+    to { transform: scaleX(1.3) skewY(8deg); opacity: 0.95; filter: drop-shadow(0 0 10px var(--scene-light)); }
 }
 
-@keyframes craneHook {
-    from { transform: translateY(-4px); }
-    to { transform: translateY(5px); }
+@keyframes lighthouseBeaconFlash {
+    0%, 100% { opacity: 0.35; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(2); filter: drop-shadow(0 0 8px var(--scene-light)); }
 }
 
-@keyframes boatBob {
-    from { transform: translateY(-1px) rotate(-0.5deg); }
-    to { transform: translateY(3px) rotate(0.7deg); }
+@keyframes silverGrassRustle {
+    from { transform: skewX(-5deg) rotate(-2.5deg); }
+    to { transform: skewX(5.5deg) rotate(3deg); }
 }
 
-@keyframes bridgeTraffic {
-    from { transform: translateX(-80px); opacity: 0; }
-    12%, 88% { opacity: 1; }
-    to { transform: translateX(80px); opacity: 0; }
+@keyframes migratoryFlockFly {
+    from { transform: translate(-26px, 8px); opacity: 0.55; }
+    to { transform: translate(38px, -14px); opacity: 1; }
+}
+
+@keyframes wetlandWaterRipple {
+    from { transform: scale(0.88) translateX(-8px); opacity: 0.35; }
+    to { transform: scale(1.12) translateX(10px); opacity: 0.95; }
+}
+
+@keyframes autumnLeafDrift {
+    0% { transform: translate(0, -16px) rotate(0deg); opacity: 0; }
+    20%, 80% { opacity: 1; }
+    100% { transform: translate(36px, 45px) rotate(180deg); opacity: 0; }
+}
+
+@keyframes templeLanternGlow {
+    from { transform: rotate(-4deg); opacity: 0.65; }
+    to { transform: rotate(4deg); opacity: 1; filter: drop-shadow(0 0 5px var(--scene-light)); }
+}
+
+@keyframes templeMountainWind {
+    from { transform: skewX(-3deg) rotate(-1.5deg); }
+    to { transform: skewX(3.5deg) rotate(2deg); }
+}
+
+@keyframes giantsCrowdWave {
+    from { transform: translateY(3px) scaleY(0.88); opacity: 0.6; }
+    to { transform: translateY(-7px) scaleY(1.25); opacity: 1; filter: drop-shadow(0 0 3px var(--scene-light)); }
+}
+
+@keyframes electricScoreboardFlash {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; filter: drop-shadow(0 0 6px var(--scene-light)); }
+}
+
+@keyframes stadiumHalogenGlow {
+    from { opacity: 0.65; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1.4); filter: drop-shadow(0 0 5px var(--scene-light)); }
+}
+
+@keyframes cheerRibbonStream {
+    to { stroke-dashoffset: -72; }
+}
+
+@keyframes bambooGrooveSwayLeft {
+    from { transform: rotate(-3deg); }
+    to { transform: rotate(3.5deg); }
+}
+
+@keyframes bambooGrooveSwayRight {
+    from { transform: rotate(3.5deg); }
+    to { transform: rotate(-3deg); }
+}
+
+@keyframes forestGodRays {
+    from { transform: translateX(-16px) skewX(-5deg); opacity: 0.08; }
+    to { transform: translateX(20px) skewX(5deg); opacity: 0.35; }
+}
+
+@keyframes deepForestFirefly {
+    0%, 100% { transform: translateY(0) scale(0.6); opacity: 0.2; }
+    50% { transform: translateY(-9px) scale(1.5); opacity: 1; filter: drop-shadow(0 0 6px var(--scene-light)); }
 }
 
 .hero-sticker {
@@ -1809,83 +1924,6 @@ html[data-time-theme="night"] .market-fish-mark {
     opacity: 0.78;
 }
 
-/* Six lightweight, transform/opacity-only decorative animations. */
-.stars-layer {
-    animation: softPulse 4s ease-in-out infinite alternate;
-}
-
-.led-lights {
-    animation: softPulse 2.8s ease-in-out infinite alternate;
-}
-
-.fireworks {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: fireworkBurst 4.2s cubic-bezier(0.1, 0.8, 0.2, 1) infinite;
-}
-
-.fireworks-sm,
-.moon-aura,
-.bridge-reflection,
-.wave,
-.wave-shimmer,
-.wave-shimmer-2,
-.led-dot,
-.beacon-light,
-.car-red-2,
-.car-white-2 {
-    animation: none;
-    filter: none;
-}
-
-.fireworks-sm {
-    opacity: 0.5;
-}
-
-.seagull-1 {
-    animation: seagullFly 7s ease-in-out infinite;
-}
-
-.seagull-2 {
-    opacity: 0.65;
-    transform: translate(220px, 55px);
-}
-
-.car-red {
-    animation: carMoveRight 4.5s linear infinite;
-}
-
-.car-white {
-    animation: carMoveLeft 4.1s linear infinite;
-}
-
-@keyframes softPulse {
-    from { opacity: 0.58; }
-    to { opacity: 1; }
-}
-
-@keyframes fireworkBurst {
-    0%, 72%, 100% { opacity: 0; transform: scale(0.25) rotate(0deg); }
-    16% { opacity: 1; transform: scale(1.05) rotate(36deg); }
-    38% { opacity: 0.78; transform: scale(1.18) rotate(72deg); }
-}
-
-@keyframes seagullFly {
-    0%, 100% { transform: translate(110px, 48px) rotate(-3deg); }
-    50% { transform: translate(130px, 39px) rotate(3deg); }
-}
-
-@keyframes carMoveRight {
-    0% { transform: translateX(-55px); opacity: 0; }
-    12%, 88% { opacity: 0.9; }
-    100% { transform: translateX(450px); opacity: 0; }
-}
-
-@keyframes carMoveLeft {
-    0% { transform: translateX(55px); opacity: 0; }
-    12%, 88% { opacity: 0.9; }
-    100% { transform: translateX(-450px); opacity: 0; }
-}
 
 /* ========================================================================== 
    Editorial title block
@@ -3114,34 +3152,11 @@ body.is-intro .cinematic-intro .busan-scene-svg * {
     animation-play-state: paused !important;
 }
 
-html[data-performance="lite"] .day-rays,
-html[data-performance="lite"] .night-firework,
-html[data-performance="lite"] .gamcheon-lookout,
-html[data-performance="lite"] .nurimaru-distant-lights,
-html[data-performance="lite"] .jagalchi-harbor-gulls,
-html[data-performance="lite"] .beach-parasols,
-html[data-performance="lite"] .lotte-facade-glint,
-html[data-performance="lite"] .park-trees,
-html[data-performance="lite"] .cinema-projector,
-html[data-performance="lite"] .eulsukdo-flock,
-html[data-performance="lite"] .beomeosa-leaves,
-html[data-performance="lite"] .sajik-crowd,
-html[data-performance="lite"] .ahopsan-light-shafts,
-html[data-performance="lite"] .ahopsan-walker {
-    animation: none;
-}
-
-html[data-performance="lite"] .night-firework {
-    opacity: 0.52;
-}
-
 html[data-performance="lite"] .scene-water-lines,
 html[data-performance="lite"] .bridge-led-flow,
 html[data-performance="lite"] .gamcheon-cloud-shadow,
-html[data-performance="lite"] .nurimaru-glass-shimmer,
 html[data-performance="lite"] .coastal-route-line,
 html[data-performance="lite"] .gadeokdo-beam,
-html[data-performance="lite"] .eulsukdo-ripples,
 html[data-performance="lite"] .sajik-cheer-streamer {
-    animation-duration: 14s;
+    animation-duration: 6s;
 }
