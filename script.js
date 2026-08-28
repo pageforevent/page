@@ -470,19 +470,19 @@ function projectBusanCoordinate(longitude, latitude) {
 
 // 실제 핀은 경위도 위치에 고정하고, 랜드마크 그림만 연결선과 함께 조금씩 벌립니다.
 const BUSAN_MAP_LANDMARK_LAYOUT = {
-    gadeokdo: { x: 145, y: 920 },
-    eulsukdo: { x: 180, y: 740 },
+    gadeokdo: { x: 155, y: 880 },
+    eulsukdo: { x: 180, y: 730 },
     beomeosa: { x: 480, y: 350 },
     sajik: { x: 515, y: 465 },
     ahopsan: { x: 735, y: 385 },
     gamcheon: { x: 330, y: 700 },
     lotteBusan: { x: 500, y: 580 },
-    busanTower: { x: 440, y: 810 },
-    jagalchi: { x: 575, y: 850 },
-    huinnyeoul: { x: 320, y: 900 },
+    busanTower: { x: 440, y: 800 },
+    jagalchi: { x: 575, y: 840 },
+    huinnyeoul: { x: 320, y: 880 },
     gwangan: { x: 625, y: 720 },
     cinemaCenter: { x: 670, y: 560 },
-    nurimaru: { x: 760, y: 760 },
+    nurimaru: { x: 760, y: 750 },
     haeundae: { x: 835, y: 600 }
 };
 
@@ -1043,7 +1043,7 @@ function createBusanMapLandmarkArtwork(sceneKey) {
 
 function createBusanMapIntroSvg(selectedScene) {
     const landscapeMap = window.matchMedia('(min-aspect-ratio: 4 / 3)').matches;
-    const mapViewBox = landscapeMap ? '-120 240 1240 730' : '0 0 1000 1250';
+    const mapViewBox = landscapeMap ? '-120 220 1240 770' : '0 0 1000 1250';
     const districtGeometry = BUSAN_DISTRICT_PATHS.map(({ name, d }) =>
         `<path data-district="${name}" d="${d}"/>`
     ).join('');
