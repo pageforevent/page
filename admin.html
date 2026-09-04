@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간편 관리자 - 사은 행사 페이지</title>
+    <!-- Pretendard 폰트 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+    <!-- 상단 토스트 알림 영역 -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- 네비게이션 헤더 -->
+    <header class="admin-header">
+        <div class="header-brand">
+            <span class="brand-badge">ADMIN</span>
+            <span class="brand-title">사은 행사 페이지 관리자</span>
+        </div>
+        <div class="header-actions">
+            <a href="index.html" target="_blank" class="btn-header" title="실제 페이지 새 탭에서 열기">
+                <span>🔗 실제 사이트 보기</span>
+            </a>
+            <button type="button" id="btn-open-setup" class="btn-header" title="관리자 초기 설정 또는 비밀번호/토큰 재설정">
+                <span>⚙️ 설정</span>
+            </button>
+            <button type="button" id="btn-logout" class="btn-header danger" style="display: none;">
+                <span>로그아웃</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="admin-container">
+        <!-- 1. 로그인 뷰 (암호만 입력) -->
+        <div id="login-view" class="login-wrap">
+            <div class="login-card">
+                <div class="login-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                </div>
+                <h1 class="login-title">관리자 로그인</h1>
+                <p class="login-subtitle">설정한 비밀번호를 입력하면 바로 페이지 텍스트와 링크를 수정할 수 있습니다.</p>
+
+                <div id="no-config-hint" class="guide-box" style="display: none; text-align: left; margin-bottom: 1.2rem;">
+                    💡 <strong>처음 이용하시나요?</strong><br>
+                    하단의 <strong>[관리자 초기 설정하기]</strong>를 눌러 사용할 비밀번호와 토큰을 1회 등록해 주세요!
+                </div>
+
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label class="form-label" for="login-password">비밀번호</label>
+                        <input type="password" id="login-password" class="form-input" placeholder="비밀번호 입력" required autofocus autocomplete="current-password">
+                    </div>
+
+                    <label class="form-checkbox-row">
+                        <input type="checkbox" id="login-remember">
+                        <span>이 기기에서 로그인 상태 유지 (자동 로그인)</span>
+                    </label>
+
+                    <button type="submit" id="btn-login-submit" class="btn-primary">
+                        <span>로그인</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                </form>
+
+                <div class="login-options-link">
+                    처음이거나 설정이 필요하신가요?
+                    <a href="javascript:void(0)" onclick="openSetupModal()">관리자 초기 설정하기</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 로딩 표시 -->
+        <div id="loading-indicator" style="display: none; text-align: center; padding: 4rem 1rem;">
+            <div style="font-size: 2rem; margin-bottom: 0.8rem;">⏳</div>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">최신 페이지 데이터를 불러오고 있습니다...</p>
+        </div>
+
+        <!-- 3. 콘텐츠 에디터 뷰 -->
+        <div id="editor-view" class="editor-section" style="display: none;">
+            <!-- 섹션: 기본 브라우저 및 화면 정보 -->
+            <div class="card-box">
+                <div class="card-box-header">
+                    <div class="card-box-title">
+                        <span>🌐</span>
+                        <span>기본 화면 정보</span>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="field-pageTitle">브라우저 탭 제목 (Page Title)</label>
+                        <input type="text" id="field-pageTitle" class="form-input" placeholder="예: 사은 행사 안내">
+                        <span class="form-hint">웹 브라우저 탭 상단에 표시되는 제목입니다.</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="field-headerTitle">메인 타이틀 (Header Title)</label>
+                        <input type="text" id="field-headerTitle" class="form-input" placeholder="예: 사은 행사 안내">
+                        <span class="form-hint">헤더 일러스트 아래에 크게 표시되는 대표 제목입니다.</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="field-subtitle">상단 소개 문구 (Subtitle)</label>
+                        <textarea id="field-subtitle" class="form-textarea" placeholder="예: 앱 설치부터 사은 행사 참여까지, 오늘의 혜택을 한 번에."></textarea>
+                        <span class="form-hint">메인 타이틀 아래에 표시되는 짧은 설명글입니다.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 섹션: STEP 01 백화점 앱 설치 -->
+            <div class="card-box">
+                <div class="card-box-header">
+                    <div class="card-box-title">
+                        <span class="step-tag">STEP 01</span>
+                        <span>앱 설치 안내 카드</span>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-grid two-cols">
+                        <div class="form-group">
+                            <label class="form-label" for="field-step1-title">카드 제목</label>
+                            <input type="text" id="field-step1-title" class="form-input" placeholder="예: 백화점 앱 설치">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="field-step1-tagline">영문 태그</label>
+                            <input type="text" id="field-step1-tagline" class="form-input" placeholder="예: DOWNLOAD THE APP">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="field-step1-desc">카드 설명 문구</label>
+                        <textarea id="field-step1-desc" class="form-textarea" placeholder="예: 앱 설치 후 다양한 할인 쿠폰과 혜택을 확인하세요"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="field-step1-button">버튼 문구</label>
+                        <input type="text" id="field-step1-button" class="form-input" placeholder="예: 바로가기">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="field-step1-link-android">🤖 Android(구글 플레이) 링크</label>
+                        <input type="url" id="field-step1-link-android" class="form-input" placeholder="https://play.google.com/store/apps/details?id=...">
+                        <span class="form-hint">안드로이드 폰으로 접속한 고객에게 연결되는 주소입니다.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="field-step1-link-ios">🍎 iOS(애플 앱스토어) 링크</label>
+                        <input type="url" id="field-step1-link-ios" class="form-input" placeholder="https://apps.apple.com/kr/app/...">
+                        <span class="form-hint">아이폰으로 접속한 고객에게 연결되는 주소입니다.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="field-step1-link-default">기본 연결 링크 (PC 등)</label>
+                        <input type="url" id="field-step1-link-default" class="form-input" placeholder="https://...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 섹션: STEP 02 카카오톡 채널 추가 -->
+            <div class="card-box">
+                <div class="card-box-header">
+                    <div class="card-box-title">
+                        <span class="step-tag">STEP 02</span>
+                        <span>카카오톡 채널 추가 카드</span>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-grid two-cols">
+                        <div class="form-group">
+                            <label class="form-label" for="field-step2-title">카드 제목</label>
+                            <input type="text" id="field-step2-title" class="form-input" placeholder="예: 카카오톡 채널 추가">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="field-step2-tagline">영문 태그</label>
+                            <input type="text" id="field-step2-tagline" class="form-input" placeholder="예: GET EVENT UPDATES">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="field-step2-desc">카드 설명 문구</label>
+                        <textarea id="field-step2-desc" class="form-textarea" placeholder="예: 실시간 행사 소식과 전용 쿠폰 알림을 받아보세요"></textarea>
+                    </div>
+
+                    <div class="form-grid two-cols">
+                        <div class="form-group">
+                            <label class="form-label" for="field-step2-button">버튼 문구</label>
+                            <input type="text" id="field-step2-button" class="form-input" placeholder="예: 바로가기">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="field-step2-link">카카오톡 채널 링크 주소</label>
+                            <input type="url" id="field-step2-link" class="form-input" placeholder="https://pf.kakao.com/...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 섹션: STEP 03 사은 행사 참여하기 -->
+            <div class="card-box">
+                <div class="card-box-header">
+                    <div class="card-box-title">
+                        <span class="step-tag gold">STEP 03</span>
+                        <span>사은 행사 참여 카드 & 혜택</span>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-grid two-cols">
+                        <div class="form-group">
+                            <label class="form-label" for="field-step3-title">카드 제목</label>
+                            <input type="text" id="field-step3-title" class="form-input" placeholder="예: 사은 행사 참여하기">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="field-step3-tagline">영문 태그</label>
+                            <input type="text" id="field-step3-tagline" class="form-input" placeholder="예: VIEW GIFT BENEFITS">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="field-step3-desc">카드 상단 설명 문구</label>
+                        <textarea id="field-step3-desc" class="form-textarea" placeholder="예: 구매 금액별로 준비된 사은 혜택을 확인하세요"></textarea>
+                    </div>
+
+                    <!-- 첫 번째 사은 혜택 -->
+                    <div class="sub-card">
+                        <div class="sub-card-title">
+                            <span>🎁 첫 번째 사은 혜택</span>
+                            <span class="badge-tag">필수 표시</span>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="field-step3-offer1-title">혜택 내용 문구</label>
+                                <input type="text" id="field-step3-offer1-title" class="form-input" placeholder="예: 10만원 이상 구매 시 1만원 상품권 증정">
+                            </div>
+                            <div class="form-grid two-cols">
+                                <div class="form-group">
+                                    <label class="form-label" for="field-step3-offer1-button">버튼 문구</label>
+                                    <input type="text" id="field-step3-offer1-button" class="form-input" placeholder="예: 바로가기">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="field-step3-offer1-link">연결 링크 주소</label>
+                                    <input type="url" id="field-step3-offer1-link" class="form-input" placeholder="https://...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 두 번째 사은 혜택 토글 및 폼 -->
+                    <div class="toggle-row" style="margin-top: 0.85rem;">
+                        <div class="toggle-label-wrap">
+                            <span class="toggle-label-title">두 번째 사은 혜택 화면 노출</span>
+                            <span class="toggle-label-desc">스위치를 켜면 카드에 두 번째 혜택 행이 추가됩니다.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="field-step3-show-second">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div id="step3-offer2-card" class="sub-card" style="display: none;">
+                        <div class="sub-card-title">
+                            <span>🎁 두 번째 사은 혜택</span>
+                            <span class="badge-tag">추가 혜택</span>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label" for="field-step3-offer2-title">혜택 내용 문구</label>
+                                <input type="text" id="field-step3-offer2-title" class="form-input" placeholder="예: 20만원/40만원 이상 구매 시 1.5만원/3만원 상품권 증정">
+                            </div>
+                            <div class="form-grid two-cols">
+                                <div class="form-group">
+                                    <label class="form-label" for="field-step3-offer2-button">버튼 문구</label>
+                                    <input type="text" id="field-step3-offer2-button" class="form-input" placeholder="예: 바로가기">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="field-step3-offer2-link">연결 링크 주소</label>
+                                    <input type="url" id="field-step3-offer2-link" class="form-input" placeholder="https://...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 하단 고정 저장 바 -->
+    <aside id="save-bar" class="save-bar" style="display: none;">
+        <div class="save-bar-inner">
+            <div class="save-status-text">
+                <span id="save-status-dot" class="status-dot"></span>
+                <span id="save-status-text">준비됨</span>
+            </div>
+            <div class="save-actions">
+                <button type="button" id="btn-reset" class="btn-secondary">되돌리기</button>
+                <button type="button" id="btn-save-submit" class="btn-save">
+                    <span>저장하기 (사이트 반영)</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- 4. 초기 설정 및 비밀번호/토큰 변경 모달 -->
+    <div id="setup-modal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 class="modal-title">관리자 초기 설정</h2>
+                <button type="button" id="btn-close-setup" class="btn-close">&times;</button>
+            </div>
+            <p class="modal-desc">
+                간단한 비밀번호만으로 어디서든 접속하여 수정할 수 있도록 비밀번호와 GitHub 토큰을 1회 등록합니다.
+            </p>
+
+            <div class="guide-box">
+                <strong>🔑 GitHub Token(PAT) 발급 방법 (1분 소요)</strong>
+                <ol>
+                    <li><a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener noreferrer">GitHub 토큰 생성 페이지 열기</a></li>
+                    <li>Note에 'page-admin' 입력, 권한에서 <strong>repo</strong> 체크박스 선택</li>
+                    <li>페이지 하단 <strong>Generate token</strong> 클릭 후 생성된 <code>ghp_...</code> 토큰 복사</li>
+                </ol>
+            </div>
+
+            <form id="setup-form" class="login-form">
+                <div class="form-group">
+                    <label class="form-label" for="setup-password">
+                        <span>사용할 비밀번호</span>
+                        <span class="badge">4자리 이상</span>
+                    </label>
+                    <input type="password" id="setup-password" class="form-input" placeholder="예: 1234 또는 쉬운 암호" required autocomplete="new-password">
+                    <span class="form-hint">이후 관리자 페이지에 접속할 때 이 비밀번호만 입력하면 됩니다.</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="setup-token">
+                        <span>GitHub Token (PAT)</span>
+                        <span class="badge">ghp_ 또는 github_pat_</span>
+                    </label>
+                    <input type="password" id="setup-token" class="form-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" required autocomplete="off">
+                    <span class="form-hint">토큰은 입력하신 비밀번호로 AES-GCM 암호화되어 안전하게 보관됩니다.</span>
+                </div>
+
+                <label class="form-checkbox-row">
+                    <input type="checkbox" id="setup-save-remote" checked>
+                    <span>다른 PC/스마트폰에서도 동일한 비밀번호로 즉시 로그인할 수 있도록 암호화 설정 동기화</span>
+                </label>
+
+                <div style="display: flex; gap: 0.6rem; margin-top: 0.8rem;">
+                    <button type="button" class="btn-secondary" style="flex: 1;" onclick="closeSetupModal()">취소</button>
+                    <button type="submit" id="btn-setup-submit" class="btn-primary" style="flex: 2;">
+                        <span>설정 완료 및 로그인</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
