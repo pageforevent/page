@@ -34,9 +34,9 @@
     "tagline": "VIEW GIFT BENEFITS",
     "title": "사은 행사 참여하기",
     "description": "구매 금액별로 준비된 사은 혜택을 확인하세요",
-    "showSecondOffer": true,
+    "showSecondOffer": false,
     "primaryOffer": {
-      "title": "10만원 이상 구매 시 1만원 상품권 증정",
+      "title": "10만원 이상 구매 시 5천원 상품권 증정",
       "buttonText": "바로가기",
       "link": "https://m.lotteshopping.com/cpn/gate/7443a43ecf1e2811/C10908?utm_source=owned&utm_medium=qr"
     },
