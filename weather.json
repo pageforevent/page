@@ -1,0 +1,11 @@
+{
+  "location": "부산 부전동",
+  "timezone": "Asia/Seoul",
+  "latitude": 35.1569988,
+  "longitude": 129.058582,
+  "grid": { "nx": 98, "ny": 75 },
+  "source": "기상청",
+  "status": "pending",
+  "condition": "unknown",
+  "observedAt": null
+}

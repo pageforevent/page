@@ -185,7 +185,7 @@ html[data-scene-theme="haeundae"] {
     --place-surface: #0B2449;
 }
 
-html[data-scene-theme="lotteBusan"] {
+html[data-scene-theme="seomyeon"] {
     --place-top: #6D351F;
     --place-bottom: #C79648;
     --place-accent: #F7D872;
@@ -675,7 +675,7 @@ body.is-intro {
     --map-glass: #78B8E8;
 }
 
-.map-landmark[data-map-scene="lotteBusan"] {
+.map-landmark[data-map-scene="seomyeon"] {
     --map-pop: #EE5368;
     --map-light: #EFCB62;
     --map-glass: #A78063;
@@ -1401,22 +1401,22 @@ html[data-time-theme="night"] .night-firework {
 }
 
 /* --- 7. Lotte Department Store Busan (롯데백화점 부산본점) --- */
-.lotte-screen-scan {
+.city-screen-scan {
     animation: digitalBillboardScan 2.6s ease-in-out infinite;
 }
-.lotte-facade-glint {
+.city-facade-glint {
     animation: modernFacadeLightBeam 3.4s ease-in-out infinite;
 }
 .seomyeon-traffic {
     animation: seomyeonStreetTraffic 3.2s ease-in-out infinite alternate;
 }
-.lotte-hotel-windows path {
+.city-hotel-windows path {
     animation: cozyWindowFlicker 2.4s ease-in-out infinite alternate;
 }
-.lotte-hotel-windows path:nth-child(2n) {
+.city-hotel-windows path:nth-child(2n) {
     animation-delay: 0.8s;
 }
-.lotte-facade-slats {
+.city-facade-slats {
     animation: neonGlowPulse 2.8s ease-in-out infinite alternate;
 }
 

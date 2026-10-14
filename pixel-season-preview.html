@@ -1,0 +1,9 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>픽셀 풍경 · 사계절 비교</title>
+<style>body{margin:0;padding:24px;background:#fff3df;color:#292b48;font-family:Arial,sans-serif}h1{font-size:22px;margin:0 0 10px}p{font-size:12px;line-height:1.6}select{padding:8px;border:2px solid #292b48;background:#fffdf2}main{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px;max-width:1000px}iframe{width:100%;aspect-ratio:160/149;border:3px solid #292b48;box-sizing:border-box;box-shadow:4px 4px #292b48;background:#fffdf2}a{color:inherit;font-size:12px}@media(max-width:420px){body{padding:14px}main{gap:10px}}</style>
+<h1>같은 풍경, 네 계절</h1><p>시간과 날씨를 낮·맑음으로 고정해 계절 차이를 비교합니다.<br>겨울에도 눈은 실제 날씨가 눈일 때만 내립니다.</p>
+<label>장소 <select aria-label="장소"><option value="gwangan">광안대교</option><option value="gamcheon">감천문화마을</option><option value="nurimaru">누리마루</option><option value="huinnyeoul">흰여울문화마을</option><option value="jagalchi">자갈치시장</option><option value="haeundae">해운대</option><option value="busanTower">부산타워</option><option value="cinemaCenter">영화의전당</option><option value="beomeosa">범어사</option><option value="ahopsan">아홉산숲</option></select></label> <a href="pixel-preview.html">10곳 미리보기</a><main></main>
+<script>
+const seasons={spring:'봄',summer:'여름',autumn:'가을',winter:'겨울'};
+function render(){const key=document.querySelector('select').value;document.querySelector('main').innerHTML=Object.entries(seasons).map(([season,name])=>'<iframe title="'+name+'" src="pixel-preview.html?single='+key+'&season='+season+'"></iframe>').join('');}
+document.querySelector('select').addEventListener('change',render);render();
+</script></html>

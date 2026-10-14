@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko" data-time-theme="day" data-season="autumn" data-weather="clear"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>부산 픽셀아트 · 10곳 미리보기</title>
+<link rel="stylesheet" href="environment.css"><link rel="stylesheet" href="landmark-art.css">
+<style>body{margin:0;padding:28px;background:#fff3df;color:#292b48;font-family:Arial,sans-serif}h1{font-size:23px;margin:0 0 8px}p{font-size:13px}nav{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0 24px}label{font-size:13px}select{padding:7px;border:2px solid #292b48;background:#fffdf2;color:#292b48}main{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}article{border:3px solid #292b48;background:#fffdf2;box-shadow:4px 4px #292b48;overflow:hidden}svg{display:block;width:100%;aspect-ratio:4/3}h2{font-size:14px;padding:12px;margin:0;border-top:3px solid #292b48}a{color:inherit} @media(max-width:900px){main{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:400px){body{padding:16px}main{gap:10px}h2{font-size:12px}}</style>
+<h1>부산, 10개의 픽셀 풍경</h1><p>코드로 그린 160 × 120 격자 · 시간·계절·날씨 미리보기</p>
+<nav><label>시간 <select data-setting="timeTheme"><option value="morning">아침</option><option value="day" selected>낮</option><option value="sunset">노을</option><option value="night">밤</option></select></label><label>계절 <select data-setting="season"><option value="spring">봄</option><option value="summer">여름</option><option value="autumn" selected>가을</option><option value="winter">겨울</option></select></label><label>날씨 <select data-setting="weather"><option value="clear">맑음</option><option value="cloudy">구름</option><option value="rain">비</option><option value="snow">눈</option><option value="storm">뇌우</option></select></label></nav><main></main>
+<script src="environment.js"></script><script src="landmark-art.js"></script><script>
+const names={gwangan:'광안대교',gamcheon:'감천문화마을',nurimaru:'누리마루',huinnyeoul:'흰여울문화마을',jagalchi:'자갈치시장',haeundae:'해운대',busanTower:'부산타워',cinemaCenter:'영화의전당',beomeosa:'범어사',ahopsan:'아홉산숲'};
+const previewParams = new URLSearchParams(location.search);
+const single = previewParams.get('single');
+const visibleNames=Object.hasOwn(names,single)?[[single,names[single]]]:Object.entries(names);
+document.querySelector('main').innerHTML=visibleNames.map(([key,name])=>'<article><svg class="busan-scene-svg" viewBox="0 0 160 120" role="img" aria-label="'+name+'">'+LandmarkArt[key].render()+SceneEnvironment.createSeasonSvg(160,120)+SceneEnvironment.createWeatherSvg(160,120)+'</svg><h2><a href="index.html?scene='+key+'&intro=preview">'+name+'</a></h2></article>').join('');
+document.querySelectorAll('select').forEach(el=>el.addEventListener('change',()=>document.documentElement.dataset[el.dataset.setting]=el.value));
+if (Object.hasOwn(names,single)) {
+ const seasons={spring:'봄',summer:'여름',autumn:'가을',winter:'겨울'};
+ const season=Object.hasOwn(seasons,previewParams.get('season'))?previewParams.get('season'):'autumn';
+ document.documentElement.dataset.season=season;
+ document.querySelectorAll('h1,p,nav').forEach(el=>el.remove());
+ document.querySelector('h2').textContent=seasons[season];
+ document.body.style.padding='0';
+ document.body.style.overflow='hidden';
+ document.querySelector('main').style.display='block';
+ document.querySelector('article').style.border='0';
+ document.querySelector('article').style.boxShadow='none';
+ document.title=names[single]+' · '+seasons[season];
+} else {
+ const link=document.createElement('a');
+ link.href='pixel-season-preview.html';
+ link.textContent='사계절 나란히 비교 →';
+ document.querySelector('nav').append(link);
+}
+const syncVisibility=()=>document.documentElement.classList.toggle('pixel-tab-hidden',document.hidden);
+document.addEventListener('visibilitychange',syncVisibility);syncVisibility();
+if('IntersectionObserver' in window){
+ const observer=new IntersectionObserver(entries=>entries.forEach(entry=>entry.target.classList.toggle('pixel-is-offscreen',!entry.isIntersecting)),{rootMargin:'100px'});
+ document.querySelectorAll('article').forEach(el=>observer.observe(el));
+}
+</script></html>

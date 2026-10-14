@@ -1,0 +1,81 @@
+/* Ten animated postcards share Bujeon's clock, seasons and KMA weather. */
+:root {
+    --env-sky-top: #39a8f2; --env-sky-bottom: #a6e8f3;
+    --weather-tint: #a6e8f3; --weather-cloud: #e0e4f5;
+    --weather-rain: #bed8ff; --season-leaf: #efa34f;
+    --season-hill: #9f6d58;
+}
+html[data-time-theme="morning"] { --env-sky-top: #ffd5b4; --env-sky-bottom: #a6ddd3; }
+html[data-time-theme="day"] { --env-sky-top: #39a8f2; --env-sky-bottom: #a6e8f3; }
+html[data-time-theme="sunset"] { --env-sky-top: #643e98; --env-sky-bottom: #f6a083; }
+html[data-time-theme="night"] { --env-sky-top: #171947; --env-sky-bottom: #443e7d; --weather-cloud: #666286; --weather-rain: #a2d9ff; }
+html[data-weather="clear"], html[data-weather="unknown"] { --weather-tint: var(--env-sky-top); }
+html[data-weather="cloudy"] { --weather-tint: #b4bccf; }
+html[data-weather="overcast"], html[data-weather="rain"], html[data-weather="sleet"] { --weather-tint: #606b96; }
+html[data-weather="snow"] { --weather-tint: #cad4e8; }
+html[data-weather="storm"] { --weather-tint: #393754; }
+html[data-season="spring"] { --season-leaf: #ff94be; --season-hill: #75aa94; }
+html[data-season="summer"] { --season-leaf: #54c99a; --season-hill: #2a8e74; }
+html[data-season="autumn"] { --season-leaf: #efa34f; --season-hill: #a47053; }
+html[data-season="winter"] { --season-leaf: #a4b6ca; --season-hill: #657a91; }
+html[data-time-theme] .hero-cover .busan-scene-svg {
+    --scene-sky-top: color-mix(in srgb, var(--env-sky-top) 70%, var(--weather-tint));
+    --scene-sky-bottom: color-mix(in srgb, var(--env-sky-bottom) 75%, var(--weather-tint));
+    --scene-hill: var(--season-hill);
+}
+.busan-scene-svg { --scene-foliage: var(--season-leaf); }
+html:is([data-time-theme="morning"], [data-time-theme="day"]) .scene-night-lights { opacity: .15 !important; }
+.dongbaek-pines, .park-trees, .beomeosa-trees { fill: var(--scene-foliage); }
+.ahopsan-bamboo-left, .ahopsan-bamboo-right { fill: color-mix(in srgb, var(--season-leaf) 40%, #5ecf96); }
+html[data-time-theme="night"] .scene-landmark { --scene-foliage: color-mix(in srgb, var(--season-leaf) 60%, #262447); }
+.weather-clouds, .weather-rain, .weather-snow, .weather-lightning, .weather-wind,
+.season-spring-petals, .season-summer-leaves, .season-autumn-leaves, .season-winter-branches { display: none; pointer-events: none; }
+html[data-weather="cloudy"] .weather-clouds,
+html[data-weather="overcast"] .weather-clouds,
+html[data-weather="rain"] .weather-clouds,
+html[data-weather="sleet"] .weather-clouds,
+html[data-weather="snow"] .weather-clouds,
+html[data-weather="storm"] .weather-clouds { display: block; }
+.weather-clouds { opacity: .7; animation: environmentCloudDrift 12s ease-in-out infinite alternate; }
+html[data-weather="cloudy"] .day-cloud { display: none; }
+html:is([data-weather="overcast"], [data-weather="rain"], [data-weather="snow"], [data-weather="sleet"], [data-weather="storm"]) :is(.day-sun, .morning-sun, .sunset-sun, .night-stars, .night-moon, .night-firework) { visibility: hidden; }
+html:is([data-weather="rain"], [data-weather="sleet"], [data-weather="storm"]) .weather-rain { display: block; }
+html:is([data-weather="snow"], [data-weather="sleet"]) .weather-snow { display: block; }
+html[data-weather="storm"] .weather-lightning { display: block; animation: environmentLightning 9s ease-in-out infinite; }
+html[data-wind="strong"] .weather-wind { display: block; opacity: .6; animation: environmentWind 3s ease-in-out infinite; }
+.weather-rain path { opacity: .6; animation: environmentRain 1.35s linear infinite; animation-delay: var(--particle-delay); }
+.weather-snow circle { animation: environmentSnow 5s linear infinite; animation-delay: var(--particle-delay); }
+html[data-season="spring"] .season-spring-petals { display: block; opacity: .8; animation: environmentPetals 7s ease-in-out infinite alternate; }
+html[data-season="summer"] .season-summer-leaves { display: block; animation: environmentSummer 4s ease-in-out infinite alternate; }
+html[data-season="autumn"] .season-autumn-leaves { display: block; }
+.season-autumn-leaves path { animation: environmentLeafFall 8s linear infinite; animation-delay: var(--particle-delay); }
+html[data-season="winter"] .season-winter-branches { display: block; }
+html[data-wind="strong"] :is(.season-spring-petals, .season-summer-leaves, .season-autumn-leaves path, .dongbaek-pines, .park-trees, .beomeosa-trees, .ahopsan-bamboo-left, .ahopsan-bamboo-right) { animation-duration: 2.5s; }
+.environment-caption { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0 0; font-size: 10px; line-height: 1.6; color: #61594f; }
+.environment-caption a { color: #61594f; white-space: nowrap; text-underline-offset: 3px; }
+.intro-environment-art { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 5; pointer-events: none; opacity: .4; }
+.intro-environment-art .weather-rain { stroke: #6e88c4; }
+.intro-environment-art .weather-clouds { display: none !important; }
+.intro-environment-art .weather-snow { fill: white; stroke: #68758e; }
+.intro-environment-art .season-winter-branches { display: none !important; }
+.intro-environment-caption { position: absolute; top: 161px; left: 25px; right: 20px; z-index: 8; color: #61594f; font-size: 10px; line-height: 1.5; }
+.busan-map-world { background: linear-gradient(150deg, var(--env-sky-bottom), color-mix(in srgb, var(--env-sky-top) 70%, var(--weather-tint))); }
+.busan-map-intro { --map-land-top: color-mix(in srgb, var(--season-hill) 35%, #ddff69); --map-land-bottom: var(--season-hill); }
+.map-landmark-motion { animation-duration: 5s; }
+.beomeosa-leaves { display: none; }
+html[data-season="autumn"] .beomeosa-leaves { display: block; }
+html[data-season="winter"] .ahopsan-fireflies { display: none; }
+html:not([data-season="summer"]) .beach-parasols { display: none; }
+html[data-wind="strong"] .map-landmark-motion { animation-duration: 3s; }
+@keyframes environmentCloudDrift { from { transform: translateX(-8px); } to { transform: translateX(12px); } }
+@keyframes environmentRain { from { transform: translate(5px, -35px); opacity: .2; } to { transform: translate(-10px, 40px); opacity: .7; } }
+@keyframes environmentSnow { from { transform: translate(-5px, -30px); opacity: .3; } to { transform: translate(12px, 50px); opacity: .95; } }
+@keyframes environmentLightning { 0%, 75%, 100% { opacity: 0; } 83% { opacity: .8; } 93% { opacity: 0; } }
+@keyframes environmentWind { from { transform: translateX(-20px); opacity: .1; } to { transform: translateX(30px); opacity: .65; } }
+@keyframes environmentPetals { from { transform: translate(-6px, -3px) rotate(-2deg); } to { transform: translate(9px, 7px) rotate(2deg); } }
+@keyframes environmentSummer { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+@keyframes environmentLeafFall { 0% { transform: translate(0, -22px); opacity: 0; } 20%, 75% { opacity: .85; } 100% { transform: translate(20px, 65px); opacity: 0; } }
+html[data-performance="lite"] :is(.weather-rain path:nth-child(2n), .weather-snow circle:nth-child(2n), .season-autumn-leaves path:nth-child(2n)) { display: none; }
+html[data-performance="lite"] :is(.weather-rain path, .weather-snow circle) { animation-duration: 4s; }
+@media (min-aspect-ratio: 4 / 3) { .intro-environment-caption { top: auto; bottom: 70px; left: 5vw; right: auto; max-width: 32vw; } }
+@media (prefers-reduced-motion: reduce) { .intro-environment-art *, .busan-scene-svg * { animation: none !important; } }

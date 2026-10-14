@@ -11,7 +11,9 @@
             const themes = ['morning', 'day', 'sunset', 'night'];
             const params = new URLSearchParams(location.search);
             const forcedTheme = params.get('theme');
-            const hour = new Date().getHours();
+            const hour = Number(new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Asia/Seoul', hour: '2-digit', hourCycle: 'h23'
+            }).format(new Date()));
             const autoTheme = hour >= 5 && hour < 11
                 ? 'morning'
                 : hour >= 11 && hour < 17
@@ -53,6 +55,9 @@
         })();
     </script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="concept.css">
+    <link rel="stylesheet" href="environment.css">
+    <link rel="stylesheet" href="landmark-art.css?v=pixel-title-1">
 </head>
 <body class="is-intro">
     <div class="app-container is-intro">
@@ -77,6 +82,8 @@
         </footer>
     </div>
 
-    <script src="script.js" defer></script>
+    <script src="environment.js" defer></script>
+    <script src="landmark-art.js" defer></script>
+    <script src="script.js?v=pixel-title-1" defer></script>
 </body>
 </html>

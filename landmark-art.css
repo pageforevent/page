@@ -1,0 +1,61 @@
+/* Integer-coordinate sprites, hard edges and discrete animation frames. */
+.hero-cover .busan-scene-card { height: clamp(300px, 75vw, 440px); }
+.busan-scene-svg, .map-pixel-art { shape-rendering: crispEdges; image-rendering: pixelated; --px-sea: var(--season-sea, #397f9c); --px-window: #42617f; }
+html[data-season="spring"] { --season-leaf: #9dc882; --season-leaf-shadow: #679d78; --season-hill: #83b58e; --season-sea: #54a8ae; --season-sky-top: #72bbd7; --season-sky-bottom: #d5e9cd; --season-ground: #a9bf94; --season-pine: #4b8e72; }
+html[data-season="summer"] { --season-leaf: #34955d; --season-leaf-shadow: #216b50; --season-hill: #2b785d; --season-sea: #237ca8; --season-sky-top: #288ae5; --season-sky-bottom: #90d8ef; --season-ground: #7caa71; --season-pine: #28674f; }
+html[data-season="autumn"] { --season-leaf: #e8a044; --season-leaf-shadow: #b75d3f; --season-hill: #a77153; --season-sea: #4c8e99; --season-sky-top: #6baacb; --season-sky-bottom: #f0d4ae; --season-ground: #ba9872; --season-pine: #3d7561; }
+html[data-season="winter"] { --season-leaf: #7fa4a0; --season-leaf-shadow: #577a7e; --season-hill: #7b899b; --season-sea: #42647e; --season-sky-top: #93a9c8; --season-sky-bottom: #d9e1e5; --season-ground: #aaa69f; --season-pine: #537a77; }
+html[data-season][data-time-theme="day"] { --env-sky-top: var(--season-sky-top); --env-sky-bottom: var(--season-sky-bottom); }
+html[data-season][data-time-theme="morning"] { --env-sky-bottom: color-mix(in srgb, var(--season-sky-bottom) 65%, #ffd5b4); }
+html[data-season][data-time-theme="sunset"] { --env-sky-bottom: color-mix(in srgb, var(--season-sky-bottom) 40%, #f6a083); }
+html[data-season][data-time-theme="night"] { --env-sky-bottom: color-mix(in srgb, var(--season-sky-bottom) 15%, #28264b); }
+.px-season-spring,.px-season-summer,.px-season-autumn,.px-season-winter { display: none; }
+html[data-season="spring"] .px-season-spring,html[data-season="summer"] .px-season-summer,html[data-season="autumn"] .px-season-autumn,html[data-season="winter"] .px-season-winter { display: block; }
+html[data-season="winter"] .px-deciduous-canopy { display: none; }
+.px-pine-canopy { fill: var(--season-pine); }
+html:not([data-season="summer"]) .px-firefly { display: none !important; }
+html[data-time-theme="night"] { --px-sea: #28385e; --px-window: #ffe39c; }
+html[data-time-theme="night"] :is(.busan-scene-svg, .map-pixel-art) { --px-sea: color-mix(in srgb, var(--season-sea, #397f9c) 40%, #171d42); --px-window: #ffe39c; }
+.hero-cover:has(.pixel-art) .hero-collage-copy { font-size: clamp(28px, 6vw, 42px); top: 54px; left: 15px; letter-spacing: -2px; transform: rotate(-3deg); }
+.hero-cover:has(.pixel-art) .hero-collage-copy br { display: none; }
+.hero-cover:has(.pixel-art) .hero-collage-copy em { margin-left: 6px; }
+.hero-cover:has(.pixel-art) .hero-collage-copy { top: 47px; left: 12px; width: clamp(108px, 25vw, 148px); line-height: 0; text-shadow: none; transform: none; }
+.pixel-event-title { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+.hero-cover .busan-scene-card .hero-sticker { bottom: 10px; left: 12px; right: auto; max-inline-size: calc(100% - 126px); }
+.px-moon, .px-star, .px-firefly { display: none; }
+html[data-time-theme="night"] :is(.px-moon, .px-star, .px-firefly) { display: block; }
+html[data-time-theme="night"] .px-sun { display: none; }
+html:is([data-weather="rain"],[data-weather="storm"],[data-weather="overcast"],[data-weather="snow"],[data-weather="sleet"]) :is(.px-sun,.px-moon,.px-star) { display:none; }
+html:not([data-weather="clear"]):not([data-weather="unknown"]) .px-cloud { display: none; }
+.px-cloud { animation: pixelCloud 16s steps(12) infinite alternate; }
+.px-water-mark { animation: pixelWater 4s steps(4) infinite alternate; }
+.px-car { animation: pixelTraffic 20s steps(160) infinite; }
+.px-car-second { animation-delay: -9s; }
+.px-boat { animation: pixelBoat 8s steps(8) infinite alternate; }
+.px-firefly { animation: pixelBlink 4s steps(1) infinite; }
+.px-walker { animation: pixelWalk var(--walk-duration) steps(var(--walk-steps)) var(--walk-delay) infinite alternate; }
+.px-stride-a { animation: pixelStrideA .8s steps(1) infinite; }
+.px-stride-b { opacity: 0; animation: pixelStrideB .8s steps(1) infinite; }
+html[data-performance="lite"] :is(.px-stride-a,.px-stride-b) { animation: none; }
+.map-pixel-art * { animation: none !important; }
+body.is-intro .hero-cover .busan-scene-svg *,
+html.pixel-tab-hidden .busan-scene-svg *,
+article.pixel-is-offscreen .busan-scene-svg * { animation-play-state: paused !important; }
+.weather-clouds { animation: pixelCloud 16s steps(12) infinite alternate; }
+.weather-rain rect { animation: pixelRain 1.8s steps(20) infinite; animation-delay: var(--particle-delay); }
+.weather-snow rect { animation: pixelSnow 6s steps(20) infinite; animation-delay: var(--particle-delay); }
+.season-autumn-leaves rect { animation: pixelSnow 9s steps(20) infinite; animation-delay: var(--particle-delay); }
+.season-spring-petals { animation: pixelBoat 7s steps(8) infinite alternate !important; }
+.season-summer-leaves { animation: none !important; }
+.weather-wind { animation: pixelCloud 3s steps(12) infinite alternate !important; }
+@keyframes pixelCloud { from {transform:translateX(0)} to {transform:translateX(12px)} }
+@keyframes pixelWater { from {transform:translateX(0)} to {transform:translateX(4px)} }
+@keyframes pixelTraffic { from {transform:translateX(-100px)} to {transform:translateX(160px)} }
+@keyframes pixelBoat { from {transform:translate(0,0)} to {transform:translate(8px,-2px)} }
+@keyframes pixelBlink { 0%,50%,100% {opacity:1} 25%,75% {opacity:0} }
+@keyframes pixelWalk { from {transform:translate(0,0)} to {transform:translate(var(--walk-x),var(--walk-y))} }
+@keyframes pixelStrideA { 0%,100% {opacity:1} 50% {opacity:0} }
+@keyframes pixelStrideB { 0%,100% {opacity:0} 50% {opacity:1} }
+@keyframes pixelRain { from {transform:translate(0,-20px)} to {transform:translate(-10px,20px)} }
+@keyframes pixelSnow { from {transform:translate(0,-20px)} to {transform:translate(10px,20px)} }
+@media (prefers-reduced-motion:reduce) { .pixel-art *, .map-pixel-art *, .intro-environment-art * {animation:none !important} }
