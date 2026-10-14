@@ -1,0 +1,94 @@
+name: Sync Kakao coupons and deploy
+
+on:
+  schedule:
+    # Every 30 minutes; avoid the busy start of the hour.
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '*.html'
+      - '*.css'
+      - '*.js'
+      - 'data.json'
+      - 'media/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - '.github/workflows/sync-coupons.yml'
+
+concurrency:
+  group: coupon-sync-and-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  sync-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      deploy: ${{ steps.publish.outputs.deploy }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test coupon selection
+        run: python -m unittest discover -s tests -p 'test_*.py'
+      - name: Test coupon visibility
+        run: node tests/test_coupon_visibility.cjs
+      - name: Fetch latest coupons
+        if: github.event_name != 'push'
+        run: python scripts/sync_kakao_coupons.py
+      - name: Commit changes without overwriting concurrent admin edits
+        id: publish
+        shell: bash
+        run: |
+          changed=false
+          if ! git diff --quiet -- data.json; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add data.json
+            git commit -m '카카오 채널 사은 쿠폰 자동 갱신'
+            # A concurrent edit causes a safe failure; the next run fetches again.
+            git push origin HEAD:main
+            changed=true
+          fi
+          if [ "$changed" = true ] || [ "$GITHUB_EVENT_NAME" != schedule ]; then
+            echo 'deploy=true' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Configure Pages
+        if: steps.publish.outputs.deploy == 'true'
+        uses: actions/configure-pages@v5
+      - name: Prepare public site
+        if: steps.publish.outputs.deploy == 'true'
+        run: |
+          mkdir -p _site
+          cp index.html script.js style.css data.json admin.html admin.js admin.css _site/
+          cp -r media _site/media
+          touch _site/.nojekyll
+      - name: Upload Pages artifact
+        if: steps.publish.outputs.deploy == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    if: needs.sync-and-build.outputs.deploy == 'true'
+    needs: sync-and-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Deploy explicitly: bot commits alone do not trigger another Pages build.
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
