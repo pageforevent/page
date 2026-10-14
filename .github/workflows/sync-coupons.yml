@@ -12,6 +12,7 @@ on:
       - '*.css'
       - '*.js'
       - 'data.json'
+      - 'weather.json'
       - 'media/**'
       - 'scripts/**'
       - 'tests/**'
@@ -28,34 +29,51 @@ permissions:
 
 jobs:
   sync-and-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
       deploy: ${{ steps.publish.outputs.deploy }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Test coupon selection
         run: python -m unittest discover -s tests -p 'test_*.py'
       - name: Test coupon visibility
         run: node tests/test_coupon_visibility.cjs
+      - name: Test scene environment
+        run: node tests/test_environment.cjs
+      - name: Fetch Bujeon weather
+        if: github.event_name != 'push'
+        id: weather
+        continue-on-error: true
+        env:
+          KMA_SERVICE_KEY: ${{ secrets.KMA_SERVICE_KEY }}
+        run: python scripts/sync_weather.py
+      - name: Report weather fetch failure
+        if: steps.weather.outcome == 'failure'
+        run: echo '::warning::날씨 수집 실패. 기존 자료를 유지하며 3시간이 지나면 화면에서 날씨 정보 없음으로 표시합니다.'
       - name: Fetch latest coupons
         if: github.event_name != 'push'
+        id: coupons
+        continue-on-error: true
         run: python scripts/sync_kakao_coupons.py
+      - name: Report coupon fetch failure
+        if: steps.coupons.outcome == 'failure'
+        run: echo '::warning::쿠폰 수집 실패. 기존 쿠폰을 유지하며 만료일 필터는 계속 적용됩니다.'
       - name: Commit changes without overwriting concurrent admin edits
         id: publish
         shell: bash
         run: |
           changed=false
-          if ! git diff --quiet -- data.json; then
+          if ! git diff --quiet -- data.json weather.json; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add data.json
-            git commit -m '카카오 채널 사은 쿠폰 자동 갱신'
+            git add data.json weather.json
+            git commit -m '사은 쿠폰 및 부전동 날씨 자동 갱신'
             # A concurrent edit causes a safe failure; the next run fetches again.
             git push origin HEAD:main
             changed=true
@@ -65,24 +83,24 @@ jobs:
           fi
       - name: Configure Pages
         if: steps.publish.outputs.deploy == 'true'
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Prepare public site
         if: steps.publish.outputs.deploy == 'true'
         run: |
           mkdir -p _site
-          cp index.html script.js style.css data.json admin.html admin.js admin.css _site/
+          cp index.html pixel-preview.html pixel-season-preview.html script.js environment.js landmark-art.js style.css concept.css environment.css landmark-art.css data.json weather.json admin.html admin.js admin.css _site/
           cp -r media _site/media
           touch _site/.nojekyll
       - name: Upload Pages artifact
         if: steps.publish.outputs.deploy == 'true'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site
 
   deploy:
     if: needs.sync-and-build.outputs.deploy == 'true'
     needs: sync-and-build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
     environment:
       name: github-pages
@@ -91,4 +109,4 @@ jobs:
       # Deploy explicitly: bot commits alone do not trigger another Pages build.
       - name: Deploy Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
