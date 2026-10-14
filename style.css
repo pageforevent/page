@@ -3135,6 +3135,18 @@ body.is-intro .app-container * {
    Quality-preserving performance safeguards
    ========================================================================== */
 
+.gift-offer-list [hidden] {
+    display: none !important;
+}
+
+.gift-offer-period,
+.gift-offer-empty {
+    margin-top: 0.35rem;
+    color: var(--text-sub);
+    font-size: 0.72rem;
+    line-height: 1.5;
+}
+
 .step-card {
     content-visibility: auto;
     contain-intrinsic-size: auto 270px;

@@ -51,6 +51,36 @@ function applyTimeTheme() {
     const timeLabel = document.getElementById('time-label');
     if (periodLabel) periodLabel.textContent = theme.label;
     if (timeLabel) timeLabel.textContent = formattedTime;
+    refreshGiftOfferVisibility(now);
+}
+
+function escapeCouponHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[character]);
+}
+
+function isGiftOfferActive(offer, date = new Date()) {
+    // Coupon periods use Korean calendar dates, regardless of the visitor's timezone.
+    const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit'
+    }).formatToParts(date);
+    const get = (type) => parts.find((part) => part.type === type).value;
+    const today = `${get('year')}-${get('month')}-${get('day')}`;
+    return (!offer.validFrom || today >= offer.validFrom)
+        && (!offer.validUntil || today <= offer.validUntil);
+}
+
+function refreshGiftOfferVisibility(date = new Date()) {
+    document.querySelectorAll('.gift-offer-list').forEach((list) => {
+        const rows = [...list.querySelectorAll('.gift-offer-row')];
+        rows.forEach((row) => { row.hidden = !isGiftOfferActive(row.dataset, date); });
+        const count = rows.filter((row) => !row.hidden).length;
+        list.classList.toggle('is-single', count === 1);
+        list.classList.toggle('is-double', count > 1);
+        const empty = list.querySelector('.gift-offer-empty');
+        if (empty) empty.hidden = count > 0;
+    });
 }
 
 function initTimeTheme() {
@@ -1374,22 +1404,24 @@ function renderPageContent(data, sceneKey) {
                 ? `
                     <div class="gift-offer-list ${visibleGiftOffers.length === 1 ? 'is-single' : 'is-double'}">
                         ${visibleGiftOffers.map((offer, offerIndex) => `
-                            <article class="gift-offer-row" data-offer-number="${String(offerIndex + 1).padStart(2, '0')}">
+                            <article class="gift-offer-row" data-offer-number="${String(offerIndex + 1).padStart(2, '0')}" data-valid-from="${escapeCouponHtml(offer.validFrom)}" data-valid-until="${escapeCouponHtml(offer.validUntil)}" ${isGiftOfferActive(offer) ? '' : 'hidden'}>
                                 <div class="gift-offer-copy">
                                     <span class="gift-offer-label">
                                         <strong>${String(offerIndex + 1).padStart(2, '0')}</strong>
                                         <span>GIFT BENEFIT</span>
                                     </span>
-                                    <h3>${offer.title}</h3>
+                                    <h3>${escapeCouponHtml(offer.title)}</h3>
+                                    ${offer.validFrom && offer.validUntil ? `<p class="gift-offer-period">${escapeCouponHtml(offer.validFrom)} ~ ${escapeCouponHtml(offer.validUntil)}</p>` : ''}
                                 </div>
-                                <a href="${offer.link}" class="gift-offer-link" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${offer.title}: ${offer.buttonText || '바로가기'}">
-                                    <span>${offer.buttonText || '바로가기'}</span>
+                                <a href="${escapeCouponHtml(offer.link)}" class="gift-offer-link" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${escapeCouponHtml(offer.title)}: ${escapeCouponHtml(offer.buttonText || '바로가기')}">
+                                    <span>${escapeCouponHtml(offer.buttonText || '바로가기')}</span>
                                     <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                         <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
                                     </svg>
                                 </a>
                             </article>
                         `).join('')}
+                        <p class="gift-offer-empty" hidden>현재 진행 중인 사은 혜택이 없습니다.</p>
                     </div>
                 `
                 : `
@@ -1436,6 +1468,7 @@ function renderPageContent(data, sceneKey) {
     }
 
     initSceneVisibilityOptimization();
+    refreshGiftOfferVisibility();
 }
 
 // 상단 랜드마크 일러스트 좌우 스와이프 제어
