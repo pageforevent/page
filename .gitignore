@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+_site/
+data.json.tmp
+weather.json.tmp
+design-preview/
+.codex-remote-review/
