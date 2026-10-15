@@ -69,7 +69,7 @@
         "description": "참여 브랜드 및 자세한 사항은 버튼을 눌러 확인 바랍니다.",
         "validFrom": "2026-10-09",
         "validUntil": "2026-10-20",
-        "manualOverride": true
+        "manualOverride": false
       }
     ],
     "enabled": true,
