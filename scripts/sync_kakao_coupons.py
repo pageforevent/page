@@ -73,8 +73,10 @@ def extract_offer(card, reference, previous):
             or parsed.username or parsed.password):
         raise ValueError(f"롯데 쿠폰 링크가 아닙니다: {title}")
     start, end = parse_period(title, description, reference)
-    return {**(previous or {}), "title": title, "description": description,
-            "buttonText": "바로가기", "link": link, "validFrom": start, "validUntil": end}
+    # Description is read only to parse the source period. Footer copy and
+    # button text belong to the administrator and are never overwritten.
+    return {**(previous or {}), "title": title,
+            "link": link, "validFrom": start, "validUntil": end}
 
 
 def synchronize(data, feed):
