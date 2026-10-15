@@ -64,6 +64,16 @@ function escapeCouponHtml(value) {
     })[character]);
 }
 
+function couponDescription(offer) {
+    const description = String(offer.description || '');
+    if (!offer.validFrom && !offer.validUntil) return description.trim();
+    // Collected date-only metadata duplicates the editable display period.
+    // Keep actual conditions and notices, including lines that contain dates.
+    const date = '(?:(?:\\d{4}\\s*[./년-]\\s*)?\\d{1,2}\\s*[./월-]\\s*\\d{1,2}\\s*일?(?:\\s*\\([월화수목금토일a-zA-Z]+\\))?)';
+    const periodLine = new RegExp('^\\s*(?:(?:사용\\s*기한|사용\\s*기간|유효\\s*기간|행사\\s*기간|이용\\s*기간|기간)\\s*[:：]?\\s*)?' + date + '\\s*(?:~|～|〜|–|—|-|부터)\\s*' + date + '\\s*(?:까지)?\\s*$', 'i');
+    return description.split(/\r?\n/).filter(line => !periodLine.test(line)).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
 function isGiftOfferActive(offer, date = new Date()) {
     if (offer.enabled === false) return false;
     // Coupon periods use Korean calendar dates, regardless of the visitor's timezone.
@@ -750,7 +760,7 @@ function renderPageContent(data, sceneKey) {
                                     </span>
                                     <h3>${escapeCouponHtml(offer.title)}</h3>
                                     ${offer.validFrom || offer.validUntil ? `<p class="gift-offer-period">${escapeCouponHtml(offer.validFrom || '상시')} ~ ${escapeCouponHtml(offer.validUntil || '종료일 없음')}</p>` : ''}
-                                    ${offer.description ? `<p class="gift-offer-description">${escapeCouponHtml(offer.description)}</p>` : ''}
+                                    ${couponDescription(offer) ? `<p class="gift-offer-description">${escapeCouponHtml(couponDescription(offer))}</p>` : ''}
                                 </div>
                                 <a href="${escapeCouponHtml(offer.link)}" class="gift-offer-link" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${escapeCouponHtml(offer.title)}: ${escapeCouponHtml(offer.buttonText || '바로가기')}">
                                     <span>${escapeCouponHtml(offer.buttonText || '바로가기')}</span>

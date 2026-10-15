@@ -152,10 +152,10 @@ body::before, body::after { display: none; }
 .btn-label { font-size: 13px; }
 .btn-icon { color: var(--club-ink); background: var(--club-paper); border-radius: 50%; width: 30px; height: 30px; }
 .gift-step-card .card-body { border-bottom: 2px dashed #22201f55; padding-bottom: 18px; }
-.gift-offer-list.is-double { grid-template-columns: 1fr; }
-.gift-offer-row {
+.gift-offer-list, .gift-offer-list.is-double { grid-template-columns: 1fr; grid-auto-rows: auto; }
+.gift-offer-row, .gift-offer-list.is-single .gift-offer-row {
     grid-template-columns: minmax(0, 1fr) auto;
-    padding: 18px 14px; min-height: 110px;
+    padding: 18px 14px; min-height: 110px; align-content: center;
     border: 1.5px dashed var(--club-ink); background: var(--club-paper);
     box-shadow: none; border-radius: 10px;
 }
@@ -169,8 +169,6 @@ body::before, body::after { display: none; }
     background: var(--club-purple); color: white; border: 1.5px solid var(--club-ink);
     border-radius: 0; box-shadow: 3px 3px 0 var(--club-ink); font-size: 11px;
 }
-.app-container footer { padding: 28px 0 0 !important; opacity: .65 !important; }
-.app-container footer a { color: var(--club-ink) !important; border-color: var(--club-ink) !important; }
 .error-msg { color: var(--club-ink); }
 .btn-retry { background: var(--club-purple); color: white; }
 
