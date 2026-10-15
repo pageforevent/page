@@ -17,6 +17,13 @@ assert.equal(context.isGiftOfferActive({}, new Date()), true); // Legacy manual 
 assert.equal(context.isGiftOfferActive({validFrom: '2026-11-01'}, new Date('2026-10-31T15:00:00Z')), true);
 assert.equal(context.isGiftOfferActive({validUntil: '2026-11-01'}, new Date('2026-11-01T15:00:00Z')), false);
 assert.equal(context.escapeCouponHtml('<img src=x onerror="x">'), '&lt;img src=x onerror=&quot;x&quot;&gt;');
+const periodOffer = {validFrom:'2026-10-01', validUntil:'2026-10-31'};
+assert.equal(context.couponDescription({...periodOffer, description:'사용기한 : 10.1(목) - 10.31(토)'}), '');
+assert.equal(context.couponDescription({...periodOffer, description:'기간 : 2026.10.09~2026.10.11\n\n참여브랜드를 확인하세요.'}), '참여브랜드를 확인하세요.');
+assert.equal(context.couponDescription({...periodOffer, description:'2026-10-01 ~ 2026-10-31'}), '');
+assert.equal(context.couponDescription({...periodOffer, description:'기간 : 2026년 10월 1일 ~ 2026년 10월 31일'}), '');
+assert.equal(context.couponDescription({...periodOffer, description:'10.9~10.11 일부 브랜드 제외'}), '10.9~10.11 일부 브랜드 제외');
+assert.equal(context.couponDescription({description:'사용기한 : 10.1(목) - 10.31(토)'}), '사용기한 : 10.1(목) - 10.31(토)');
 
 const rows = [
     { dataset: monthly },
