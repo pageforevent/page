@@ -6,7 +6,7 @@
     <title>간편 관리자 - 사은 행사 페이지</title>
     <!-- Pretendard 폰트 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="admin.css?v=refresh-controls-3">
 </head>
 <body>
 
@@ -21,10 +21,10 @@
         </div>
         <div class="header-actions">
             <a href="index.html" target="_blank" class="btn-header" title="실제 페이지 새 탭에서 열기">
-                <span>🔗 실제 사이트 보기</span>
+                <span>실제 사이트</span>
             </a>
             <button type="button" id="btn-open-setup" class="btn-header" title="관리자 초기 설정 또는 비밀번호/토큰 재설정">
-                <span>⚙️ 설정</span>
+                <span>계정 설정</span>
             </button>
             <button type="button" id="btn-logout" class="btn-header danger" style="display: none;">
                 <span>로그아웃</span>
@@ -85,41 +85,49 @@
 
         <!-- 3. 콘텐츠 에디터 뷰 -->
         <div id="editor-view" class="editor-section" style="display: none;">
+            <div class="editor-intro"><div><p class="eyebrow">EVENT GUIDE</p><h1>페이지 관리</h1></div><p>내용을 편집하고 미리보기로 확인하세요.</p></div>
+            <nav class="editor-tabs" aria-label="관리 영역">
+                <button type="button" data-tab="content" aria-pressed="true">쿠폰 관리</button>
+                <button type="button" data-tab="guide" aria-pressed="false">안내 내용</button>
+                <button type="button" data-tab="display" aria-pressed="false">화면·운영 설정</button>
+            </nav>
+            <section data-panel="content">
+                <div class="section-heading"><div><h2>사은 쿠폰</h2><p id="coupon-count" class="form-hint"></p></div><button type="button" id="btn-add-coupon" class="btn-secondary">+ 쿠폰 추가</button></div>
+                <p class="section-help">쿠폰을 선택해 수정하세요. 사용을 끄거나 기간이 지나도 목록에는 남습니다. 자동 쿠폰의 내용을 수정하면 수동 관리로 전환됩니다.</p>
+                <div class="coupon-tools"><div class="coupon-filters" aria-label="쿠폰 관리 구분"><button type="button" data-coupon-filter="all" aria-pressed="true">전체</button><button type="button" data-coupon-filter="auto" aria-pressed="false">자동 갱신</button><button type="button" data-coupon-filter="manual" aria-pressed="false">수동 관리</button></div><button type="button" id="btn-refresh-now" class="btn-secondary">지금 갱신 요청</button></div>
+                <p id="refresh-request-status" class="form-hint" role="status"></p>
+                <div class="refresh-links"><a id="refresh-runs-link" href="https://github.com/pageforevent/page/actions/workflows/sync-coupons.yml" target="_blank" rel="noopener noreferrer" hidden>실행 상태 보기 ↗</a><button type="button" id="btn-reload-content" hidden>완료 후 최신 내용 불러오기</button></div>
+                <p class="form-hint coupon-sort-help">⠿ 손잡이를 끌어 순서를 변경하세요. 전체 목록 순서가 방문자 화면에 적용됩니다.</p>
+                <p id="coupon-sort-status" class="sr-only" aria-live="polite"></p>
+                <div id="coupon-list"></div>
+            </section>
+            <section data-panel="guide" hidden>
+                <div class="section-heading"><div><h2>안내 내용</h2><p class="form-hint">제목, 앱 설치와 채널 안내를 수정합니다.</p></div></div>
             <!-- 섹션: 기본 브라우저 및 화면 정보 -->
-            <div class="card-box">
-                <div class="card-box-header">
-                    <div class="card-box-title">
-                        <span>🌐</span>
-                        <span>기본 화면 정보</span>
-                    </div>
-                </div>
+            <details class="card-box editor-disclosure">
+                <summary class="section-summary">기본 화면 정보</summary>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label" for="field-pageTitle">브라우저 탭 제목 (Page Title)</label>
+                        <label class="form-label" for="field-pageTitle">브라우저 탭 제목</label>
                         <input type="text" id="field-pageTitle" class="form-input" placeholder="예: 사은 행사 안내">
                         <span class="form-hint">웹 브라우저 탭 상단에 표시되는 제목입니다.</span>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="field-headerTitle">메인 타이틀 (Header Title)</label>
+                        <label class="form-label" for="field-headerTitle">페이지 제목</label>
                         <input type="text" id="field-headerTitle" class="form-input" placeholder="예: 사은 행사 안내">
                         <span class="form-hint">헤더 일러스트 아래에 크게 표시되는 대표 제목입니다.</span>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="field-subtitle">상단 소개 문구 (Subtitle)</label>
+                        <label class="form-label" for="field-subtitle">소개 문구</label>
                         <textarea id="field-subtitle" class="form-textarea" placeholder="예: 앱 설치부터 사은 행사 참여까지, 오늘의 혜택을 한 번에."></textarea>
                         <span class="form-hint">메인 타이틀 아래에 표시되는 짧은 설명글입니다.</span>
                     </div>
                 </div>
-            </div>
+            </details>
 
             <!-- 섹션: STEP 01 백화점 앱 설치 -->
-            <div class="card-box">
-                <div class="card-box-header">
-                    <div class="card-box-title">
-                        <span class="step-tag">STEP 01</span>
-                        <span>앱 설치 안내 카드</span>
-                    </div>
-                </div>
+            <details class="card-box editor-disclosure">
+                <summary class="section-summary">앱 설치 안내</summary>
                 <div class="form-grid">
                     <div class="form-grid two-cols">
                         <div class="form-group">
@@ -159,16 +167,11 @@
                         <input type="url" id="field-step1-link-default" class="form-input" placeholder="https://...">
                     </div>
                 </div>
-            </div>
+            </details>
 
             <!-- 섹션: STEP 02 카카오톡 채널 추가 -->
-            <div class="card-box">
-                <div class="card-box-header">
-                    <div class="card-box-title">
-                        <span class="step-tag">STEP 02</span>
-                        <span>카카오톡 채널 추가 카드</span>
-                    </div>
-                </div>
+            <details class="card-box editor-disclosure">
+                <summary class="section-summary">카카오톡 채널 추가 카드</summary>
                 <div class="form-grid">
                     <div class="form-grid two-cols">
                         <div class="form-group">
@@ -197,16 +200,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </details>
 
             <!-- 섹션: STEP 03 사은 행사 참여하기 -->
-            <div class="card-box">
-                <div class="card-box-header">
-                    <div class="card-box-title">
-                        <span class="step-tag gold">STEP 03</span>
-                        <span>사은 행사 참여 카드 & 혜택</span>
-                    </div>
-                </div>
+            <details class="card-box editor-disclosure"><summary class="section-summary">사은 행사 카드 문구</summary>
                 <div class="form-grid">
                     <div class="form-grid two-cols">
                         <div class="form-group">
@@ -224,66 +221,23 @@
                         <textarea id="field-step3-desc" class="form-textarea" placeholder="예: 구매 금액별로 준비된 사은 혜택을 확인하세요"></textarea>
                     </div>
 
-                    <!-- 첫 번째 사은 혜택 -->
-                    <div class="sub-card">
-                        <div class="sub-card-title">
-                            <span>🎁 첫 번째 사은 혜택</span>
-                            <span class="badge-tag">필수 표시</span>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label" for="field-step3-offer1-title">혜택 내용 문구</label>
-                                <input type="text" id="field-step3-offer1-title" class="form-input" placeholder="예: 10만원 이상 구매 시 1만원 상품권 증정">
-                            </div>
-                            <div class="form-grid two-cols">
-                                <div class="form-group">
-                                    <label class="form-label" for="field-step3-offer1-button">버튼 문구</label>
-                                    <input type="text" id="field-step3-offer1-button" class="form-input" placeholder="예: 바로가기">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="field-step3-offer1-link">연결 링크 주소</label>
-                                    <input type="url" id="field-step3-offer1-link" class="form-input" placeholder="https://...">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- 두 번째 사은 혜택 토글 및 폼 -->
-                    <div class="toggle-row" style="margin-top: 0.85rem;">
-                        <div class="toggle-label-wrap">
-                            <span class="toggle-label-title">두 번째 사은 혜택 화면 노출</span>
-                            <span class="toggle-label-desc">스위치를 켜면 카드에 두 번째 혜택 행이 추가됩니다.</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="field-step3-show-second">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-
-                    <div id="step3-offer2-card" class="sub-card" style="display: none;">
-                        <div class="sub-card-title">
-                            <span>🎁 두 번째 사은 혜택</span>
-                            <span class="badge-tag">추가 혜택</span>
-                        </div>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label" for="field-step3-offer2-title">혜택 내용 문구</label>
-                                <input type="text" id="field-step3-offer2-title" class="form-input" placeholder="예: 20만원/40만원 이상 구매 시 1.5만원/3만원 상품권 증정">
-                            </div>
-                            <div class="form-grid two-cols">
-                                <div class="form-group">
-                                    <label class="form-label" for="field-step3-offer2-button">버튼 문구</label>
-                                    <input type="text" id="field-step3-offer2-button" class="form-input" placeholder="예: 바로가기">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="field-step3-offer2-link">연결 링크 주소</label>
-                                    <input type="url" id="field-step3-offer2-link" class="form-input" placeholder="https://...">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-            </div>
+            </details>
+                <details class="card-box editor-disclosure"><summary class="section-summary">카드 표시 및 순서</summary><div id="card-controls" class="form-grid"></div></details>
+                <details class="card-box editor-disclosure"><summary class="section-summary">화면의 보조 문구</summary><div id="copy-controls" class="form-grid"></div></details>
+                <details class="card-box editor-disclosure"><summary class="section-summary">하단 이미지·연결 링크</summary><div id="banner-controls" class="form-grid"></div></details>
+            </section>
+            <section data-panel="display" hidden>
+                <div class="section-heading"><div><h2>화면·운영 설정</h2><p class="form-hint">필요한 설정 묶음을 열어 변경하세요.</p></div></div>
+                <div id="display-controls"></div>
+                <details class="card-box editor-disclosure"><summary class="section-summary">자동 갱신</summary><div id="sync-controls" class="form-grid"></div></details>
+            </section>
+            <section id="preview-panel" class="card-box" hidden>
+                <div class="coupon-heading"><h2>저장 전 미리보기</h2><button type="button" id="btn-close-preview" class="btn-secondary">닫기</button></div>
+                <p class="form-hint">아직 저장하지 않은 내용입니다. 방문자 화면에는 반영되지 않습니다.</p>
+                <iframe id="preview-frame" title="저장 전 방문자 화면 미리보기"></iframe>
+            </section>
         </div>
     </main>
 
@@ -295,9 +249,10 @@
                 <span id="save-status-text">준비됨</span>
             </div>
             <div class="save-actions">
-                <button type="button" id="btn-reset" class="btn-secondary">되돌리기</button>
+                <details class="save-more"><summary class="btn-secondary">더 보기</summary><div class="save-more-menu"><button type="button" id="btn-download-draft">초안 내려받기</button><button type="button" id="btn-reset">변경 되돌리기</button></div></details>
+                <button type="button" id="btn-preview" class="btn-secondary">미리보기</button>
                 <button type="button" id="btn-save-submit" class="btn-save">
-                    <span>저장하기 (사이트 반영)</span>
+                    <span>변경사항 저장</span>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
                         <polyline points="17 21 17 13 7 13 7 21"></polyline>
@@ -326,6 +281,7 @@
                     <li>Note에 'page-admin' 입력, 권한에서 <strong>repo</strong> 체크박스 선택</li>
                     <li>페이지 하단 <strong>Generate token</strong> 클릭 후 생성된 <code>ghp_...</code> 토큰 복사</li>
                 </ol>
+                <p class="form-hint">세분화 토큰을 사용한다면 이 저장소의 Contents 쓰기와 Actions 쓰기 권한이 필요합니다. Actions 쓰기는 관리자에서 갱신을 요청할 때 사용합니다.</p>
             </div>
 
             <form id="setup-form" class="login-form">
@@ -362,6 +318,8 @@
         </div>
     </div>
 
-    <script src="admin.js"></script>
+    <script src="site-config.js?v=refresh-controls-3"></script>
+    <script src="admin-controls.js?v=refresh-controls-3"></script>
+    <script src="admin.js?v=refresh-controls-3"></script>
 </body>
 </html>

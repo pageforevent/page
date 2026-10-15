@@ -7,6 +7,10 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import Request, urlopen
+if __package__:
+    from .refresh_policy import scheduled_collection_allowed, forced_refresh
+else:
+    from refresh_policy import scheduled_collection_allowed, forced_refresh
 
 CHANNEL = "_xlZaqM"
 FEED_URL = f"https://pf.kakao.com/rocket-web/web/profiles/{CHANNEL}/posts?includePinnedPost=false"
@@ -74,6 +78,8 @@ def extract_offer(card, reference, previous):
 
 
 def synchronize(data, feed):
+    if data.get("settings", {}).get("autoCoupons") is False and not forced_refresh():
+        return copy.deepcopy(data)
     posts = feed.get("items")
     if not isinstance(posts, list) or not posts:
         raise ValueError("채널 소식 목록이 비어 있거나 형식이 바뀌었습니다.")
@@ -97,11 +103,23 @@ def synchronize(data, feed):
     reference = datetime.fromtimestamp(reference_ms / 1000, KST).date()
     result = copy.deepcopy(data)
     gift = result["giftStep"]
-    gift["primaryOffer"] = extract_offer(primary, reference, gift.get("primaryOffer"))
-    if sports:
-        gift["secondaryOffer"] = extract_offer(sports[0], reference, gift.get("secondaryOffer"))
-    # Presence and validity are separate: the browser hides expired/future cards.
-    gift["showSecondOffer"] = bool(sports)
+    if isinstance(gift.get("offers"), list):
+        # Only explicitly connected entries are updated. Deleted entries stay deleted.
+        for index, offer in enumerate(gift["offers"]):
+            if offer.get("manualOverride"):
+                continue
+            source = offer.get("source")
+            card = primary if source == "monthly" else sports[0] if source == "sports" and sports else None
+            if card:
+                gift["offers"][index] = extract_offer(card, reference, offer)
+    else:
+        # Compatibility with deployed content before the list editor migration.
+        if not gift.get("primaryOffer", {}).get("manualOverride"):
+            gift["primaryOffer"] = extract_offer(primary, reference, gift.get("primaryOffer"))
+        if sports and not gift.get("secondaryOffer", {}).get("manualOverride"):
+            gift["secondaryOffer"] = extract_offer(sports[0], reference, gift.get("secondaryOffer"))
+    # Missing/expired cards stay editable; only the public page filters by dates.
+    gift.pop("showSecondOffer", None)
     gift["couponSource"] = {"channel": CHANNEL, "postId": post["id"],
                             "postUrl": f"https://pf.kakao.com/{CHANNEL}/{post['id']}",
                             "updatedAt": reference_ms}
@@ -121,17 +139,27 @@ def main():
     parser.add_argument("--data", type=Path, default=ROOT / "data.json")
     args = parser.parse_args()
     data = json.loads(args.data.read_text(encoding="utf-8"))
+    if not scheduled_collection_allowed():
+        print("서울 시간 자동 갱신 시간 밖: 쿠폰 수집 건너뜀")
+        return
+    if data.get("settings", {}).get("autoCoupons") is False and not forced_refresh():
+        print("관리자 설정: 쿠폰 자동 수집 꺼짐")
+        return
     updated = synchronize(data, fetch_feed())
     if data == updated:
         print("쿠폰 변경 없음")
         return
-    for key in ("primaryOffer", "secondaryOffer"):
-        offer = updated["giftStep"].get(key)
+    gift = updated["giftStep"]
+    offers = gift.get("offers", [gift.get("primaryOffer"), gift.get("secondaryOffer")])
+    for offer in offers:
         if offer:
-            print(f"{key}: {offer['title']} ({offer.get('validFrom')} ~ {offer.get('validUntil')})")
+            print(f"{offer.get('title', '')} ({offer.get('validFrom')} ~ {offer.get('validUntil')})")
     if args.dry_run:
         print("미리보기 완료: 파일을 변경하지 않았습니다.")
     else:
+        if not scheduled_collection_allowed():
+            print("자동 갱신 시간이 종료되어 쿠폰 변경을 저장하지 않습니다.")
+            return
         # Only write after both cards have been validated successfully.
         temporary = args.data.with_suffix(".json.tmp")
         temporary.write_text(json.dumps(updated, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -32,10 +32,11 @@ const SceneEnvironment = (() => {
 
     function apply(date = new Date()) {
         const state = stateAt(date);
+        const settings = typeof SiteConfig !== 'undefined' ? SiteConfig.settings(window.__siteData) : {};
         const root = document.documentElement;
-        root.dataset.season = state.season;
-        root.dataset.weather = state.weather;
-        root.dataset.wind = state.wind ? 'strong' : 'normal';
+        root.dataset.season = settings.season === false ? 'summer' : state.season;
+        root.dataset.weather = settings.weather === false ? 'unknown' : state.weather;
+        root.dataset.wind = settings.weather === false ? 'normal' : state.wind ? 'strong' : 'normal';
         const time = snapshot?.observedAt && state.fresh ? new Intl.DateTimeFormat('ko-KR', {
             timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', hour12: false
         }).format(new Date(snapshot.observedAt)) : '';

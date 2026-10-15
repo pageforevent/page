@@ -5,13 +5,13 @@ const vm = require('node:vm');
 const storage = new Map();
 const root = { dataset: {} };
 const label = {};
-const context = vm.createContext({Intl, Date, URLSearchParams, AbortController,
+const context = vm.createContext({Intl, Date, URL, URLSearchParams, AbortController,
     window: { location: {search: ''}, matchMedia: () => ({matches: false}),
         localStorage: {getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value)} },
     document: {addEventListener() {}, documentElement: root,
         querySelectorAll: selector => selector === '[data-environment-label]' ? [label] : []}
 });
-for (const file of ['environment.js', 'landmark-art.js', 'script.js']) {
+for (const file of ['site-config.js', 'environment.js', 'landmark-art.js', 'script.js']) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '..', file), 'utf8'), context);
 }
 const environment = vm.runInContext('SceneEnvironment', context);

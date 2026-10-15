@@ -65,6 +65,7 @@ function escapeCouponHtml(value) {
 }
 
 function isGiftOfferActive(offer, date = new Date()) {
+    if (offer.enabled === false) return false;
     // Coupon periods use Korean calendar dates, regardless of the visitor's timezone.
     const parts = new Intl.DateTimeFormat('en-US', {
         timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit'
@@ -339,6 +340,8 @@ function chooseRandomBusanScene() {
     const keys = Object.keys(BUSAN_SCENES);
     const previewScene = new URLSearchParams(window.location.search).get('scene');
     if (previewScene && BUSAN_SCENES[previewScene]) return previewScene;
+    const settings = SiteConfig.settings(window.__siteData);
+    if (!settings.randomScene && BUSAN_SCENES[settings.scene]) return settings.scene;
 
     // 한 장소가 연속으로 뽑히지 않고, 열 곳을 모두 본 뒤 다시 섞습니다.
     try {
@@ -387,6 +390,8 @@ function createPixelUiIcon(kind) {
 }
 
 function createPixelEventTitle() {
+    const title = SiteConfig.settings(window.__siteData).heroTitle;
+    if (title !== 'EVENT GUIDE') return `<span class="custom-hero-title">${escapeCouponHtml(title)}</span>`;
     const glyphs = {
         E:['11111','10000','10000','11110','10000','10000','11111'],
         V:['10001','10001','10001','10001','10001','01010','00100'],
@@ -645,6 +650,7 @@ async function loadEventDataPromise(sceneKey) {
 
 // 본문 헤더 및 스텝 카드 렌더링
 function renderPageContent(data, sceneKey) {
+    const settings = SiteConfig.settings(data);
     document.title = data.pageTitle;
     const currentDate = getCurrentDateDisplay();
 
@@ -679,12 +685,12 @@ function renderPageContent(data, sceneKey) {
                 </div>
             </div>
             <div class="header-content">
-                <span class="title-overline">EVENT GUIDE / 이용 안내</span>
+                <span class="title-overline">${escapeCouponHtml(settings.overline)}</span>
                 <div class="title-row">
-                    <h1 class="festival-title">${data.headerTitle}</h1>
+                    <h1 class="festival-title">${escapeCouponHtml(data.headerTitle)}</h1>
                     <span class="title-kitsch-mark" aria-hidden="true">✳</span>
                 </div>
-                <p class="festival-subtitle">${data.subtitle || '앱 설치와 채널 추가, 사은 혜택을 안내합니다.'}</p>
+                <p class="festival-subtitle">${escapeCouponHtml(data.subtitle)}</p>
             </div>
             <div class="club-strip" aria-hidden="true"><span>앱 설치 ↗</span><span>채널 추가 ↗</span><span>혜택 확인 ✳</span></div>
         `;
@@ -698,9 +704,9 @@ function renderPageContent(data, sceneKey) {
         const userOS = getMobileOS();
         const stepFragment = document.createDocumentFragment();
 
-        const stepsToRender = data.giftStep
-            ? [...data.steps, data.giftStep]
-            : data.steps;
+        const stepsToRender = (settings.eventEnabled ? [...(data.steps || []), data.giftStep].filter(Boolean) : [])
+            .filter(step => step.enabled !== false)
+            .sort((a,b) => (a.order ?? ({step1:1,step2:2,step3:3}[a.id])) - (b.order ?? ({step1:1,step2:2,step3:3}[b.id])));
 
         stepsToRender.forEach((step, index) => {
             const stepElement = document.createElement('section');
@@ -725,14 +731,11 @@ function renderPageContent(data, sceneKey) {
                 }
             }
 
-            const isGiftStep = step.id === 'step3' && step.primaryOffer;
+            const isGiftStep = step.id === 'step3';
             if (isGiftStep) stepElement.classList.add('gift-step-card');
 
             const visibleGiftOffers = isGiftStep
-                ? [
-                    step.primaryOffer,
-                    ...(step.showSecondOffer && step.secondaryOffer ? [step.secondaryOffer] : [])
-                ].filter((offer) => offer?.title && offer?.link)
+                ? SiteConfig.offers(step).filter(offer => offer.enabled !== false && offer?.title && SiteConfig.safeLink(offer.link))
                 : [];
 
             const actionMarkup = isGiftStep
@@ -746,7 +749,8 @@ function renderPageContent(data, sceneKey) {
                                         <span>GIFT BENEFIT</span>
                                     </span>
                                     <h3>${escapeCouponHtml(offer.title)}</h3>
-                                    ${offer.validFrom && offer.validUntil ? `<p class="gift-offer-period">${escapeCouponHtml(offer.validFrom)} ~ ${escapeCouponHtml(offer.validUntil)}</p>` : ''}
+                                    ${offer.validFrom || offer.validUntil ? `<p class="gift-offer-period">${escapeCouponHtml(offer.validFrom || '상시')} ~ ${escapeCouponHtml(offer.validUntil || '종료일 없음')}</p>` : ''}
+                                    ${offer.description ? `<p class="gift-offer-description">${escapeCouponHtml(offer.description)}</p>` : ''}
                                 </div>
                                 <a href="${escapeCouponHtml(offer.link)}" class="gift-offer-link" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${escapeCouponHtml(offer.title)}: ${escapeCouponHtml(offer.buttonText || '바로가기')}">
                                     <span>${escapeCouponHtml(offer.buttonText || '바로가기')}</span>
@@ -754,13 +758,13 @@ function renderPageContent(data, sceneKey) {
                                 </a>
                             </article>
                         `).join('')}
-                        <p class="gift-offer-empty" hidden>현재 진행 중인 사은 혜택이 없습니다.</p>
+                        <p class="gift-offer-empty" hidden>${escapeCouponHtml(settings.emptyMessage)}</p>
                     </div>
                 `
                 : `
                     <div class="card-action">
-                        <a href="${finalLink}" class="btn-action" target="${step.target || '_blank'}" rel="noopener noreferrer" aria-label="${step.title}: ${step.buttonText}">
-                            <span class="btn-label">${step.buttonText}</span>
+                        <a href="${escapeCouponHtml(SiteConfig.safeLink(finalLink) || '#')}" class="btn-action" target="_blank" rel="noopener noreferrer" aria-label="${escapeCouponHtml(step.title)}: ${escapeCouponHtml(step.buttonText)}">
+                            <span class="btn-label">${escapeCouponHtml(step.buttonText)}</span>
                             <span class="btn-icon" aria-hidden="true">
                                 ${createPixelUiIcon('arrow')}
                             </span>
@@ -771,22 +775,22 @@ function renderPageContent(data, sceneKey) {
             stepElement.innerHTML = `
                 <div class="card-glow-bg"></div>
                 <div class="card-header-row">
-                    <span class="step-num-pill">${step.stepNum || `STEP 0${index + 1}`}</span>
+                    <span class="step-num-pill">${escapeCouponHtml(step.stepNum || `STEP 0${index + 1}`)}</span>
                     <div class="card-meta-right">
                         ${osBadgeText}
-                        <span class="card-tagline">${step.tagline || `SPECIAL 0${index + 1}`}</span>
+                        <span class="card-tagline">${escapeCouponHtml(step.tagline || `SPECIAL 0${index + 1}`)}</span>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="icon-avatar">
                         <div class="icon-pulse"></div>
                         <div class="icon-inner">
-                            ${createPixelUiIcon(index === 0 ? 'phone' : index === 1 ? 'chat' : 'gift')}
+                            ${createPixelUiIcon(step.id === 'step1' ? 'phone' : step.id === 'step2' ? 'chat' : 'gift')}
                         </div>
                     </div>
                     <div class="card-text-group">
-                        <h2 class="step-heading">${step.title}</h2>
-                        <p class="step-desc">${step.description || ''}</p>
+                        <h2 class="step-heading">${escapeCouponHtml(step.title)}</h2>
+                        <p class="step-desc">${escapeCouponHtml(step.description)}</p>
                     </div>
                 </div>
                 ${actionMarkup}
@@ -795,15 +799,31 @@ function renderPageContent(data, sceneKey) {
             stepFragment.appendChild(stepElement);
         });
 
+        if (!settings.eventEnabled) {
+            const notice = document.createElement('p');
+            notice.className = 'event-closed-message';
+            notice.textContent = settings.closedMessage;
+            stepFragment.appendChild(notice);
+        }
         stepContainer.replaceChildren(stepFragment);
     }
 
+    const banner = document.getElementById('footer-banner');
+    if (banner) {
+        const config = data.footerBanner || {};
+        const source = config.enabled && SiteConfig.imageSource(config.image);
+        const link = SiteConfig.safeLink(config.link);
+        banner.hidden = !source;
+        const artwork = source ? `<img src="${escapeCouponHtml(source)}" alt="${escapeCouponHtml(config.alt || '행사 안내 이미지')}" width="1200" height="600" loading="lazy" decoding="async">` : '';
+        banner.innerHTML = link && source ? `<a href="${escapeCouponHtml(link)}" target="_blank" rel="noopener noreferrer">${artwork}</a>` : artwork;
+    }
     initSceneVisibilityOptimization();
     refreshGiftOfferVisibility();
 }
 
 // 상단 랜드마크 일러스트 좌우 스와이프 제어
 function initHeroSwipeCarousel(initialSceneKey) {
+    if (!SiteConfig.settings(window.__siteData).gallery) return;
     const heroCover = document.getElementById('hero-cover-swipe');
     const stage = document.getElementById('hero-scene-stage');
     const counterCurrent = document.getElementById('hero-scene-counter-current');
@@ -855,7 +875,7 @@ function initHeroSwipeCarousel(initialSceneKey) {
         nextCard.classList.add('is-sliding-in');
         stage.appendChild(nextCard);
 
-        const duration = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 320;
+        const duration = !SiteConfig.settings(window.__siteData).animation || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 320;
         const easing = 'cubic-bezier(0.22, 1, 0.36, 1)';
 
         const outAnim = currentCard.animate([
@@ -965,13 +985,32 @@ function initHeroSwipeCarousel(initialSceneKey) {
 }
 
 // 앱 시작 및 인트로-데이터 병렬 실행 제어
-function initApp() {
+async function initApp() {
+    try {
+        const response = await (window.__eventDataPromise || fetch('data.json', {cache: 'no-cache'}));
+        if (!response.ok) throw new Error('데이터를 읽지 못했습니다.');
+        window.__siteData = await response.json();
+        window.__eventDataPromise = Promise.resolve({ok:true, json: async () => window.__siteData});
+    } catch (error) {
+        document.querySelector('.app-container')?.classList.remove('is-intro');
+        document.querySelector('.app-container')?.classList.add('is-ready');
+        document.body.classList.remove('is-intro');
+        const header = document.getElementById('header-container');
+        if (header) header.innerHTML = '<p>데이터를 불러오지 못했습니다.</p><button onclick="location.reload()">다시 시도</button>';
+        return;
+    }
+    const settings = SiteConfig.settings(window.__siteData);
+    const root = document.documentElement;
+    root.dataset.animation = settings.animation ? 'on' : 'off';
+    root.dataset.gallery = settings.gallery ? 'on' : 'off';
+    root.dataset.weatherEffect = settings.weather ? 'on' : 'off';
+    root.dataset.seasonEffect = settings.season ? 'on' : 'off';
     const sceneKey = chooseRandomBusanScene();
     document.documentElement.dataset.sceneTheme = sceneKey;
     if (typeof SceneEnvironment !== 'undefined') SceneEnvironment.init();
     initTimeTheme();
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduceMotion = !settings.intro || !settings.animation || !settings.eventEnabled || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const performanceMode = document.documentElement.dataset.performance || 'full';
     const litePerformance = performanceMode === 'lite';
     const balancedPerformance = performanceMode === 'balanced';

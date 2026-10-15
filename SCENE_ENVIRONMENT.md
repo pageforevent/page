@@ -29,7 +29,7 @@
 2. GitHub 저장소 **Settings → Secrets and variables → Actions → New repository secret**에 `KMA_SERVICE_KEY`를 추가합니다. 인코딩/디코딩 키 모두 지원하며 디코딩 키를 권장합니다.
 3. 수정 파일을 `main`에 반영하고 **Sync Kakao coupons and deploy → Run workflow**를 실행합니다.
 
-키는 브라우저·배포 산출물에 들어가지 않습니다. Actions가 30분 간격으로 기상청 API를 호출하고 공개 가능한 날씨 값만 `weather.json`으로 배포합니다. 날씨 수집 실패가 쿠폰 갱신을 막지 않으며 그 반대도 마찬가지입니다.
+키는 브라우저·배포 산출물에 들어가지 않습니다. Actions가 매일 서울 시간 09:30·10:00·10:30·11:00에만 기상청 API를 호출하고 공개 가능한 날씨 값만 `weather.json`으로 배포합니다. 날씨 수집 실패가 쿠폰 갱신을 막지 않으며 그 반대도 마찬가지입니다.
 
 부전동 대표 지점은 위도 35.1569988, 경도 129.058582이며 기상청 5km 격자 `(98, 75)`를 사용합니다. 모든 명소가 이 지점의 날씨를 공유하므로 각 명소 현지의 개별 실황은 아닙니다. 위치 기준: OpenStreetMap 부전동 중심점.
 

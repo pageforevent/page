@@ -1,4 +1,9 @@
 import unittest
+import os
+import tempfile
+import json
+from pathlib import Path
+from unittest.mock import patch
 from datetime import datetime
 from scripts.sync_weather import KST, LATITUDE, LONGITUDE, api_items, kma_grid, make_snapshot, publication_times
 
@@ -14,7 +19,19 @@ def forecasts(sky=1, lightning=0):
 
 
 class WeatherTests(unittest.TestCase):
+    def test_disabled_collection_does_not_request_weather(self):
+        from scripts import sync_weather
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "data.json").write_text(json.dumps({"settings": {"autoWeather": False}}), encoding="utf-8")
+            with patch.object(sync_weather, "ROOT", root), patch.object(sync_weather, "request_items") as request:
+                sync_weather.main()
+                request.assert_not_called()
+
     def setUp(self):
+        environment = patch.dict(os.environ, {"GITHUB_EVENT_NAME":"test", "FORCE_REFRESH":"false"})
+        environment.start()
+        self.addCleanup(environment.stop)
         self.now = datetime(2026, 10, 14, 17, 7, tzinfo=KST)
         self.observed, self.forecast_base = publication_times(self.now)
 

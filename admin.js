@@ -179,7 +179,7 @@ async function commitToGitHub(path, contentStr, message, token = currentToken, s
 
     if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.message || `저장 실패 (${res.status})`);
+        throw new Error(res.status === 409 ? '다른 변경과 저장이 겹쳤습니다. 입력 내용은 유지됩니다. 다시 저장하거나 초안을 내려받아 주세요.' : errorData.message || `저장 실패 (${res.status})`);
     }
 
     return await res.json();
@@ -319,28 +319,7 @@ function populateForm(data) {
     document.getElementById('field-step3-tagline').value = gift.tagline || '';
     document.getElementById('field-step3-desc').value = gift.description || '';
 
-    // 혜택 1
-    const pOffer = gift.primaryOffer || {};
-    document.getElementById('field-step3-offer1-title').value = pOffer.title || '';
-    document.getElementById('field-step3-offer1-button').value = pOffer.buttonText || '';
-    document.getElementById('field-step3-offer1-link').value = pOffer.link || '';
-
-    // 혜택 2
-    const showSecond = Boolean(gift.showSecondOffer);
-    document.getElementById('field-step3-show-second').checked = showSecond;
-    toggleSecondOfferVisibility(showSecond);
-
-    const sOffer = gift.secondaryOffer || {};
-    document.getElementById('field-step3-offer2-title').value = sOffer.title || '';
-    document.getElementById('field-step3-offer2-button').value = sOffer.buttonText || '';
-    document.getElementById('field-step3-offer2-link').value = sOffer.link || '';
-}
-
-function toggleSecondOfferVisibility(show) {
-    const card = document.getElementById('step3-offer2-card');
-    if (card) {
-        card.style.display = show ? 'block' : 'none';
-    }
+    AdminControls.load(data);
 }
 
 // 폼 입력값을 JSON 객체로 수집 (기존 불변 필드 iconSvg, id 등 유지)
@@ -377,21 +356,7 @@ function collectFormData() {
     updated.giftStep.tagline = document.getElementById('field-step3-tagline').value.trim();
     updated.giftStep.description = document.getElementById('field-step3-desc').value.trim();
 
-    // 사은 혜택 1
-    if (!updated.giftStep.primaryOffer) updated.giftStep.primaryOffer = {};
-    updated.giftStep.primaryOffer.title = document.getElementById('field-step3-offer1-title').value.trim();
-    updated.giftStep.primaryOffer.buttonText = document.getElementById('field-step3-offer1-button').value.trim();
-    updated.giftStep.primaryOffer.link = document.getElementById('field-step3-offer1-link').value.trim();
-
-    // 사은 혜택 2
-    const showSecond = document.getElementById('field-step3-show-second').checked;
-    updated.giftStep.showSecondOffer = showSecond;
-    if (!updated.giftStep.secondaryOffer) updated.giftStep.secondaryOffer = {};
-    updated.giftStep.secondaryOffer.title = document.getElementById('field-step3-offer2-title').value.trim();
-    updated.giftStep.secondaryOffer.buttonText = document.getElementById('field-step3-offer2-button').value.trim();
-    updated.giftStep.secondaryOffer.link = document.getElementById('field-step3-offer2-link').value.trim();
-
-    return updated;
+    return AdminControls.collect(updated);
 }
 
 function updateSaveStatus(text, state = 'ready') {
@@ -410,13 +375,53 @@ function updateSaveStatus(text, state = 'ready') {
 // 6. 데이터 저장 (GitHub 자동 커밋)
 // ==========================================================================
 
+async function requestAutomaticRefresh() {
+    const button = document.getElementById('btn-refresh-now');
+    const status = document.getElementById('refresh-request-status');
+    if (AdminControls.hasChanges()) {
+        status.textContent = '수정한 내용을 먼저 저장한 뒤 갱신을 요청해 주세요.';
+        return;
+    }
+    if (!currentToken) { status.textContent = '관리자 로그인이 필요합니다.'; return; }
+    button.disabled = true;
+    status.textContent = 'GitHub Actions에 갱신을 요청하고 있습니다…';
+    try {
+        const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/actions/workflows/sync-coupons.yml/dispatches`, {
+            method: 'POST',
+            headers: {'Accept':'application/vnd.github+json', 'Authorization':`Bearer ${currentToken}`, 'Content-Type':'application/json'},
+            body: JSON.stringify({ref: BRANCH_NAME, inputs: {force_refresh: true}})
+        });
+        if (!response.ok) {
+            if (response.status === 403) throw new Error('토큰의 Actions 쓰기 권한을 확인해 주세요. 계정 설정에서 토큰을 변경할 수 있습니다.');
+            if (response.status === 404 || response.status === 422) throw new Error('갱신 워크플로가 아직 반영되지 않았거나 실행 권한이 없습니다. 저장소 main의 워크플로와 토큰 권한을 확인해 주세요.');
+            throw new Error(`갱신 요청 실패 (${response.status})`);
+        }
+        status.textContent = '갱신을 요청했습니다. 실행 완료 후 최신 내용을 불러오세요. 수동 관리 쿠폰은 유지됩니다.';
+        document.getElementById('refresh-runs-link').hidden = false;
+        document.getElementById('btn-reload-content').hidden = false;
+    } catch (error) {
+        status.textContent = error.message;
+    } finally {
+        button.disabled = false;
+    }
+}
+
 async function saveChanges() {
     const saveBtn = document.getElementById('btn-save-submit');
     saveBtn.disabled = true;
+    document.getElementById('editor-view').inert = true;
+    document.getElementById('btn-reset').disabled = true;
     updateSaveStatus('GitHub 저장소에 커밋하는 중...', 'saving');
 
     try {
-        const updatedData = collectFormData();
+        let updatedData = collectFormData();
+        // Rebase only non-conflicting fields onto the latest repository contents.
+        const latest = await fetchFromGitHub(DATA_PATH, currentToken);
+        if (!latest) throw new Error('최신 데이터를 읽지 못했습니다. 입력 내용은 유지됩니다.');
+        if (latest.sha !== currentSha) {
+            const remote = JSON.parse(b64DecodeUnicode(latest.content.replace(/\s/g, '')));
+            updatedData = SiteConfig.merge(originalData, updatedData, remote);
+        }
         const jsonString = JSON.stringify(updatedData, null, 2);
 
         const commitRes = await commitToGitHub(
@@ -424,21 +429,25 @@ async function saveChanges() {
             jsonString,
             '콘텐츠 수정 (간편 관리자)',
             currentToken,
-            currentSha
+            latest.sha
         );
 
         // 새 sha 갱신
         currentSha = commitRes.content.sha;
         originalData = updatedData;
+        populateForm(updatedData);
+        AdminControls.clean();
 
         updateSaveStatus('방금 저장 완료! (사이트 자동 배포 중)', 'ready');
-        showToast('성공적으로 저장되었습니다! 약 30초~1분 후 실제 사이트에 반영됩니다.', 'success', 5000);
+        showToast('저장했습니다. 배포 완료 후 실제 사이트에 반영됩니다.', 'success', 5000);
     } catch (err) {
         console.error(err);
         updateSaveStatus('저장 중 오류가 발생했습니다.', 'ready');
         showToast('저장 실패: ' + err.message, 'error', 5000);
     } finally {
         saveBtn.disabled = false;
+        document.getElementById('editor-view').inert = false;
+        document.getElementById('btn-reset').disabled = false;
     }
 }
 
@@ -521,13 +530,7 @@ async function handleSetupSubmit(e) {
 // ==========================================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // 혜택 2 토글 이벤트
-    const secondOfferToggle = document.getElementById('field-step3-show-second');
-    if (secondOfferToggle) {
-        secondOfferToggle.addEventListener('change', (e) => {
-            toggleSecondOfferVisibility(e.target.checked);
-        });
-    }
+    AdminControls.init();
 
     // 설정 모달 열기/닫기
     const btnOpenSetup = document.getElementById('btn-open-setup');
