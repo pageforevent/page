@@ -2,9 +2,15 @@ name: Sync Kakao coupons and deploy
 
 on:
   schedule:
-    # Every 30 minutes; avoid the busy start of the hour.
-    - cron: '7,37 * * * *'
+    # UTC -> Asia/Seoul: 09:30, 10:00, 10:30, 11:00 only.
+    - cron: '30 0,1 * * *'
+    - cron: '0 1,2 * * *'
   workflow_dispatch:
+    inputs:
+      force_refresh:
+        description: '예약 수집 설정과 관계없이 연결된 자동 쿠폰·날씨를 지금 갱신 (수동 쿠폰 보호)'
+        type: boolean
+        default: true
   push:
     branches: [main]
     paths:
@@ -31,6 +37,8 @@ jobs:
   sync-and-build:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
+    env:
+      FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' && inputs.force_refresh && 'true' || 'false' }}
     outputs:
       deploy: ${{ steps.publish.outputs.deploy }}
     steps:
@@ -44,6 +52,8 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_*.py'
       - name: Test coupon visibility
         run: node tests/test_coupon_visibility.cjs
+      - name: Test administrator coupon editing
+        run: node tests/test_admin.cjs
       - name: Test scene environment
         run: node tests/test_environment.cjs
       - name: Fetch Bujeon weather
@@ -88,7 +98,7 @@ jobs:
         if: steps.publish.outputs.deploy == 'true'
         run: |
           mkdir -p _site
-          cp index.html pixel-preview.html pixel-season-preview.html script.js environment.js landmark-art.js style.css concept.css environment.css landmark-art.css data.json weather.json admin.html admin.js admin.css _site/
+          cp index.html pixel-preview.html pixel-season-preview.html script.js environment.js landmark-art.js style.css concept.css environment.css landmark-art.css data.json weather.json admin.html admin.js admin-controls.js site-config.js admin.css _site/
           cp -r media _site/media
           touch _site/.nojekyll
       - name: Upload Pages artifact
