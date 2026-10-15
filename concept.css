@@ -309,3 +309,17 @@ body {
 .title-kitsch-mark::after { width: 6px; height: 28px; top: 0; left: 11px; }
 @media (min-aspect-ratio: 4 / 3) { .busan-map-world { border-radius: 0; } }
 @media (max-width: 385px) { .hero-smile { width: 56px; height: 56px; } }
+
+html[data-animation="off"] *, html[data-animation="off"] *::before, html[data-animation="off"] *::after {
+    animation: none !important; transition: none !important; scroll-behavior: auto !important;
+}
+html[data-gallery="off"] .hero-swipe-hint { display: none; }
+html[data-weather-effect="off"] [class^="weather-"], html[data-weather-effect="off"] [data-environment-label] { display: none; }
+html[data-season-effect="off"] [class^="season-"], html[data-season-effect="off"] .px-season-spring,
+html[data-season-effect="off"] .px-season-autumn, html[data-season-effect="off"] .px-season-winter { display: none; }
+.custom-hero-title { display: block; max-width: 320px; font-size: clamp(24px, 6vw, 48px); line-height: 1.15; overflow-wrap: anywhere; white-space: pre-wrap; }
+.gift-offer-description { white-space: pre-line; font-size: 12px; line-height: 1.6; margin-top: 8px; }
+.event-closed-message { padding: 28px; border: 2px solid #292b48; background: #fff9ec; color: #292b48; line-height: 1.7; white-space: pre-line; }
+.footer-banner { margin-top: 28px; border: 2px solid #292b48; background: #fff9ec; }
+.footer-banner a, .footer-banner img { display: block; width: 100%; }
+.footer-banner img { height: auto; }
