@@ -38,6 +38,19 @@ class CouponSyncTests(unittest.TestCase):
         self.assertEqual(result["steps"], self.data["steps"])
         self.assertEqual(synchronize(result, source), result)
 
+    def test_auto_refresh_changes_only_title_period_and_link(self):
+        previous = {"id":"monthly", "source":"monthly", "enabled":False,
+                    "title":"old", "link":"https://example.com/old",
+                    "validFrom":"2026-09-01", "validUntil":"2026-09-30",
+                    "description":"매장에서 행사 조건을 확인해 주세요.", "buttonText":"쿠폰 확인"}
+        self.data["giftStep"]["offers"] = [previous]
+        result = synchronize(self.data, feed([self.monthly]))["giftStep"]["offers"][0]
+        self.assertEqual(result["title"], self.monthly["title"])
+        self.assertEqual(result["validUntil"], "2026-10-31")
+        self.assertIn('/monthly/', result["link"])
+        for key in ("id","source","enabled","description","buttonText"):
+            self.assertEqual(result[key], previous[key])
+
     def test_november_changed_amounts_and_order(self):
         monthly = card("[11월] 20만원 이상 구매 시 1만원 쿠폰 증정", "11.1(일)~11.30(월)", "new")
         result = synchronize(self.data, feed([self.sports, monthly]))
