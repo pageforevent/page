@@ -36,13 +36,14 @@ const AdminControls = (() => {
                         <div class="form-grid two-cols">${field('노출 시작일', 'validFrom', offer.validFrom, 'date')}${field('노출 종료일', 'validUntil', offer.validUntil, 'date')}</div>
                         <p class="form-hint">한국 날짜 기준, 종료일 포함. 비워 둔 날짜는 제한하지 않습니다.</p>
                         <details class="coupon-options"><summary>설명·버튼 문구</summary><div class="form-grid">
-                            <label class="form-group"><span class="form-label">설명</span><textarea class="form-textarea" data-field="description">${escape(offer.description)}</textarea></label>
+                            <label class="form-group"><span class="form-label">하단 안내 문구 (직접 관리)</span><textarea class="form-textarea" data-field="description">${escape(offer.description)}</textarea></label>
                             ${field('버튼 문구', 'buttonText', offer.buttonText || '바로가기')}
+                            <p class="form-hint">안내·버튼 문구는 자동 갱신해도 유지됩니다. 날짜는 위 노출 기간에만 표시됩니다.</p>
                         </div></details>
                         <details class="coupon-options"><summary>자동 갱신 설정</summary><div class="form-grid">
                             <label class="form-group"><span class="form-label">수집 연결</span><select class="form-input" data-field="source">${[['manual','직접 작성'],['monthly','카카오 월별 쿠폰'],['sports','카카오 스포츠/아웃도어']].map(([value,label]) => `<option value="${value}" ${offer.source === value ? 'selected' : ''}>${label}</option>`).join('')}</select></label>
                             <label class="form-checkbox-row"><input type="checkbox" data-field="manualOverride" ${offer.manualOverride || offer.source === 'manual' ? 'checked' : ''}>수동 수정 보호</label>
-                            <p class="form-hint">내용을 수정하면 보호가 켜집니다. 자동 수집을 다시 적용하려면 보호를 해제하세요.</p>
+                            <p class="form-hint">행사명·날짜·주소를 직접 수정하면 보호가 켜집니다. 하단 안내·버튼 문구는 보호 설정과 관계없이 직접 관리합니다.</p>
                         </div></details>
                     </div>
                     <div class="coupon-editor-footer"><span>쿠폰 순서</span><div class="coupon-actions"><button type="button" data-action="up" ${index ? '' : 'disabled'} aria-label="쿠폰 위로">↑</button><button type="button" data-action="down" ${index < coupons.length - 1 ? '' : 'disabled'} aria-label="쿠폰 아래로">↓</button></div><button type="button" class="delete-coupon" data-action="delete">쿠폰 삭제</button></div>
@@ -219,7 +220,7 @@ const AdminControls = (() => {
         $('coupon-list').addEventListener('input', event => {
             const card = event.target.closest('.coupon-editor');
             if (!card) return;
-            if (!['enabled','manualOverride'].includes(event.target.dataset.field)) card.querySelector('[data-field="manualOverride"]').checked = true;
+            if (['title','link','validFrom','validUntil','source'].includes(event.target.dataset.field)) card.querySelector('[data-field="manualOverride"]').checked = true;
             syncCoupons();
             refreshSummary(card);
         });

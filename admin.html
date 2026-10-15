@@ -93,7 +93,7 @@
             </nav>
             <section data-panel="content">
                 <div class="section-heading"><div><h2>사은 쿠폰</h2><p id="coupon-count" class="form-hint"></p></div><button type="button" id="btn-add-coupon" class="btn-secondary">+ 쿠폰 추가</button></div>
-                <p class="section-help">쿠폰을 선택해 수정하세요. 사용을 끄거나 기간이 지나도 목록에는 남습니다. 자동 쿠폰의 내용을 수정하면 수동 관리로 전환됩니다.</p>
+                <p class="section-help">행사명·날짜·주소만 자동 갱신합니다. 하단 안내·버튼 문구는 직접 관리하며, 사용을 끄거나 기간이 지나도 목록에는 남습니다.</p>
                 <div class="coupon-tools"><div class="coupon-filters" aria-label="쿠폰 관리 구분"><button type="button" data-coupon-filter="all" aria-pressed="true">전체</button><button type="button" data-coupon-filter="auto" aria-pressed="false">자동 갱신</button><button type="button" data-coupon-filter="manual" aria-pressed="false">수동 관리</button></div><button type="button" id="btn-refresh-now" class="btn-secondary">지금 갱신 요청</button></div>
                 <p id="refresh-request-status" class="form-hint" role="status"></p>
                 <div class="refresh-links"><a id="refresh-runs-link" href="https://github.com/pageforevent/page/actions/workflows/sync-coupons.yml" target="_blank" rel="noopener noreferrer" hidden>실행 상태 보기 ↗</a><button type="button" id="btn-reload-content" hidden>완료 후 최신 내용 불러오기</button></div>
@@ -319,7 +319,7 @@
     </div>
 
     <script src="site-config.js?v=refresh-controls-3"></script>
-    <script src="admin-controls.js?v=refresh-controls-3"></script>
+    <script src="admin-controls.js?v=coupon-notes-5"></script>
     <script src="admin.js?v=refresh-controls-3"></script>
 </body>
 </html>
