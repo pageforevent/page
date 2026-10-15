@@ -7,6 +7,10 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlencode, unquote
 from urllib.request import urlopen
+if __package__:
+    from .refresh_policy import scheduled_collection_allowed, forced_refresh
+else:
+    from refresh_policy import scheduled_collection_allowed, forced_refresh
 
 ROOT = Path(__file__).resolve().parents[1]
 KST = timezone(timedelta(hours=9))
@@ -88,6 +92,13 @@ def make_snapshot(observations, forecasts, observed, forecast_base, now):
 
 
 def main():
+    if not scheduled_collection_allowed():
+        print("서울 시간 자동 갱신 시간 밖: 날씨 수집 건너뜀")
+        return
+    data = json.loads((ROOT / "data.json").read_text(encoding="utf-8"))
+    if data.get("settings", {}).get("autoWeather") is False and not forced_refresh():
+        print("관리자 설정: 날씨 자동 수집 꺼짐")
+        return
     key = os.environ.get("KMA_SERVICE_KEY", "").strip()
     if not key:
         print("::warning::KMA_SERVICE_KEY 미등록: 날씨 갱신은 건너뛰고 쿠폰/배포는 계속합니다.")
@@ -102,6 +113,9 @@ def main():
         previous = json.loads(destination.read_text(encoding="utf-8"))
         if updated == previous:
             print("부전동 날씨 변경 없음")
+            return
+        if not scheduled_collection_allowed():
+            print("자동 갱신 시간이 종료되어 날씨 변경을 저장하지 않습니다.")
             return
         temporary = destination.with_suffix(".json.tmp")
         temporary.write_text(json.dumps(updated, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
