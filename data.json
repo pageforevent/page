@@ -44,7 +44,7 @@
       "channel": "_xlZaqM",
       "postId": 114411708,
       "postUrl": "https://pf.kakao.com/_xlZaqM/114411708",
-      "updatedAt": 1791607519000
+      "updatedAt": 1792721625000
     },
     "offers": [
       {
@@ -63,12 +63,12 @@
         "id": "sports",
         "source": "sports",
         "enabled": true,
-        "title": "스포츠/아웃도어 5~10%",
+        "title": "스포츠/아웃도어 7.5%",
         "buttonText": "바로가기",
-        "link": "https://m.lotteshopping.com/cpn/gate/3778452ffc4ba76e/C10902?utm_source=&utm_medium=plusfriend",
+        "link": "https://m.lotteshopping.com/cpn/gate/7ccbb50b383fa660/C10902?utm_source=kakao&utm_medium=plusfriend",
         "description": "참여 브랜드 및 자세한 사항은 버튼을 눌러 확인 바랍니다.",
-        "validFrom": "2026-10-09",
-        "validUntil": "2026-10-11",
+        "validFrom": "2026-10-23",
+        "validUntil": "2026-10-25",
         "manualOverride": false
       }
     ],
